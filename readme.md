@@ -20,6 +20,10 @@ const fts = require('functional-typescript')
 // TODO
 ```
 
+## Related
+
+- [FaaSLang](https://github.com/faaslang/faaslang) - Analogous goals as this project but uses JavaScript with JSDoc instead of TypeScript.
+
 ## License
 
 MIT © [Travis Fischer](https://transitivebullsh.it)
