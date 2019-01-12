@@ -1,0 +1,15 @@
+src
+test
+examples
+tsconfig.json
+tsconfig.module.json
+tslint.json
+.travis.yml
+.github
+.prettierignore
+.vscode
+build/docs
+**/*.spec.*
+coverage
+.nyc_output
+*.log
