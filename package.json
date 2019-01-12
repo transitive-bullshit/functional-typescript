@@ -2,11 +2,15 @@
   "name": "functional-typescript",
   "version": "0.0.1",
   "description": "TypeScript standard for serverless functions.",
+  "repository": "https://github.com/transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/transitive-bullshit/functional-typescript",
-  "license": "MIT",
+  "engines": {
+    "node": ">=8.9"
+  },
   "keywords": [
     "typescript",
     "serverless",
@@ -55,9 +59,6 @@
     "version": "Bump package.json version, update CHANGELOG.md, tag release",
     "reset": "Delete all untracked files and reset the repo to the last commit",
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
-  },
-  "engines": {
-    "node": ">=8.9"
   },
   "dependencies": {
     "@types/node": "^10.12.18",
