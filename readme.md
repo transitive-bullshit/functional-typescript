@@ -20,9 +20,16 @@ const fts = require('functional-typescript')
 // TODO
 ```
 
+## How it works
+
+TODO
+
 ## Related
 
-- [FaaSLang](https://github.com/faaslang/faaslang) - Analogous goals as this project but uses JavaScript with JSDoc instead of TypeScript.
+- [FaaSLang](https://github.com/faaslang/faaslang) - Very similar in spirit to this project but uses JavaScript with JSDoc instead of TypeScript.
+- [AWS TypeScript Template](https://github.com/serverless/serverless/tree/master/lib/plugins/create/templates/aws-nodejs-typescript) - Default TypeScript template for AWS serverless functions.
+- [Serverless Plugin TypeScript](https://github.com/prisma/serverless-plugin-typescript) - Serverless plugin for zero-config Typescript support.
+- [Quicktype](https://quicktype.io) - Used under the hood for converting TypeScript types to [JSON Schema](https://json-schema.org).
 
 ## License
 
