@@ -5,6 +5,7 @@
     "no-implicit-dependencies": [true, "dev"],
 
     "max-classes-per-file": false,
-    "member-access": false
+    "member-access": false,
+    "no-console": false
   }
 }

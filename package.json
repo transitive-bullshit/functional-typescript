@@ -31,7 +31,7 @@
     "test": "run-s build test:*",
     "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
     "test:unit": "nyc --silent ava",
-    "watch": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
+    "start": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
     "cov": "run-s build test:unit cov:html && opn coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov > coverage.lcov && codecov",
@@ -52,7 +52,7 @@
     "build": "Clean and rebuild the project",
     "fix": "Try to automatically fix any linting problems",
     "test": "Lint and unit test the project",
-    "watch": "Watch and rebuild the project on save, then rerun relevant tests",
+    "start": "Watch and rebuild the project on save, then rerun relevant tests",
     "cov": "Rebuild, run tests, then create and open the coverage report",
     "doc": "Generate HTML API documentation and open it in a browser",
     "doc:json": "Generate API documentation in typedoc JSON format",
@@ -62,7 +62,12 @@
   },
   "dependencies": {
     "@types/node": "^10.12.18",
-    "typescript": "^3.2.2"
+    "@types/tempy": "^0.2.0",
+    "fs-extra": "^7.0.1",
+    "tempy": "^0.2.1",
+    "ts-simple-ast": "^21.0.0",
+    "typescript": "^3.2.2",
+    "typescript-json-schema": "^0.34.0"
   },
   "devDependencies": {
     "ava": "^1.0.1",
@@ -95,7 +100,13 @@
   },
   "prettier": {
     "singleQuote": true,
-    "semi": false
+    "jsxSingleQuote": true,
+    "semi": false,
+    "tabs": false,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always"
   },
   "nyc": {
     "exclude": [
