@@ -6,12 +6,12 @@ import { FunctionDeclaration, printNode, Project, ts } from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
 export default async function createFTSDefinition(file: string) {
-  const opts = {
+  const compilerOptions = {
     ignoreCompilerErrors: true,
     target: ts.ScriptTarget.ES2017
   }
 
-  const project = new Project({ compilerOptions: opts })
+  const project = new Project({ compilerOptions })
 
   project.addExistingSourceFiles([file])
   project.resolveSourceFileDependencies()
@@ -44,9 +44,17 @@ export default async function createFTSDefinition(file: string) {
     throw new Error('Unable to infer a main function export')
   }
 
-  console.log(printNode(main.compilerNode))
+  const name = main.getName()
+  const signature = main.getSignature()
+  const typeParams = signature.getTypeParameters()
+  const params = signature.getParameters()
+  const returnType = signature.getReturnType()
+  const docs = signature.getDocumentationComments()
+  const tags = signature.getJsDocTags()
 
-  // const name = main.getName()
+  const schema = createJSONSchema(file, compilerOptions)
+
+  console.log(printNode(main.compilerNode))
 
   /*
   const app = new typedoc.Application(opts)
