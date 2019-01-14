@@ -18,7 +18,7 @@ FTS allows you to transform a standard TypeScript function like this:
 /**
  * This is a basic TypeScript function.
  */
-export function helloWorld(name: string = 'World'): string {
+export function hello(name: string = 'World'): string {
   return `Hello ${name}!`
 }
 ```
@@ -26,7 +26,7 @@ export function helloWorld(name: string = 'World'): string {
 Into a badass serverless function that can be called over HTTP like this (GET):
 
 ```
-https://example.com/helloWorld?name=Travis
+https://example.com/hello?name=Travis
 ```
 
 Or like this (POST):
