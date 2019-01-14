@@ -12,7 +12,7 @@
 
 ## What is FTS?
 
-FTS allows you to transform a standard TypeScript function like this:
+FTS transforms a standard TypeScript function like this:
 
 ```ts
 /**
