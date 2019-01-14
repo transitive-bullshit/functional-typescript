@@ -9,7 +9,7 @@ export default async function createFTSDefinition(file: string) {
   // initialize and compile TS program
   const compilerOptions = {
     ignoreCompilerErrors: true,
-    lib: ['es2017', 'dom'],
+    // lib: ['es2017', 'dom'],
     target: TS.ts.ScriptTarget.ES2017
   }
 
@@ -54,10 +54,23 @@ export default async function createFTSDefinition(file: string) {
 
   await mainSourceFile.save()
 
-  const schema = createJSONSchema(file, compilerOptions, FTSFunction)
+  const schemaArgs = {
+    defaultProps: true,
+    noExtraProps: true,
+    required: true,
+    titles: true
+  }
+
+  const schema = createJSONSchema(
+    file,
+    compilerOptions,
+    FTSFunction,
+    schemaArgs
+  )
   console.log(JSON.stringify(schema, null, 2))
 }
 
+/** Find main exported function declaration */
 export function extractMainFunction(
   sourceFile: TS.SourceFile
 ): TS.FunctionDeclaration | undefined {
@@ -65,22 +78,31 @@ export function extractMainFunction(
     .getFunctions()
     .filter((f) => f.isDefaultExport())
 
-  // find main exported function declaration
-  let main: TS.FunctionDeclaration
-
   if (functionDefaultExports.length === 1) {
-    main = functionDefaultExports[0]
-  } else {
-    const functionExports = sourceFile
-      .getFunctions()
-      .filter((f) => f.isExported())
-
-    if (functionExports.length === 1) {
-      main = functionExports[0]
-    }
+    return functionDefaultExports[0]
   }
 
-  return main
+  const functionExports = sourceFile
+    .getFunctions()
+    .filter((f) => f.isExported())
+
+  if (functionExports.length === 1) {
+    return functionExports[0]
+  }
+
+  if (functionExports.length > 1) {
+    const externalFunctions = functionExports.filter((f) => {
+      const docs = f.getJsDocs()[0]
+
+      return (
+        docs && docs.getTags().find((tag) => tag.getTagName() === 'external')
+      )
+    })
+
+    if (externalFunctions.length === 1) {
+      return externalFunctions[0]
+    }
+  }
 }
 
 export function addParamsInterface(
@@ -153,11 +175,14 @@ export function addFTSFunctionInterface(
 
   addReturnType(ftsInterface, main, docs)
 
+  let description = ''
+
   if (docs && docs.description) {
-    ftsInterface.addJsDoc(docs.description)
+    description += docs.description + '\n'
   }
 
-  ftsInterface.addJsDoc({ description: `@name: ${mainName}` })
+  description += `@name: ${mainName}`
+  ftsInterface.addJsDoc({ description })
 
   return ftsInterface
 }
@@ -171,7 +196,7 @@ export function addReturnType(
 
   const property = ftsInterface.addProperty({
     name: 'return',
-    type: mainReturnType.getText(main.getReturnTypeNode())
+    type: mainReturnType.getText()
   })
 
   if (docs) {
@@ -191,7 +216,7 @@ export function createJSONSchema(
   file: string,
   compilerOptions: object,
   fullTypeName = '*',
-  settings = { required: true }
+  settings?: TJS.PartialArgs
 ): TJS.Definition {
   const program = TJS.getProgramFromFiles(
     [file],
