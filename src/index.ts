@@ -3,6 +3,8 @@ import { FunctionDeclaration, printNode, Project, ts } from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
 export default async function createFTSDefinition(file: string) {
+  // initialize and compile TS program
+
   const compilerOptions = {
     ignoreCompilerErrors: true,
     target: ts.ScriptTarget.ES2017
@@ -21,6 +23,7 @@ export default async function createFTSDefinition(file: string) {
     .getFunctions()
     .filter((f) => f.isDefaultExport())
 
+  // find main exported function declaration
   let main: FunctionDeclaration
 
   if (functionDefaultExports.length === 1) {
@@ -43,13 +46,18 @@ export default async function createFTSDefinition(file: string) {
 
   // console.log(printNode(main.compilerNode))
 
-  // const name = main.getName()
-  const signature = main.getSignature()
-  // const typeParams = signature.getTypeParameters()
-  const params = signature.getParameters()
-  // const returnType = signature.getReturnType()
-  // const docs = signature.getDocumentationComments()
-  // const tags = signature.getJsDocTags()
+  // extract main function type and documentation info
+  const mainName = main.getName()
+  const mainSignature = main.getSignature()
+  const mainTypeParams = mainSignature.getTypeParameters()
+  const mainParams = mainSignature.getParameters()
+  // const mainReturnType = mainSignature.getReturnType()
+
+  if (mainTypeParams.length > 0) {
+    throw new Error(
+      `Type Parameters are not supported for function "${mainName}"`
+    )
+  }
 
   const doc = main.getJsDocs()[0]
   const paramComments = {}
@@ -69,8 +77,8 @@ export default async function createFTSDefinition(file: string) {
     name: 'FTSParams'
   })
 
-  for (let i = 0; i < params.length; ++i) {
-    const param = params[i]
+  for (let i = 0; i < mainParams.length; ++i) {
+    const param = mainParams[i]
     const node = param.getValueDeclaration()
     const name = param.getName()
 
@@ -86,12 +94,14 @@ export default async function createFTSDefinition(file: string) {
     }
   }
 
-  await sourceFile.save()
-
   console.log(printNode(paramsInterface.compilerNode))
+
+  /*
+  await sourceFile.save()
 
   const schema = createJSONSchema(file, compilerOptions)
   console.log(JSON.stringify(schema, null, 2))
+  */
 }
 
 export function createJSONSchema(
@@ -108,4 +118,4 @@ export function createJSONSchema(
   return schema
 }
 
-createFTSDefinition('./examples/double.ts')
+createFTSDefinition('./examples/medium.ts')
