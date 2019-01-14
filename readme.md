@@ -6,11 +6,11 @@
 
 ## Features
 
+- Adds type safety to your serverless functions
+- Adds built-in documentation to your serverless functions
 - Compatible with all serverless providers (AWS, GCP, Azure, etc)
-- Adds type safety to serverless functions
-- Builtin documentation for serverless functions
 
-## What is Functional TypeScript (FTS)?
+## What is FTS?
 
 FTS allows you to transform a standard TypeScript function like this:
 
