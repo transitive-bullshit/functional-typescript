@@ -58,8 +58,7 @@ export default async function createFTSDefinition(file: string) {
   const schema = createJSONSchema(file, FTSFunction, {
     defaultProps: true,
     noExtraProps: true,
-    required: true,
-    titles: true
+    required: true
   })
   console.log(JSON.stringify(schema, null, 2))
 }
