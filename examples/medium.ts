@@ -22,24 +22,3 @@ export default async function Example(
 ): Promise<string> {
   return 'Hello World'
 }
-
-interface FTSParams {
-    /**
-     * Example describing string `foo`.
-     */
-    foo: string;
-    bar: number;
-    nala?: Nala;
-}
-
-/**
- * This is an example description for an example function.
- * @name: Example
- */
-interface FTSFunction {
-    params: FTSParams;
-    /**
-     * Description of return value.
-     */
-    return: Promise<string>;
-}
