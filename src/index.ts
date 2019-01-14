@@ -60,6 +60,7 @@ export default async function createFTSDefinition(file: string) {
     noExtraProps: true,
     required: true
   })
+  schema.title = mainName
   console.log(JSON.stringify(schema, null, 2))
 }
 

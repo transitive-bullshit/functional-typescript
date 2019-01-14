@@ -35,7 +35,7 @@ export async function ExampleFunction(
 }
 ```
 
-FTS will generate the following JSON Schema:
+FTS will generate a JSON Schema that fully specifies the main function export, `ExampleFunction`.
 
 ```json
 {
@@ -126,6 +126,8 @@ const fts = require('functional-typescript')
 TODO
 
 ## Roadmap
+
+FTS is an active WIP.
 
 - [ ] Function definition parser
   - [x] extract main function export
