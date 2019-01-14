@@ -9,8 +9,9 @@ export default async function createFTSDefinition(file: string) {
   // initialize and compile TS program
   const compilerOptions = {
     ignoreCompilerErrors: true,
-    // lib: ['es2017', 'dom'],
-    target: TS.ts.ScriptTarget.ES2017
+    // TODO: why do we need to specify the full filename for these lib definition files?
+    lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
+    target: TS.ScriptTarget.ES5
   }
 
   const project = new TS.Project({ compilerOptions })
@@ -54,26 +55,19 @@ export default async function createFTSDefinition(file: string) {
 
   await mainSourceFile.save()
 
-  const schemaArgs = {
+  const schema = createJSONSchema(file, FTSFunction, {
     defaultProps: true,
     noExtraProps: true,
     required: true,
     titles: true
-  }
-
-  const schema = createJSONSchema(
-    file,
-    compilerOptions,
-    FTSFunction,
-    schemaArgs
-  )
+  })
   console.log(JSON.stringify(schema, null, 2))
 }
 
 /** Find main exported function declaration */
 export function extractMainFunction(
   sourceFile: TS.SourceFile
-): TS.FunctionDeclaration | undefined {
+): TS.FunctionDeclaration {
   const functionDefaultExports = sourceFile
     .getFunctions()
     .filter((f) => f.isDefaultExport())
@@ -95,7 +89,11 @@ export function extractMainFunction(
       const docs = f.getJsDocs()[0]
 
       return (
-        docs && docs.getTags().find((tag) => tag.getTagName() === 'external')
+        docs &&
+        docs.getTags().find((tag) => {
+          const tagName = tag.getTagName()
+          return tagName === 'external' || tagName === 'public'
+        })
       )
     })
 
@@ -103,6 +101,8 @@ export function extractMainFunction(
       return externalFunctions[0]
     }
   }
+
+  return undefined
 }
 
 export function addParamsInterface(
@@ -214,17 +214,23 @@ export function addReturnType(
 
 export function createJSONSchema(
   file: string,
-  compilerOptions: object,
   fullTypeName = '*',
-  settings?: TJS.PartialArgs
+  settings?: TJS.PartialArgs,
+  jsonCompilerOptions: any = {}
 ): TJS.Definition {
+  const compilerOptions = {
+    lib: ['es2018', 'dom'],
+    target: 'es5',
+    ...jsonCompilerOptions
+  }
+
   const program = TJS.getProgramFromFiles(
     [file],
     compilerOptions,
-    process.env.CWD
+    process.cwd()
   )
-  const schema = TJS.generateSchema(program, fullTypeName, settings)
-  return schema
+
+  return TJS.generateSchema(program, fullTypeName, settings)
 }
 
 createFTSDefinition('./examples/medium.ts')
