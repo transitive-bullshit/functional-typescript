@@ -23,7 +23,7 @@ export function helloWorld(name: string = 'World'): string {
 }
 ```
 
-Into an infinitely scalable serverless function that can be called over HTTP like this (GET):
+Into a badass serverless function that can be called over HTTP like this (GET):
 
 ```
 https://example.com/helloWorld?name=Travis
