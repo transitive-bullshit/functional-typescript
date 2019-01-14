@@ -81,9 +81,10 @@ exports.hello = (req, res) => {
 }
 ```
 
-**Functional TypeScript**
+**FTS**
 
 ```ts
+// note that TypeScript infers type information automatically in this example!
 export function hello(name = 'World') {
   return `Hello ${name}!`
 }
