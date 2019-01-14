@@ -6,9 +6,10 @@
 
 ## Features
 
-- Adds type safety to your serverless functions
-- Adds built-in documentation to your serverless functions
-- Compatible with all serverless providers (AWS, GCP, Azure, etc)
+- Type-safe!
+- Self-documenting
+- Cloud provider-agnostic
+- Compatible with all major serverless providers (AWS, GCP, Azure, etc)
 
 ## What is FTS?
 
@@ -23,7 +24,7 @@ export function hello(name: string = 'World'): string {
 }
 ```
 
-Into a badass serverless function that can be called over HTTP like this (GET):
+Into a badass, type-safe serverless function that can be called over HTTP like this (GET):
 
 ```
 https://example.com/hello?name=GitHub
@@ -93,7 +94,7 @@ FTS allows you to define **provider-agnostic** serverless functions while also g
 
 ## Usage
 
-You may use this package as a CLI or programatically as a module.
+You can use this package as either a CLI or programatically as a module.
 
 #### CLI
 
@@ -254,7 +255,7 @@ For more information, see [Why Serverless?](https://serverless.com/learn/overvie
 
 Functional TypeScript builds off of and shares many of the same design goals as [FaaSLang](https://github.com/faaslang/faaslang). The main difference is that FaaSLang's default implementation uses JavaScript + JSDoc to generate custom schemas for function definitions, whereas FTS uses TypeScript to generate JSON Schemas for function definitions.
 
-In our experience, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core definition layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages without further development. For example, it would be relatively simple to extend FTS in the future beyond TypeScript to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io).
+In our opinion, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core definition and validation layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages. For example, it would be relatively simple to extend FTS in the future beyond TypeScript to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io).
 
 #### How do I use FTS with my Serverless Provider (AWS, GCP, Kubeless, Fn, Azure, OpenWhisk, etc)?
 
