@@ -18,6 +18,7 @@
     "function",
     "functional",
     "faas",
+    "rpc",
     "stdlib"
   ],
   "scripts": {
@@ -61,18 +62,15 @@
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "dependencies": {
+    "doctrine": "^3.0.0",
+    "ts-simple-ast": "^21.0.0",
+    "typescript-json-schema": "^0.34.0"
+  },
+  "devDependencies": {
     "@types/doctrine": "^0.0.3",
     "@types/json-schema": "^7.0.1",
     "@types/node": "^10.12.18",
     "@types/tempy": "^0.2.0",
-    "doctrine": "^3.0.0",
-    "fs-extra": "^7.0.1",
-    "tempy": "^0.2.1",
-    "ts-simple-ast": "^21.0.0",
-    "typescript": "^3.2.2",
-    "typescript-json-schema": "^0.34.0"
-  },
-  "devDependencies": {
     "ava": "^1.0.1",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
@@ -85,7 +83,8 @@
     "trash-cli": "^1.4.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
-    "typedoc": "^0.14.1"
+    "typedoc": "^0.14.1",
+    "typescript": "^3.2.2"
   },
   "ava": {
     "failFast": true,

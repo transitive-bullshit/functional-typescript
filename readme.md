@@ -12,7 +12,17 @@ This module requires `node >= 8`.
 npm install --save functional-typescript
 ```
 
+This will install the `fts` CLI program globally.
+
 ## Usage
+
+#### CLI
+
+```bash
+fts --help
+
+TODO
+```
 
 ```js
 const fts = require('functional-typescript')
@@ -23,6 +33,28 @@ const fts = require('functional-typescript')
 ## How it works
 
 TODO
+
+## Roadmap
+
+- [ ] Function definition parser
+  - [x] extract main function export
+  - [x] convert main function signature to json schema
+  - [x] support common jsdoc comments
+  - [ ] make process readonly to source files
+  - [ ] support custom tsconfig
+  - [ ] initial CLI wrapper to generate function definitions
+- [ ] Function invocation given a definition schema and JS file entrypoint
+  - [ ] validate function parameters against json schema
+  - [ ] support async functions
+  - [ ] validate function return type against json schema
+  - [ ] support optional FTS Context (ip, headers, etc)
+- [ ] HTTP gateway implementation
+- [ ] Documentation
+- [ ] Testing
+  - [ ] Basic unit tests for function definition parser
+  - [ ] Basic unit tests for function invocation wrapper
+  - [ ] Basic unit tests for HTTP gateway
+  - [ ] Integration tests for TS function => definition => HTTP gateway
 
 ## Related
 
