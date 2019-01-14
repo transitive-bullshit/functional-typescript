@@ -47,9 +47,9 @@ All parameters and return values are type-checked by the FTS gateway, so you can
 
 ## Why Functional TypeScript?
 
-The serverless space has seen rapid growth, yet [tooling](https://serverless.com) especially across different providers has struggled to keep up. One of the major disadvantages of serverless at the moment is that each API provider generally has their own conventions and caveats, which can quickly lead to vendor lock-in.
+The serverless space has seen such rapid growth, that tooling, especially across different providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each API provider generally has their own conventions and caveats, which can quickly lead to vendor lock-in.
 
-Take, for example, the same Node.js "Hello World" function defined across several popular serverless providers:
+For example, take the following Node.js "Hello World" function defined across several popular serverless providers:
 
 **AWS**
 
@@ -89,7 +89,7 @@ export function hello(name = 'World') {
 }
 ```
 
-**FTS allows you to define provider-agnostic serverless functions while also giving you strong type checking and built-in documentation for free.**
+FTS allows you to define **provider-agnostic** serverless functions while also giving you **strong type checking** and **built-in documentation** for free.
 
 ## Usage
 
