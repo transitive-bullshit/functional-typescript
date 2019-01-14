@@ -26,28 +26,28 @@ export function hello(name: string = 'World'): string {
 Into a badass serverless function that can be called over HTTP like this (GET):
 
 ```
-https://example.com/hello?name=Travis
+https://example.com/hello?name=GitHub
 ```
 
 Or like this (POST):
 
 ```
 {
-  "name": "Travis"
+  "name": "GitHub"
 }
 ```
 
 And returns a result like this:
 
 ```
-"Hello Travis!"
+"Hello GitHub!"
 ```
 
 All parameters and return values are type-checked by the FTS gateway, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
 
 ## Why Functional TypeScript?
 
-The serverless space has seen such rapid growth, that tooling, especially across different providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each API provider generally has their own conventions and caveats, which can quickly lead to vendor lock-in.
+The serverless space has seen such rapid growth that tooling, especially across different cloud providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each cloud provider generally has their own conventions and gotchas, which can quickly lead to vendor lock-in.
 
 For example, take the following Node.js "Hello World" function defined across several popular serverless providers:
 
