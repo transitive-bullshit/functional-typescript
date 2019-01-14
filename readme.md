@@ -248,7 +248,7 @@ FTS is an active WIP.
 
 Serverless functions allow your code to be executed on-demand and scale automatically both up towards infinity and down to zero. They minimize cost in terms of infrastructure and engineering time, largely due to removing operational overhead and reducing the surface area for potential errors.
 
-For more information, see [Why Serverless?](https://serverless.com/learn/overview), and [Martin Fowler on Serverless](https://martinfowler.com/articles/serverless.html).
+For more information, see [Why Serverless?](https://serverless.com/learn/overview), and an excellent breakdown on the [Tradeoffs that come with Serverless](https://martinfowler.com/articles/serverless.html).
 
 #### How is FTS related to FaaSLang?
 
