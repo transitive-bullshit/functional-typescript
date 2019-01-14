@@ -1,5 +1,5 @@
 import * as doctrine from 'doctrine'
-import { FunctionDeclaration, printNode, Project, ts } from 'ts-simple-ast'
+import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
 export default async function createFTSDefinition(file: string) {
@@ -7,10 +7,10 @@ export default async function createFTSDefinition(file: string) {
 
   const compilerOptions = {
     ignoreCompilerErrors: true,
-    target: ts.ScriptTarget.ES2017
+    target: TS.ts.ScriptTarget.ES2017
   }
 
-  const project = new Project({ compilerOptions })
+  const project = new TS.Project({ compilerOptions })
 
   project.addExistingSourceFiles([file])
   project.resolveSourceFileDependencies()
@@ -24,7 +24,7 @@ export default async function createFTSDefinition(file: string) {
     .filter((f) => f.isDefaultExport())
 
   // find main exported function declaration
-  let main: FunctionDeclaration
+  let main: TS.FunctionDeclaration
 
   if (functionDefaultExports.length === 1) {
     main = functionDefaultExports[0]
@@ -44,14 +44,13 @@ export default async function createFTSDefinition(file: string) {
     throw new Error('Unable to infer a main function export')
   }
 
-  // console.log(printNode(main.compilerNode))
+  // console.log(TS.printNode(main.compilerNode))
 
   // extract main function type and documentation info
   const mainName = main.getName()
-  const mainSignature = main.getSignature()
-  const mainTypeParams = mainSignature.getTypeParameters()
-  const mainParams = mainSignature.getParameters()
-  // const mainReturnType = mainSignature.getReturnType()
+  const mainTypeParams = main.getTypeParameters()
+  const mainParams = main.getParameters()
+  // const mainReturnType = main.getReturnType()
 
   if (mainTypeParams.length > 0) {
     throw new Error(
@@ -77,15 +76,17 @@ export default async function createFTSDefinition(file: string) {
     name: 'FTSParams'
   })
 
-  for (let i = 0; i < mainParams.length; ++i) {
-    const param = mainParams[i]
-    const node = param.getValueDeclaration()
+  for (const param of mainParams) {
     const name = param.getName()
 
-    paramsInterface.insertProperty(i, {
-      name,
-      type: param.getTypeAtLocation(node).getText(node)
-    })
+    paramsInterface.addProperty(
+      param.getStructure() as TS.PropertySignatureStructure
+    )
+    // paramsInterface.addProperty({
+    //   hasQuestionToken: param.isOptional(),
+    //   name,
+    //   type: param.getType().getText(param)
+    // })
 
     const comment = paramComments[name]
     if (comment) {
@@ -94,7 +95,7 @@ export default async function createFTSDefinition(file: string) {
     }
   }
 
-  console.log(printNode(paramsInterface.compilerNode))
+  console.log(TS.printNode(paramsInterface.compilerNode))
 
   /*
   await sourceFile.save()
