@@ -79,43 +79,36 @@ export default async function createFTSDefinition(file: string) {
   for (const param of mainParams) {
     const name = param.getName()
 
-    paramsInterface.addProperty(
+    const property = paramsInterface.addProperty(
       param.getStructure() as TS.PropertySignatureStructure
     )
-    // paramsInterface.addProperty({
-    //   hasQuestionToken: param.isOptional(),
-    //   name,
-    //   type: param.getType().getText(param)
-    // })
 
     const comment = paramComments[name]
     if (comment) {
-      const property = paramsInterface.getProperty(name)
       property.addJsDoc(comment)
     }
   }
 
   console.log(TS.printNode(paramsInterface.compilerNode))
 
-  /*
   await sourceFile.save()
 
   const schema = createJSONSchema(file, compilerOptions)
   console.log(JSON.stringify(schema, null, 2))
-  */
 }
 
 export function createJSONSchema(
   file: string,
   compilerOptions: object,
-  fullTypeName = '*'
+  fullTypeName = '*',
+  settings = { required: true }
 ): TJS.Definition {
   const program = TJS.getProgramFromFiles(
     [file],
     compilerOptions,
     process.env.CWD
   )
-  const schema = TJS.generateSchema(program, fullTypeName)
+  const schema = TJS.generateSchema(program, fullTypeName, settings)
   return schema
 }
 
