@@ -97,27 +97,19 @@ Note that this JSON Schema allows for easy type checking, documentation generati
 
 ## Why?
 
-## Install
+TODO
 
-You may either use this package programatically or as a CLI.
+## Usage
 
-To use the CLI:
+You may use this package as a CLI or programatically as a module.
+
+#### CLI
 
 ```bash
 npm install -g functional-typescript
 ```
 
 This will install the `fts` CLI program globally.
-
-To use as a module:
-
-```bash
-npm install --save functional-typescript
-```
-
-## Usage
-
-#### CLI
 
 ```bash
 fts --help
@@ -126,6 +118,10 @@ TODO
 ```
 
 #### Module
+
+```bash
+npm install --save functional-typescript
+```
 
 ```js
 const fts = require('functional-typescript')
