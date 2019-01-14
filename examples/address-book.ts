@@ -1,7 +1,7 @@
 /**
  * #TopLevel
  */
-export default function Nala(address: AddressBook): string {
+export function Nala(address: AddressBook): string {
   return 'TODO'
 }
 

@@ -1,8 +1,8 @@
 export interface FunctionDefinition {
   title: string
   description: string
-  // params
-  // returns
+  // params: Array<Param>
+  // returns: Type
 }
 
 export interface HttpHeaders {

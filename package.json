@@ -61,9 +61,11 @@
     "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "dependencies": {
+    "@types/doctrine": "^0.0.3",
     "@types/json-schema": "^7.0.1",
     "@types/node": "^10.12.18",
     "@types/tempy": "^0.2.0",
+    "doctrine": "^3.0.0",
     "fs-extra": "^7.0.1",
     "tempy": "^0.2.1",
     "ts-simple-ast": "^21.0.0",

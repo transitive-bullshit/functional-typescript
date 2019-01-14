@@ -1,7 +1,4 @@
-// import * as fs from 'fs-extra'
-// import * as tempy from 'tempy'
-// import * as typedoc from 'typedoc'
-// import * as ts from 'typescript'
+import * as doctrine from 'doctrine'
 import { FunctionDeclaration, printNode, Project, ts } from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
@@ -44,42 +41,70 @@ export default async function createFTSDefinition(file: string) {
     throw new Error('Unable to infer a main function export')
   }
 
-  const name = main.getName()
+  // console.log(printNode(main.compilerNode))
+
+  // const name = main.getName()
   const signature = main.getSignature()
-  const typeParams = signature.getTypeParameters()
+  // const typeParams = signature.getTypeParameters()
   const params = signature.getParameters()
-  const returnType = signature.getReturnType()
-  const docs = signature.getDocumentationComments()
-  const tags = signature.getJsDocTags()
+  // const returnType = signature.getReturnType()
+  // const docs = signature.getDocumentationComments()
+  // const tags = signature.getJsDocTags()
+
+  const doc = main.getJsDocs()[0]
+  const paramComments = {}
+  let docs: doctrine.Annotation
+
+  if (doc) {
+    const { description } = doc.getStructure()
+    docs = doctrine.parse(description as string)
+    const paramTags = docs.tags.filter((tag) => tag.title === 'param')
+
+    for (const tag of paramTags) {
+      paramComments[tag.name] = tag.description
+    }
+  }
+
+  const paramsInterface = sourceFile.addInterface({
+    name: 'FTSParams'
+  })
+
+  for (let i = 0; i < params.length; ++i) {
+    const param = params[i]
+    const node = param.getValueDeclaration()
+    const name = param.getName()
+
+    paramsInterface.insertProperty(i, {
+      name,
+      type: param.getTypeAtLocation(node).getText(node)
+    })
+
+    const comment = paramComments[name]
+    if (comment) {
+      const property = paramsInterface.getProperty(name)
+      property.addJsDoc(comment)
+    }
+  }
+
+  await sourceFile.save()
+
+  console.log(printNode(paramsInterface.compilerNode))
 
   const schema = createJSONSchema(file, compilerOptions)
-
-  console.log(printNode(main.compilerNode))
-
-  // TODO: create interface from params and generate JSON schema from that
-
-  /*
-  const app = new typedoc.Application(opts)
-  const src = app.expandInputFiles(files)
-  const project = app.convert(src)
-  const docFile = tempy.file({ extension: 'json' })
-  app.generateJson(project, docFile)
-
-  const docs = await fs.readJson(docFile)
-  console.log(JSON.stringify(docs, null, 2))
-  */
+  console.log(JSON.stringify(schema, null, 2))
 }
 
 export function createJSONSchema(
   file: string,
-  compilerOptions: object
+  compilerOptions: object,
+  fullTypeName = '*'
 ): TJS.Definition {
   const program = TJS.getProgramFromFiles(
     [file],
     compilerOptions,
     process.env.CWD
   )
-  const schema = TJS.generateSchema(program, '*')
+  const schema = TJS.generateSchema(program, fullTypeName)
   return schema
 }
 

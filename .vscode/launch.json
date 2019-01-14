@@ -15,7 +15,7 @@
         "<node_internals>/**/*.js",
         "${workspaceFolder}/node_modules/**/*.js"
       ],
-      // "preLaunchTask": "npm: build",
+      "preLaunchTask": "npm: build:main",
       // "stopOnEntry": true,
       "smartStep": true,
       "runtimeArgs": ["--nolazy"]
