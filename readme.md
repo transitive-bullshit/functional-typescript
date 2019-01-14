@@ -1,10 +1,125 @@
-# Functional TypeScript
+# Functional TypeScript (FTS)
 
 > TypeScript standard for serverless functions.
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript.svg)](https://www.npmjs.com/package/functional-typescript) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## Intro
+## Features
+
+- Compatible with all serverless providers (AWS, GCP, Azure, etc)
+- Adds type safety to serverless functions
+- Builtin documentation for serverless functions
+
+## What is Functional TypeScript (FTS)?
+
+FTS allows you to transform a standard TypeScript function like this:
+
+```ts
+/**
+ * This is a basic TypeScript function.
+ */
+export function helloWorld(name: string = 'World'): string {
+  return `Hello ${name}!`
+}
+```
+
+Into an infinitely scalable serverless function that can be called over HTTP like this (GET):
+
+```
+https://example.com/helloWorld?name=Travis
+```
+
+Or like this (POST):
+
+```
+{
+  "name": "Travis"
+}
+```
+
+And returns a result like this:
+
+```
+"Hello Travis!"
+```
+
+All parameters and return values are type-checked by the FTS gateway, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
+
+## Why Functional TypeScript?
+
+The serverless space has seen rapid growth, yet [tooling](https://serverless.com) especially across different providers has struggled to keep up. One of the major disadvantages of serverless at the moment is that each API provider generally has their own conventions and caveats, which can quickly lead to vendor lock-in.
+
+Take, for example, the same Node.js "Hello World" function defined across several popular serverless providers:
+
+**AWS**
+
+```js
+exports.handler = (event, context, callback) => {
+  const name = event.name || 'World'
+  callback(null, `Hello ${name}!`)
+}
+```
+
+**Azure**
+
+```js
+module.exports = function(context, req) {
+  const name = req.query.name || (req.body && req.body.name) || 'World'
+  context.res = { body: `Hello ${name}!` }
+  context.done()
+}
+```
+
+**GCP**
+
+```js
+const escapeHtml = require('escape-html')
+
+exports.hello = (req, res) => {
+  const name = req.query.name || req.body.name || 'World'
+  res.send(`Hello ${escapeHtml(name)}!`)
+}
+```
+
+**Functional TypeScript**
+
+```ts
+export function hello(name = 'World') {
+  return `Hello ${name}!`
+}
+```
+
+**FTS allows you to define provider-agnostic serverless functions while also giving you strong type checking and built-in documentation for free.**
+
+## Usage
+
+You may use this package as a CLI or programatically as a module.
+
+#### CLI
+
+```bash
+npm install -g functional-typescript
+```
+
+This will install the `fts` CLI program globally.
+
+```bash
+fts --help
+```
+
+#### Module
+
+```bash
+npm install --save functional-typescript
+```
+
+```js
+const fts = require('functional-typescript')
+
+// TODO
+```
+
+## FTS Specification
 
 Given the following TypeScript file:
 
@@ -95,40 +210,6 @@ FTS will generate a JSON Schema that fully specifies the default `ExampleFunctio
 
 Note that this JSON Schema allows for easy type checking, documentation generation, and asynchronous function invocation.
 
-## Why?
-
-TODO
-
-## Usage
-
-You may use this package as a CLI or programatically as a module.
-
-#### CLI
-
-```bash
-npm install -g functional-typescript
-```
-
-This will install the `fts` CLI program globally.
-
-```bash
-fts --help
-
-TODO
-```
-
-#### Module
-
-```bash
-npm install --save functional-typescript
-```
-
-```js
-const fts = require('functional-typescript')
-
-// TODO
-```
-
 ## Roadmap
 
 FTS is an active WIP.
@@ -160,6 +241,24 @@ FTS is an active WIP.
 - [ ] Post-MVP
   - [ ] Support multiple
   - [ ] now-builder for FTS functions
+
+## FAQ
+
+#### Why Serverless?
+
+Serverless functions allow your code to be executed on-demand and scale automatically both up towards infinity and down to zero. They minimize cost in terms of infrastructure and engineering time, largely due to removing operational overhead and reducing the surface area for potential errors.
+
+For more information, see [Why Serverless?](https://serverless.com/learn/overview), and [Martin Fowler on Serverless](https://martinfowler.com/articles/serverless.html).
+
+#### How is FTS related to FaaSLang?
+
+Functional TypeScript builds off of and shares many of the same design goals as [FaaSLang](https://github.com/faaslang/faaslang). The main difference is that FaaSLang's default implementation uses JavaScript + JSDoc to generate custom schemas for function definitions, whereas FTS uses TypeScript to generate JSON Schemas for function definitions.
+
+In our experience, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core definition layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages without further development. For example, it would be relatively simple to extend FTS in the future beyond TypeScript to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io).
+
+#### How do I use FTS with my Serverless Provider (AWS, GCP, Kubeless, Fn, Azure, OpenWhisk, etc)?
+
+Great question -- this answer will be updated once we have a good answer... 😁
 
 ## Related
 
