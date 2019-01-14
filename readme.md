@@ -26,16 +26,16 @@ interface Nala {
  * @param foo - Example describing string `foo`.
  * @returns Description of return value.
  */
-export async function ExampleFunction(
+export default async function ExampleFunction(
   foo: string,
   bar: number,
   nala?: Nala
 ): Promise<string> {
-  return 'Hello World'
+  return 'Hello World!'
 }
 ```
 
-FTS will generate a JSON Schema that fully specifies the main function export, `ExampleFunction`.
+FTS will generate a JSON Schema that fully specifies the default `ExampleFunction` export.
 
 ```json
 {
@@ -95,15 +95,25 @@ FTS will generate a JSON Schema that fully specifies the main function export, `
 
 Note that this JSON Schema allows for easy type checking, documentation generation, and asynchronous function invocation.
 
+## Why?
+
 ## Install
 
-This module requires `node >= 8`.
+You may either use this package programatically or as a CLI.
+
+To use the CLI:
+
+```bash
+npm install -g functional-typescript
+```
+
+This will install the `fts` CLI program globally.
+
+To use as a module:
 
 ```bash
 npm install --save functional-typescript
 ```
-
-This will install the `fts` CLI program globally.
 
 ## Usage
 
@@ -115,15 +125,13 @@ fts --help
 TODO
 ```
 
+#### Module
+
 ```js
 const fts = require('functional-typescript')
 
 // TODO
 ```
-
-## How it works
-
-TODO
 
 ## Roadmap
 
@@ -146,6 +154,7 @@ FTS is an active WIP.
   - [ ] Usage Info
   - [ ] Standard Specification
   - [ ] Example functions (test suite)
+  - [ ] Description of how it works
   - [ ] How to use with different serverless cloud providers
 - [ ] Testing
   - [ ] Basic unit tests for function definition parser

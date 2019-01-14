@@ -61,6 +61,7 @@ export default async function createFTSDefinition(file: string) {
     required: true
   })
   schema.title = mainName
+  // TODO: go through and remove empty `defaultProps`
   console.log(JSON.stringify(schema, null, 2))
 }
 
