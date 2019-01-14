@@ -56,6 +56,8 @@ export default async function createFTSDefinition(file: string) {
 
   console.log(printNode(main.compilerNode))
 
+  // TODO: create interface from params and generate JSON schema from that
+
   /*
   const app = new typedoc.Application(opts)
   const src = app.expandInputFiles(files)
