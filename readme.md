@@ -81,8 +81,6 @@ exports.hello = (req, res) => {
 }
 ```
 
-Contrast this with FTS, which allows you to define **provider-agnostic** serverless functions while also giving you **strong type checking** and **built-in documentation** for free.
-
 **FTS**
 
 ```ts
@@ -90,6 +88,8 @@ export function hello(name: string = 'World'): string {
   return `Hello ${name}!`
 }
 ```
+
+FTS allows you to define **provider-agnostic** serverless functions while also giving you **strong type checking** and **built-in documentation** for free.
 
 ## Usage
 
