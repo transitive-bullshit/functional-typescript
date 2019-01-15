@@ -1,11 +1,12 @@
 import * as doctrine from 'doctrine'
+import * as fs from 'fs-extra'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
 const FTSFunction = 'FTSFunction'
 const FTSParams = 'FTSParams'
 
-export default async function createFTSDefinition(file: string) {
+export async function generateSchema(file: string): Promise<TJS.Definition> {
   // initialize and compile TS program
   const compilerOptions = {
     ignoreCompilerErrors: true,
@@ -13,6 +14,8 @@ export default async function createFTSDefinition(file: string) {
     lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
     target: TS.ScriptTarget.ES5
   }
+
+  const originalFileContent = await fs.readFile(file, 'utf8')
 
   const project = new TS.Project({ compilerOptions })
 
@@ -62,7 +65,9 @@ export default async function createFTSDefinition(file: string) {
   })
   schema.title = mainName
   // TODO: go through and remove empty `defaultProps`
-  console.log(JSON.stringify(schema, null, 2))
+
+  await fs.writeFile(file, originalFileContent)
+  return schema
 }
 
 /** Find main exported function declaration */
@@ -234,4 +239,9 @@ export function createJSONSchema(
   return TJS.generateSchema(program, fullTypeName, settings)
 }
 
-createFTSDefinition('./examples/medium.ts')
+/*
+generateSchema('./fixtures/medium.ts')
+  .then((schema) => {
+    console.log(JSON.stringify(schema, null, 2))
+  })
+*/

@@ -222,6 +222,7 @@ FTS is an active WIP.
   - [ ] make process readonly to source files
   - [ ] support custom tsconfig
   - [ ] CLI wrapper to generate function definitions
+  - [ ] support standard JS with jsdoc comments
 - [ ] Function invocation given an FTS definition schema and JS file entrypoint
   - [ ] validate function parameters against json schema
   - [ ] support async functions
