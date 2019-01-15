@@ -1,3 +1,4 @@
+import * as arrayEqual from 'array-equal'
 import * as doctrine from 'doctrine'
 import * as fs from 'fs-extra'
 import * as TS from 'ts-simple-ast'
@@ -63,11 +64,42 @@ export async function generateSchema(file: string): Promise<TJS.Definition> {
     noExtraProps: true,
     required: true
   })
-  schema.title = mainName
-  // TODO: go through and remove empty `defaultProps`
+  postProcessSchema(schema, main)
 
   await fs.writeFile(file, originalFileContent)
   return schema
+}
+
+export function postProcessSchema(
+  schema: TJS.Definition,
+  main: TS.FunctionDeclaration
+) {
+  schema.title = main.getName()
+
+  // remove empty `defaultProperties`
+  // TODO: remove other extraneous propertis
+  // TODO: remove / handle Promise type
+  filterObjectDeep(
+    schema,
+    (key, value) =>
+      key === 'defaultProperties' && (!value || arrayEqual(value, []))
+  )
+}
+
+export function filterObjectDeep(
+  obj: any,
+  blacklist: (k: string, v: any) => boolean
+) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key]
+      if (blacklist(key, value)) {
+        delete obj[key]
+      } else if (typeof value === 'object') {
+        filterObjectDeep(value, blacklist)
+      }
+    }
+  }
 }
 
 /** Find main exported function declaration */
@@ -238,10 +270,3 @@ export function createJSONSchema(
 
   return TJS.generateSchema(program, fullTypeName, settings)
 }
-
-/*
-generateSchema('./fixtures/medium.ts')
-  .then((schema) => {
-    console.log(JSON.stringify(schema, null, 2))
-  })
-*/

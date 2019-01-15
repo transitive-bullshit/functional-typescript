@@ -8,8 +8,11 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
+  "bin": {
+    "fts": "build/main/cli.js"
+  },
   "engines": {
-    "node": ">=8.9"
+    "node": ">=8"
   },
   "keywords": [
     "typescript",
@@ -63,6 +66,8 @@
   },
   "dependencies": {
     "@types/fs-extra": "^5.0.4",
+    "array-equal": "^1.0.0",
+    "commander": "^2.19.0",
     "doctrine": "^3.0.0",
     "fs-extra": "^7.0.1",
     "ts-simple-ast": "^21.0.0",
