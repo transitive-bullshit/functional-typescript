@@ -219,7 +219,7 @@ FTS is an active WIP.
   - [x] extract main function export
   - [x] convert main function signature to json schema
   - [x] support common jsdoc comments
-  - [ ] make process readonly to source files
+  - [x] make process readonly to source files
   - [ ] support custom tsconfig
   - [ ] CLI wrapper to generate function definitions
   - [ ] support standard JS with jsdoc comments
@@ -230,13 +230,13 @@ FTS is an active WIP.
   - [ ] support optional FTS Context (ip, headers, etc)
 - [ ] HTTP gateway implementation
 - [ ] Documentation
-  - [ ] Usage Info
+  - [ ] Basic Usage Info
   - [ ] Standard Specification
   - [ ] Example functions (test suite)
   - [ ] Description of how it works
   - [ ] How to use with different serverless cloud providers
 - [ ] Testing
-  - [ ] Basic unit tests for function definition parser
+  - [x] Basic unit tests for function definition parser
   - [ ] Basic unit tests for function invocation wrapper
   - [ ] Basic unit tests for HTTP gateway
   - [ ] Integration tests for TS function => definition => HTTP gateway

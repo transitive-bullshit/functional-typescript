@@ -25,7 +25,6 @@
     "stdlib"
   ],
   "scripts": {
-    "describe": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
@@ -34,8 +33,8 @@
     "fix:tslint": "tslint --fix --project .",
     "test": "run-s build test:*",
     "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
-    "test:unit": "nyc --silent ava",
-    "start": "run-s clean build:main && run-p \"build:main -- -w\" \"test:unit -- --watch\"",
+    "test:unit": "nyc -- ava -v",
+    "start": "run-s clean build:main && run-p \"build:main -- -w\"",
     "cov": "run-s build test:unit cov:html && opn coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "cov:send": "nyc report --reporter=lcov > coverage.lcov && codecov",
@@ -50,19 +49,6 @@
     "all": "run-s reset test cov:check doc:html",
     "prepare-release": "run-s all version doc:publish",
     "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('functional-typescript must be installed with Yarn: https://yarnpkg.com/')\""
-  },
-  "scripts-info": {
-    "info": "Display information about the package scripts",
-    "build": "Clean and rebuild the project",
-    "fix": "Try to automatically fix any linting problems",
-    "test": "Lint and unit test the project",
-    "start": "Watch and rebuild the project on save, then rerun relevant tests",
-    "cov": "Rebuild, run tests, then create and open the coverage report",
-    "doc": "Generate HTML API documentation and open it in a browser",
-    "doc:json": "Generate API documentation in typedoc JSON format",
-    "version": "Bump package.json version, update CHANGELOG.md, tag release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "prepare-release": "One-step: clean, build, test, publish docs, and prep a release"
   },
   "dependencies": {
     "@types/fs-extra": "^5.0.4",
@@ -79,7 +65,7 @@
     "@types/json-schema": "^7.0.1",
     "@types/node": "^10.12.18",
     "ajv": "^6.7.0",
-    "ava": "^1.0.1",
+    "ava": "^1.1.0",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
@@ -96,6 +82,7 @@
   },
   "ava": {
     "failFast": true,
+    "snapshotDir": "./.snapshots",
     "files": [
       "build/main/**/*.test.js"
     ],

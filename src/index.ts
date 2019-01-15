@@ -1,4 +1,4 @@
-import * as arrayEqual from 'array-equal'
+import arrayEqual from 'array-equal'
 import * as doctrine from 'doctrine'
 import * as fs from 'fs-extra'
 import * as TS from 'ts-simple-ast'
@@ -51,23 +51,25 @@ export async function generateSchema(file: string): Promise<TJS.Definition> {
     docs = doctrine.parse(description as string)
   }
 
-  const paramsInterface = addParamsInterface(mainSourceFile, main, docs)
-  console.log(TS.printNode(paramsInterface.compilerNode))
+  addParamsInterface(mainSourceFile, main, docs)
+  addFTSFunctionInterface(mainSourceFile, main, docs)
 
-  const ftsInterface = addFTSFunctionInterface(mainSourceFile, main, docs)
-  console.log(TS.printNode(ftsInterface.compilerNode))
+  // console.log(TS.printNode(paramsInterface.compilerNode))
+  // console.log(TS.printNode(ftsInterface.compilerNode))
 
   await mainSourceFile.save()
 
-  const schema = createJSONSchema(file, FTSFunction, {
-    defaultProps: true,
-    noExtraProps: true,
-    required: true
-  })
-  postProcessSchema(schema, main)
-
-  await fs.writeFile(file, originalFileContent)
-  return schema
+  try {
+    const schema = createJSONSchema(file, FTSFunction, {
+      defaultProps: true,
+      noExtraProps: true,
+      required: true
+    })
+    postProcessSchema(schema, main)
+    return schema
+  } finally {
+    await fs.writeFile(file, originalFileContent, 'utf8')
+  }
 }
 
 export function postProcessSchema(

@@ -1,4 +1,4 @@
-import program = require('commander')
+import program from 'commander'
 import * as FTS from '.'
 
 export async function exec(argv: string[]) {

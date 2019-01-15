@@ -1,4 +1,4 @@
-import Ajv = require('ajv')
+import Ajv from 'ajv'
 import test from 'ava'
 import * as globby from 'globby'
 import * as path from 'path'
@@ -16,7 +16,6 @@ for (const fixture of fixtures) {
 
     ajv.validateSchema(schema)
     t.is(ajv.errors, null)
-
-    // t.snapshot(schema)
+    t.snapshot(schema)
   })
 }
