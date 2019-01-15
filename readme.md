@@ -221,6 +221,7 @@ FTS is an active WIP.
   - [x] add support common jsdoc comments
   - [x] fix should be readonly to source files
   - [ ] fix async / promise return types
+  - [ ] fix support for anonymous function exports
   - [ ] add support for custom tsconfig
   - [ ] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
