@@ -218,30 +218,32 @@ FTS is an active WIP.
 - [ ] Function definition parser
   - [x] extract main function export
   - [x] convert main function signature to json schema
-  - [x] support common jsdoc comments
-  - [x] make process readonly to source files
-  - [ ] support custom tsconfig
-  - [ ] CLI wrapper to generate function definitions
-  - [ ] support standard JS with jsdoc comments
+  - [x] add support common jsdoc comments
+  - [x] fix should be readonly to source files
+  - [ ] fix async / promise return types
+  - [ ] add support for custom tsconfig
+  - [ ] add CLI wrapper to generate function definitions
+  - [ ] add support for standard JS with jsdoc comments
 - [ ] Function invocation given an FTS definition schema and JS file entrypoint
   - [ ] validate function parameters against json schema
   - [ ] support async functions
   - [ ] validate function return type against json schema
   - [ ] support optional FTS Context (ip, headers, etc)
+  - [ ] add CLI support for invoking functions
 - [ ] HTTP gateway implementation
 - [ ] Documentation
-  - [ ] Basic Usage Info
-  - [ ] Standard Specification
-  - [ ] Example functions (test suite)
-  - [ ] Description of how it works
-  - [ ] How to use with different serverless cloud providers
+  - [ ] basic Usage Info
+  - [ ] standard Specification
+  - [ ] example functions (test suite)
+  - [ ] description of how it works
+  - [ ] how to use with different serverless cloud providers
 - [ ] Testing
-  - [x] Basic unit tests for function definition parser
-  - [ ] Basic unit tests for function invocation wrapper
-  - [ ] Basic unit tests for HTTP gateway
-  - [ ] Integration tests for TS function => definition => HTTP gateway
+  - [x] basic unit tests for function definition parser
+  - [ ] basic unit tests for function invocation wrapper
+  - [ ] basic unit tests for HTTP gateway
+  - [ ] integration tests for TS function => definition => HTTP gateway
 - [ ] Post-MVP
-  - [ ] Support multiple
+  - [ ] support multiple languages
   - [ ] now-builder for FTS functions
 
 ## FAQ
