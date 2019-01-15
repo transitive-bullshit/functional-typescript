@@ -6,9 +6,9 @@
 
 ## Features
 
-- Type-safe!
-- Self-documenting
-- Cloud provider-agnostic
+- Simple -- you just write TypeScript!
+- Add type safety to your serverless functions
+- Easily generate docs for your serverless functions
 - Compatible with all major serverless providers (AWS, GCP, Azure, etc)
 
 ## What is FTS?
