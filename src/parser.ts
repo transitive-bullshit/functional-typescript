@@ -355,7 +355,7 @@ function filterObjectDeep(obj: any, blacklist: (k: string, v: any) => boolean) {
 }
 
 if (!module.parent) {
-  generateDefinition('./fixtures/medium.ts')
+  generateDefinition('./fixtures/double.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

@@ -28,8 +28,8 @@ for (const fixture of fixtures) {
     // TODO: test invoking handler with mock req/res
 
     jsf.option({ alwaysFakeOptionals: true })
-    const params = await jsf.resolve(definition.params.schema)
+    // const params = await jsf.resolve(definition.params.schema)
 
-    await fs.rmdir(outDir)
+    await fs.remove(outDir)
   })
 }
