@@ -1,7 +1,7 @@
 import * as accepts from 'accepts'
 import * as contentType from 'content-type'
 import * as http from 'http'
-import * as parseUrl from 'parseurl'
+import parseUrl from 'parseurl'
 import * as qs from 'qs'
 import typeIs from 'type-is'
 import * as url from 'url'
