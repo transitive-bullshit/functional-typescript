@@ -4,6 +4,7 @@ import * as fs from 'fs-extra'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 import * as FTS from './types'
+export * from './types'
 
 const FTSFunction = 'FTSFunction'
 const FTSParams = 'FTSParams'
