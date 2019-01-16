@@ -215,15 +215,15 @@ Note that this JSON Schema allows for easy type checking, documentation generati
 
 FTS is an active WIP.
 
-- [ ] Function definition parser
+- [x] Function definition parser
   - [x] extract main function export
   - [x] convert main function signature to json schema
   - [x] add support common jsdoc comments
   - [x] fix should be readonly to source files
   - [x] fix async / promise return types
-  - [ ] fix support for anonymous function exports
+  - [x] fix support for anonymous function exports
+  - [x] add support for default values
   - [ ] add support for custom tsconfig
-  - [ ] add support for default values
   - [ ] add support for data blobs (buffers, streams, etc)
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
@@ -235,8 +235,8 @@ FTS is an active WIP.
   - [ ] add CLI support for invoking functions
 - [ ] HTTP gateway implementation
 - [ ] Documentation
-  - [ ] basic Usage Info
-  - [ ] standard Specification
+  - [ ] basic usage Info
+  - [ ] standard specification
   - [ ] example functions (test suite)
   - [ ] description of how it works
   - [ ] how to use with different serverless cloud providers
