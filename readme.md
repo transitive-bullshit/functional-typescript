@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="100"/>
+<img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" />
 
-# Functional TypeScript (FTS)
+# Functional TypeScript
 
 > TypeScript standard for rock solid serverless functions.
 
@@ -16,7 +16,7 @@
 - **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
 - **Lightweight**: Focused http handler optimized for serverless environments
 
-## What is FTS?
+## What is Functional TypeScript (FTS)?
 
 FTS transforms a standard TypeScript function like this:
 
@@ -55,7 +55,7 @@ All parameters and return values are type-checked by a standard Node.js HTTP han
 
 The serverless space has seen such rapid growth that tooling, especially across different cloud providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each cloud provider has their own conventions and gotchas, which can quickly lead to vendor lock-in.
 
-For example, take the following Node.js serverless function defined across several popular cloud providers:
+For example, take the following Node.js serverless function defined across several cloud providers:
 
 **AWS**
 
