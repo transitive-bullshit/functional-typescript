@@ -51,19 +51,25 @@
     "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('functional-typescript must be installed with Yarn: https://yarnpkg.com/')\""
   },
   "dependencies": {
-    "@types/fs-extra": "^5.0.4",
     "array-equal": "^1.0.0",
     "commander": "^2.19.0",
+    "cors": "^2.8.5",
     "doctrine": "^3.0.0",
     "fs-extra": "^7.0.1",
+    "micro": "^9.3.3",
+    "qs": "^6.6.0",
     "ts-simple-ast": "^21.0.0",
     "typescript-json-schema": "^0.34.0"
   },
   "devDependencies": {
     "@types/ajv": "^1.0.0",
+    "@types/cors": "^2.8.4",
     "@types/doctrine": "^0.0.3",
+    "@types/fs-extra": "^5.0.4",
     "@types/json-schema": "^7.0.1",
+    "@types/micro": "^7.3.3",
     "@types/node": "^10.12.18",
+    "@types/qs": "^6.5.1",
     "ajv": "^6.7.0",
     "ava": "^1.1.0",
     "codecov": "^3.1.0",

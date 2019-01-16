@@ -246,6 +246,8 @@ FTS is an active WIP.
   - [ ] basic unit tests for function invocation wrapper
   - [ ] basic unit tests for HTTP gateway
   - [ ] integration tests for TS function => definition => HTTP gateway
+- [ ] Misc
+  - [ ] parser, cli, http handler, and http gateway should be separate packages to minimize serverless bundle size and startup time (especially parser's dependency on typescript)
 - [ ] Post-MVP
   - [ ] support multiple languages
   - [ ] now-builder for FTS functions
