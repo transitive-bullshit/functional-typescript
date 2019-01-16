@@ -6,9 +6,9 @@
 
 ## Features
 
-- **Standard**: Just TypeScript + JSON Schema!
-- **Robust**: Type-safe serverless functions
-- **Simple**: Super easy to setup and integrate
+- **Standard**: Just TypeScript + JSON Schema
+- **Robust**: Type-safe serverless functions!
+- **Simple**: Quick to setup and integrate
 - **Compatible**: Supports all major serverless providers (AWS, GCP, Azure, Now, etc)
 - **Explicit**: Easily generate serverless function docs
 - **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
