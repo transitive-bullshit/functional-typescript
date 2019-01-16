@@ -1,6 +1,6 @@
 # Functional TypeScript (FTS)
 
-> TypeScript standard for serverless functions.
+> TypeScript standard for rock solid serverless functions.
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript.svg)](https://www.npmjs.com/package/functional-typescript) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
