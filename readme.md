@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="100"/>
+
 # Functional TypeScript (FTS)
 
 > TypeScript standard for rock solid serverless functions.
