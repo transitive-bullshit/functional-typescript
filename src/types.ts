@@ -12,6 +12,7 @@ export interface DefinitionBuilder {
   sourceFile: TS.SourceFile
   main: TS.FunctionDeclaration
   docs?: doctrine.Annotation
+  title: string
   definition: Partial<Definition>
 }
 

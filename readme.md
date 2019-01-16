@@ -223,6 +223,8 @@ FTS is an active WIP.
   - [x] fix async / promise return types
   - [ ] fix support for anonymous function exports
   - [ ] add support for custom tsconfig
+  - [ ] add support for default values
+  - [ ] add support for data blobs (buffers, streams, etc)
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
 - [ ] Function invocation given an FTS definition schema and JS file entrypoint

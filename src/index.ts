@@ -1,6 +1,7 @@
 import arrayEqual from 'array-equal'
 import * as doctrine from 'doctrine'
 import * as fs from 'fs-extra'
+import * as path from 'path'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 import * as FTS from './types'
@@ -40,7 +41,7 @@ export async function generateDefinition(
   }
 
   // extract main function type and documentation info
-  const title = main.getName()
+  const title = main.getName ? main.getName() : path.parse(file).name
   const mainTypeParams = main.getTypeParameters()
 
   if (mainTypeParams.length > 0) {
@@ -68,14 +69,11 @@ export async function generateDefinition(
     },
     docs,
     main,
-    sourceFile
+    sourceFile,
+    title
   }
 
-  addParamsInterface(builder)
   addFunctionInterface(builder)
-
-  // console.log(TS.printNode(paramsInterface.compilerNode))
-  // console.log(TS.printNode(ftsInterface.compilerNode))
 
   await sourceFile.save()
 
@@ -94,7 +92,7 @@ export async function generateDefinition(
 }
 
 export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
-  builder.definition.schema.title = builder.definition.title
+  builder.definition.schema.title = builder.title
 
   // remove empty `defaultProperties`
   // TODO: remove other extraneous propertis
@@ -125,7 +123,7 @@ export function filterObjectDeep(
 /** Find main exported function declaration */
 export function extractMainFunction(
   sourceFile: TS.SourceFile
-): TS.FunctionDeclaration {
+): TS.FunctionDeclaration | undefined {
   const functionDefaultExports = sourceFile
     .getFunctions()
     .filter((f) => f.isDefaultExport())
@@ -160,15 +158,42 @@ export function extractMainFunction(
     }
   }
 
+  // TODO: arrow function exports are a lil hacky
+  const arrowFunctionExports = sourceFile
+    .getDescendantsOfKind(TS.SyntaxKind.ArrowFunction)
+    .filter((f) => TS.TypeGuards.isExportAssignment(f.getParent()))
+
+  if (arrowFunctionExports.length === 1) {
+    return (arrowFunctionExports[0] as unknown) as TS.FunctionDeclaration
+  }
+
   return undefined
 }
 
-export function addParamsInterface(
+export function addFunctionInterface(
   builder: FTS.DefinitionBuilder
 ): TS.InterfaceDeclaration {
+  addParamsDeclaration(builder)
+
+  const functionInterface = builder.sourceFile.addInterface({
+    name: FTSFunction
+  })
+
+  functionInterface.addProperty({
+    name: 'params',
+    type: FTSParams
+  })
+
+  addReturnType(builder, functionInterface)
+  return functionInterface
+}
+
+export function addParamsDeclaration(
+  builder: FTS.DefinitionBuilder
+): TS.ClassDeclaration {
   const mainParams = builder.main.getParameters()
 
-  const paramsInterface = builder.sourceFile.addInterface({
+  const paramsDeclaration = builder.sourceFile.addClass({
     name: FTSParams
   })
 
@@ -184,12 +209,16 @@ export function addParamsInterface(
   for (let i = 0; i < mainParams.length; ++i) {
     const param = mainParams[i]
     const name = param.getName()
+    const structure = param.getStructure()
+    if (!structure.type) {
+      structure.type = param.getType().getText()
+    }
 
     if (name === 'context') {
       if (i !== mainParams.length - 1) {
         throw new Error(
           `Function parameter "context" must be last parameter to main function "${
-            builder.definition.title
+            builder.title
           }"`
         )
       }
@@ -201,8 +230,8 @@ export function addParamsInterface(
       // TODO: ensure that type is not `FTS.Context`
     }
 
-    const property = paramsInterface.addProperty(
-      param.getStructure() as TS.PropertySignatureStructure
+    const property = paramsDeclaration.addProperty(
+      structure as TS.PropertySignatureStructure
     )
 
     const comment = paramComments[name]
@@ -211,23 +240,7 @@ export function addParamsInterface(
     }
   }
 
-  return paramsInterface
-}
-
-export function addFunctionInterface(
-  builder: FTS.DefinitionBuilder
-): TS.InterfaceDeclaration {
-  const functionInterface = builder.sourceFile.addInterface({
-    name: FTSFunction
-  })
-
-  functionInterface.addProperty({
-    name: 'params',
-    type: FTSParams
-  })
-
-  addReturnType(builder, functionInterface)
-  return functionInterface
+  return paramsDeclaration
 }
 
 export function addReturnType(
@@ -283,4 +296,15 @@ export function createJSONSchema(
   )
 
   return TJS.generateSchema(program, fullTypeName, settings)
+}
+
+if (!module.parent) {
+  generateDefinition('./fixtures/hello-world.ts')
+    .then((definition) => {
+      console.log(JSON.stringify(definition, null, 2))
+    })
+    .catch((err) => {
+      console.error(err)
+      process.exit(1)
+    })
 }
