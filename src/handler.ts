@@ -2,8 +2,6 @@ import Ajv from 'ajv'
 // import * as cors from 'cors'
 import * as http from 'http'
 import * as micro from 'micro'
-import * as qs from 'qs'
-import * as url from 'url'
 import * as FTS from './types'
 
 export function createHttpHandler(
@@ -49,25 +47,43 @@ export function createHttpHandler(
   }
 
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const urlinfo = url.parse(req.url)
-    const query = qs.parse(urlinfo.query)
+    const context = new FTS.HttpContext(req, res)
     let params: any = {}
 
     if (req.method === 'GET') {
-      params = query
+      params = context.query
     }
 
     const isValid = validateParams(params)
     if (!isValid) {
       const message = ajv.errorsText(validateParams.errors)
       const error = new Error(message)
-      // TODOO
+      // TODO
       // error.statusCode = 400
       micro.sendError(req, res, error)
       return
     }
 
-    // TODO: need array for params ordering
+    const args = definition.params.order.map((name) => params[name])
+    if (definition.params.context) {
+      args.push(context)
+    }
+
+    try {
+      Promise.resolve(entryPoint(...args)).then(
+        (result: any) => {
+          // TODO
+          console.log(result)
+        },
+        (err) => {
+          // TODO
+          console.log('error', err)
+        }
+      )
+    } catch (err) {
+      // TODO
+      console.log('error', err)
+    }
 
     res.setHeader('content-type', 'text/plain')
     res.end(`The current time is ${new Date()}`)

@@ -54,7 +54,8 @@ export async function generateDefinition(
   const diagnostics = project.getPreEmitDiagnostics()
   if (diagnostics.length > 0) {
     console.log(project.formatDiagnosticsWithColorAndContext(diagnostics))
-    // TODO: throw?
+
+    // TODO: throw error?
   }
 
   const sourceFile = project.getSourceFileOrThrow(file)
@@ -108,7 +109,7 @@ export async function generateDefinition(
 }
 
 /** Find main exported function declaration */
-export function extractMainFunction(
+function extractMainFunction(
   sourceFile: TS.SourceFile,
   definition: Partial<FTS.Definition>
 ): TS.FunctionDeclaration | undefined {
@@ -183,7 +184,7 @@ export function extractMainFunction(
   return undefined
 }
 
-export function addParamsDeclaration(
+function addParamsDeclaration(
   builder: FTS.DefinitionBuilder
 ): TS.ClassDeclaration {
   const mainParams = builder.main.getParameters()
@@ -246,7 +247,7 @@ export function addParamsDeclaration(
   return paramsDeclaration
 }
 
-export function addReturnTypeAlias(
+function addReturnTypeAlias(
   builder: FTS.DefinitionBuilder
 ): TS.TypeAliasDeclaration {
   const mainReturnType = builder.main.getReturnType()
@@ -280,7 +281,7 @@ export function addReturnTypeAlias(
   return typeAlias
 }
 
-export function addJSONSchemas(
+function addJSONSchemas(
   builder: FTS.DefinitionBuilder,
   jsonSchemaOptions: TJS.PartialArgs = {},
   jsonCompilerOptions: any = {}
@@ -310,7 +311,7 @@ export function addJSONSchemas(
   )
 }
 
-export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
+function postProcessDefinition(builder: FTS.DefinitionBuilder) {
   const { params, returns } = builder.definition
   const schemas = [params, returns]
 
@@ -327,10 +328,7 @@ export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
   // TODO: remove other extraneous propertis
 }
 
-export function filterObjectDeep(
-  obj: any,
-  blacklist: (k: string, v: any) => boolean
-) {
+function filterObjectDeep(obj: any, blacklist: (k: string, v: any) => boolean) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key]

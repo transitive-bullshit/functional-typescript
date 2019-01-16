@@ -55,16 +55,6 @@ export interface DefinitionBuilder {
   definition: Partial<Definition>
 }
 
-export interface Context {
-  readonly headers: http.IncomingHttpHeaders
-  readonly ip: string
-  readonly url: string
-  readonly user?: string
-  set(name: string, value: number | string | string[]): void
-
-  // TODO: this needs work
-}
-
 export type HttpHandler = (
   req: http.IncomingMessage,
   res: http.ServerResponse
@@ -73,3 +63,6 @@ export type HttpHandler = (
 export interface HttpHandlerOptions {
   cors?: cors.CorsOptions
 }
+
+export * from './context'
+export * from './http-context'

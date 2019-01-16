@@ -236,13 +236,14 @@ FTS is an active WIP.
   - [ ] add support for data blobs (buffers, streams, etc)
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
-- [ ] Function http handler given an FTS definition schema and JS file entrypoint
-  - [ ] validate function parameters against json schema
+- [ ] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
+  - [x] validate function parameters against json schema
   - [ ] validate function return type against json schema
-  - [ ] add support for async functions
+  - [x] add support for async functions
   - [ ] add support for Context (ip, headers, etc)
   - [ ] add support for setting response headers
-  - [ ] add CLI support for invoking functions
+  - [ ] add CLI support for invoking functions via http handler
+  - TODO: non-http, direct handler?
 - [ ] HTTP server implementation
 - [ ] Documentation
   - [ ] basic usage Info
@@ -253,10 +254,10 @@ FTS is an active WIP.
 - [ ] Testing
   - [x] basic unit tests for function definition parser
   - [ ] basic unit tests for function invocation wrapper
-  - [ ] basic unit tests for HTTP gateway
-  - [ ] integration tests for TS function => definition => HTTP gateway
+  - [ ] basic unit tests for HTTP server
+  - [ ] integration tests for TS function => definition => HTTP server
 - [ ] Misc
-  - [ ] parser, cli, http handler, and http gateway should be separate packages to minimize serverless bundle size and startup time (especially parser's dependency on typescript)
+  - [ ] parser, cli, http handler, and http server should be separate packages to minimize serverless bundle size and startup time (especially parser's dependency on typescript)
 - [ ] Post-MVP
   - [ ] support multiple languages
   - [ ] now-builder for FTS functions
