@@ -24,7 +24,7 @@ export function hello(name: string = 'World'): string {
 }
 ```
 
-Into a badass, type-safe serverless function that can be called over HTTP like this (GET):
+Into a type-safe serverless function that can be called over HTTP like this (GET):
 
 ```
 https://example.com/hello?name=GitHub
@@ -44,7 +44,7 @@ And returns a result like this:
 "Hello GitHub!"
 ```
 
-All parameters and return values are type-checked by the FTS gateway, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
+All parameters and return values are type-checked by a standard Node.js HTTP handler, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
 
 ## Why Functional TypeScript?
 
@@ -274,6 +274,8 @@ For more information, see [Why Serverless?](https://serverless.com/learn/overvie
 Functional TypeScript builds off of and shares many of the same design goals as [FaaSLang](https://github.com/faaslang/faaslang). The main difference is that FaaSLang's default implementation uses JavaScript + JSDoc to generate custom schemas for function definitions, whereas FTS uses TypeScript to generate JSON Schemas for function definitions.
 
 In our opinion, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core definition and validation layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages. For example, it would be relatively simple to extend FTS in the future beyond TypeScript to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io).
+
+FTS also exposes a standard Node.js [http](https://nodejs.org/api/http.html#http_event_request) handler for invoking FTS functions (`(req, res) => { ... }`). This makes it extremely easy to integrate with any Node.js server framework, including [express](https://expressjs.com), [koajs](https://koajs.com), [micro](https://github.com/zeit/micro), and many others. While FaaSLang could potentially be extended to support more general usage, the default implementation only supports a custom API gateway server.
 
 #### How do I use FTS with my Serverless Provider (AWS, GCP, Kubeless, Fn, Azure, OpenWhisk, etc)?
 
