@@ -15,11 +15,13 @@ export function createHttpHandler(
 ): FTS.HttpHandler {
   const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
   const validateParams = ajv.compile(definition.params.schema)
-  // const validateReturns = ajv.compile(definition.returns)
+  const validateReturns = ajv.compile(definition.returns.schema)
 
   const opts: FTS.HttpHandlerOptions = {
     ...options
   }
+
+  // TODO: add cors and use options
   console.log(opts)
 
   let entryPoint: any = require(jsFilePath)
@@ -46,21 +48,35 @@ export function createHttpHandler(
     }
   }
 
+  const sendError = (
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    error: Error,
+    statusCode = 500
+  ) => {
+    /* tslint:disable no-string-literal */
+    error['statusCode'] = statusCode
+    /* tslint:enable no-string-literal */
+    console.log(error)
+    micro.sendError(req, res, error)
+  }
+
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
     const context = new FTS.HttpContext(req, res)
     let params: any = {}
 
     if (req.method === 'GET') {
       params = context.query
+    } else {
+      // TODO: handle
+      sendError(req, res, new Error('TODO: support more HTTP methods'))
+      return
     }
 
-    const isValid = validateParams(params)
-    if (!isValid) {
+    const hasValidParams = validateParams(params)
+    if (!hasValidParams) {
       const message = ajv.errorsText(validateParams.errors)
-      const error = new Error(message)
-      // TODO
-      // error.statusCode = 400
-      micro.sendError(req, res, error)
+      sendError(req, res, new Error(message), 400)
       return
     }
 
@@ -72,21 +88,24 @@ export function createHttpHandler(
     try {
       Promise.resolve(entryPoint(...args)).then(
         (result: any) => {
-          // TODO
-          console.log(result)
+          const isValidReturnType = validateReturns(result)
+          if (!isValidReturnType) {
+            const message = ajv.errorsText(validateReturns.errors)
+            sendError(req, res, new Error(message), 502)
+            return
+          }
+
+          micro.send(res, 200, result)
         },
         (err) => {
-          // TODO
-          console.log('error', err)
+          sendError(req, res, err, 403)
+          return
         }
       )
     } catch (err) {
-      // TODO
-      console.log('error', err)
+      sendError(req, res, err, 500)
+      return
     }
-
-    res.setHeader('content-type', 'text/plain')
-    res.end(`The current time is ${new Date()}`)
   }
 
   // cors.default(opts.cors, handler)

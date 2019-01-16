@@ -6,10 +6,13 @@
 
 ## Features
 
-- Simple -- you just write TypeScript!
-- Add type safety to your serverless functions
-- Easily generate docs for your serverless functions
-- Compatible with all major serverless providers (AWS, GCP, Azure, etc)
+- **Standard**: Just TypeScript + JSON Schema!
+- **Robust**: Type-safe serverless functions
+- **Simple**: Super easy to setup and integrate
+- **Compatible**: Supports all major serverless providers (AWS, GCP, Azure, Now, etc)
+- **Explicit**: Easily generate serverless function docs
+- **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
+- **Lightweight**: Focused http handler optimized for serverless environments
 
 ## What is FTS?
 
@@ -227,20 +230,21 @@ FTS is an active WIP.
 - [x] Function definition parser
   - [x] extract main function export
   - [x] convert main function signature to json schema
-  - [x] add support common jsdoc comments
+  - [x] add support for common jsdoc comments
   - [x] fix should be readonly to source files
   - [x] fix async / promise return types
   - [x] fix support for arrow function exports
   - [x] add support for default values
   - [ ] add support for custom tsconfig
   - [ ] add support for data blobs (buffers, streams, etc)
+  - [ ] add support for void return type
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
 - [ ] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
   - [x] validate function parameters against json schema
   - [ ] validate function return type against json schema
   - [x] add support for async functions
-  - [ ] add support for Context (ip, headers, etc)
+  - [x] add support for http context (ip, headers, etc)
   - [ ] add support for setting response headers
   - [ ] add CLI support for invoking functions via http handler
   - TODO: non-http, direct handler?
@@ -253,7 +257,7 @@ FTS is an active WIP.
   - [ ] how to use with different serverless cloud providers
 - [ ] Testing
   - [x] basic unit tests for function definition parser
-  - [ ] basic unit tests for function invocation wrapper
+  - [ ] basic unit tests for function http handler
   - [ ] basic unit tests for HTTP server
   - [ ] integration tests for TS function => definition => HTTP server
 - [ ] Misc
@@ -266,7 +270,7 @@ FTS is an active WIP.
 
 ### Why Serverless?
 
-Serverless functions allow your code to be executed on-demand and scale automatically both up towards infinity and down to zero. They minimize cost in terms of infrastructure and engineering time, largely due to removing operational overhead and reducing the surface area for potential errors.
+Serverless functions allow your code to run on-demand and scale automatically both infinitely upwards and down to zero. They are great at minimizing cost in terms of infrastructure and engineering time, largely due to removing operational overhead and reducing the surface area for potential errors.
 
 For more information, see [Why Serverless?](https://serverless.com/learn/overview), and an excellent breakdown on the [Tradeoffs that come with Serverless](https://martinfowler.com/articles/serverless.html).
 
@@ -278,7 +282,7 @@ In our opinion, the relatively mature [JSON Schema](https://json-schema.org) spe
 
 FTS also exposes a standard Node.js [http handler](https://nodejs.org/api/http.html#http_event_request) for invoking FTS functions `(req, res) => { ... }`. This makes it **extremely easy to integrate with popular Node.js server frameworks** such as [express](https://expressjs.com), [koajs](https://koajs.com), [micro](https://github.com/zeit/micro), and many others. While FaaSLang could potentially be extended to support more general usage, the default implementation currently only supports a custom API gateway server... which makes me a sad panda. 🐼
 
-### How do I use FTS with my Serverless Provider (AWS, GCP, Kubeless, Fn, Azure, OpenWhisk, etc)?
+### How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?
 
 Great question -- this answer will be updated once we have a good answer... 😁
 
@@ -290,8 +294,8 @@ Great question -- this answer will be updated once we have a good answer... 😁
 
 ---
 
-- [Quicktype](https://quicktype.io) - Used under the hood for converting TypeScript types to [JSON Schema](https://json-schema.org).
-- [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) - Generates JSON Schema from TypeScript.
+- [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) - Used under the hood to convert TypeScript types to [JSON Schema](https://json-schema.org).
+- [Quicktype](https://quicktype.io) - Very useful utility which uses JSON Schema as a common standard for converting between different type systems.
 
 ---
 

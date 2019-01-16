@@ -1,17 +1,35 @@
 import test from 'ava'
-import * as globby from 'globby'
+import * as fs from 'fs-extra'
+// import * as globby from 'globby'
+import jsf from 'json-schema-faker'
 import * as path from 'path'
-// import * as FTS from '.'
+import * as tempy from 'tempy'
+import * as FTS from '.'
 
-const fixtures = globby.sync('./fixtures/**/*.ts')
+const fixtures = ['./fixtures/address-book.ts'] // globby.sync('./fixtures/**/*.ts')
 
 for (const fixture of fixtures) {
-  const { name } = path.parse(fixture)
+  const pathInfo = path.parse(fixture)
 
-  test(name, async (t) => {
-    // const definition = await FTS.generateDefinition(fixture)
-    t.truthy(true)
+  test(pathInfo.name, async (t) => {
+    const outDir = tempy.directory()
+    const definition = await FTS.generateDefinition(fixture, {
+      compilerOptions: {
+        outDir
+      },
+      emit: true
+    })
+    t.truthy(definition)
 
-    // TODO
+    const jsFilePath = path.join(outDir, `${pathInfo.name}.js`)
+    const handler = FTS.createHttpHandler(definition, jsFilePath)
+    t.is(typeof handler, 'function')
+
+    // TODO: test invoking handler with mock req/res
+
+    jsf.option({ alwaysFakeOptionals: true })
+    const params = await jsf.resolve(definition.params.schema)
+
+    await fs.rmdir(outDir)
   })
 }

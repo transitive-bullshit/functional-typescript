@@ -1,3 +1,5 @@
+// TODO: parser would be ~2x faster if we reused the ts program from TS in TJS
+
 import arrayEqual from 'array-equal'
 import * as doctrine from 'doctrine'
 import * as fs from 'fs-extra'
@@ -11,20 +13,23 @@ const FTSReturns = 'FTSReturns'
 const FTSParams = 'FTSParams'
 
 export async function generateDefinition(
-  file: string
+  file: string,
+  options: FTS.PartialDefinitionOptions = {}
 ): Promise<FTS.Definition> {
   // initialize and compile TS program
   const compilerOptions = {
     ignoreCompilerErrors: true,
     // TODO: why do we need to specify the full filename for these lib definition files?
     lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
-    target: TS.ScriptTarget.ES5
+    target: TS.ScriptTarget.ES5,
+    ...(options.compilerOptions || {})
   }
 
   const jsonSchemaOptions = {
     defaultProps: true,
     noExtraProps: true,
-    required: true
+    required: true,
+    ...(options.jsonSchemaOptions || {})
   }
 
   const definition: Partial<FTS.Definition> = {
@@ -93,9 +98,17 @@ export async function generateDefinition(
     title
   }
 
+  if (options.emit) {
+    const result = project.emit(options.emitOptions)
+    if (result.getEmitSkipped()) {
+      throw new Error('emit skipped')
+    }
+  }
+
   addParamsDeclaration(builder)
   addReturnTypeAlias(builder)
 
+  // TODO: figure out a better workaround than mutating the source file directly
   await sourceFile.save()
 
   try {
@@ -130,7 +143,7 @@ function extractMainFunction(
 
   if (functionExports.length === 1) {
     const func = functionExports[0]
-    definition.config.namedExport = func.getExportKeywordOrThrow().getText()
+    definition.config.namedExport = func.getName()
     return func
   }
 
@@ -149,7 +162,7 @@ function extractMainFunction(
 
     if (externalFunctions.length === 1) {
       const func = externalFunctions[0]
-      definition.config.namedExport = func.getExportKeywordOrThrow().getText()
+      definition.config.namedExport = func.getName()
       return func
     }
   }

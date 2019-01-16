@@ -47,6 +47,15 @@ export interface Config {
   namedExport?: string
 }
 
+export interface DefinitionOptions {
+  emit?: boolean
+  emitOptions?: TS.EmitOptions
+  compilerOptions?: TS.CompilerOptions
+  jsonSchemaOptions?: TJS.PartialArgs
+}
+
+export type PartialDefinitionOptions = Partial<DefinitionOptions>
+
 export interface DefinitionBuilder {
   sourceFile: TS.SourceFile
   main: TS.FunctionDeclaration
