@@ -62,6 +62,7 @@ export async function generateDefinition(
     definition: {
       config: {
         async: false,
+        context: false,
         language: 'typescript'
       },
       description: docs && docs.description,
@@ -89,35 +90,6 @@ export async function generateDefinition(
   }
 
   return builder.definition as FTS.Definition
-}
-
-export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
-  builder.definition.schema.title = builder.title
-
-  // remove empty `defaultProperties`
-  // TODO: remove other extraneous propertis
-  // TODO: remove / handle Promise type
-  filterObjectDeep(
-    builder.definition.schema,
-    (key, value) =>
-      key === 'defaultProperties' && (!value || arrayEqual(value, []))
-  )
-}
-
-export function filterObjectDeep(
-  obj: any,
-  blacklist: (k: string, v: any) => boolean
-) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key]
-      if (blacklist(key, value)) {
-        delete obj[key]
-      } else if (typeof value === 'object') {
-        filterObjectDeep(value, blacklist)
-      }
-    }
-  }
 }
 
 /** Find main exported function declaration */
@@ -223,11 +195,17 @@ export function addParamsDeclaration(
         )
       }
 
+      builder.definition.config.context = true
       // TODO: ensure context has valid type `FTS.Context`
       // ignore context in parameter aggregation
-      break
+      continue
     } else {
-      // TODO: ensure that type is not `FTS.Context`
+      // TODO: ensure that type is valid:
+      // not `FTS.Context`
+      // not Promise<T>
+      // not Function or ArrowFunction
+      // not RegExp
+      // TODO: does json schema handle Date type for us?
     }
 
     const property = paramsDeclaration.addProperty(
@@ -296,6 +274,39 @@ export function createJSONSchema(
   )
 
   return TJS.generateSchema(program, fullTypeName, settings)
+}
+
+export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
+  const { schema } = builder.definition
+
+  schema.title = builder.title
+  delete schema.required
+  delete schema.additionalProperties
+
+  // remove empty `defaultProperties`
+  filterObjectDeep(
+    schema,
+    (key, value) =>
+      key === 'defaultProperties' && (!value || arrayEqual(value, []))
+  )
+
+  // TODO: remove other extraneous propertis
+}
+
+export function filterObjectDeep(
+  obj: any,
+  blacklist: (k: string, v: any) => boolean
+) {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key]
+      if (blacklist(key, value)) {
+        delete obj[key]
+      } else if (typeof value === 'object') {
+        filterObjectDeep(value, blacklist)
+      }
+    }
+  }
 }
 
 if (!module.parent) {

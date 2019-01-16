@@ -229,9 +229,10 @@ FTS is an active WIP.
   - [ ] add support for standard JS with jsdoc comments
 - [ ] Function invocation given an FTS definition schema and JS file entrypoint
   - [ ] validate function parameters against json schema
-  - [ ] support async functions
   - [ ] validate function return type against json schema
-  - [ ] support optional FTS Context (ip, headers, etc)
+  - [ ] add support for async functions
+  - [ ] add support for Context (ip, headers, etc)
+  - [ ] add support for setting response headers
   - [ ] add CLI support for invoking functions
 - [ ] HTTP gateway implementation
 - [ ] Documentation

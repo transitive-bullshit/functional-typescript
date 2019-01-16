@@ -6,6 +6,7 @@ import * as TJS from 'typescript-json-schema'
 export interface Config {
   language: string
   async: boolean
+  context: boolean
 }
 
 export interface DefinitionBuilder {
@@ -24,8 +25,8 @@ export interface Definition {
 }
 
 export interface Context {
-  req: http.IncomingMessage
-  res: http.ServerResponse
-  ip: string
-  user?: string
+  readonly headers: http.IncomingHttpHeaders
+  readonly ip: string
+  readonly user?: string
+  set(name: string, value: number | string | string[]): void
 }
