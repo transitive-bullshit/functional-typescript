@@ -18,7 +18,7 @@
 
 ## What is Functional TypeScript (FTS)?
 
-FTS transforms a standard TypeScript function like this:
+FTS transforms standard TypeScript functions like this:
 
 ```ts
 /**
@@ -29,7 +29,7 @@ export function hello(name: string = 'World'): string {
 }
 ```
 
-Into a type-safe serverless function that can be called over HTTP like this (GET):
+Into type-safe serverless functions that can be called over HTTP like this (GET):
 
 ```
 https://example.com/hello?name=GitHub
