@@ -11,11 +11,11 @@ for (const fixture of fixtures) {
   const { name } = path.parse(fixture)
 
   test(name, async (t) => {
-    const schema = await FTS.generateSchema(fixture)
-    t.truthy(schema)
+    const definition = await FTS.generateDefinition(fixture)
+    t.truthy(definition)
 
-    ajv.validateSchema(schema)
+    ajv.validateSchema(definition.schema)
     t.is(ajv.errors, null)
-    t.snapshot(schema)
+    t.snapshot(definition)
   })
 }

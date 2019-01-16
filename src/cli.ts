@@ -17,8 +17,8 @@ export async function exec(argv: string[]) {
     process.exit(1)
   }
 
-  const schema = await FTS.generateSchema(file)
-  console.log(JSON.stringify(schema, null, 2))
+  const definition = await FTS.generateDefinition(file)
+  console.log(JSON.stringify(definition, null, 2))
 }
 
 exec(process.argv).catch((err) => {

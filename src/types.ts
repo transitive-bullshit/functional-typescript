@@ -1,9 +1,25 @@
+import * as doctrine from 'doctrine'
 import * as http from 'http'
+import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
-export interface Function extends TJS.Definition {
-  params: TJS.Definition
-  return: TJS.Definition
+export interface Config {
+  language: string
+  async: boolean
+}
+
+export interface DefinitionBuilder {
+  sourceFile: TS.SourceFile
+  main: TS.FunctionDeclaration
+  docs?: doctrine.Annotation
+  definition: Partial<Definition>
+}
+
+export interface Definition {
+  title: string
+  description?: string
+  config: Config
+  schema: TJS.Definition
 }
 
 export interface Context {

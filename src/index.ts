@@ -3,11 +3,14 @@ import * as doctrine from 'doctrine'
 import * as fs from 'fs-extra'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
+import * as FTS from './types'
 
 const FTSFunction = 'FTSFunction'
 const FTSParams = 'FTSParams'
 
-export async function generateSchema(file: string): Promise<TJS.Definition> {
+export async function generateDefinition(
+  file: string
+): Promise<FTS.Definition> {
   // initialize and compile TS program
   const compilerOptions = {
     ignoreCompilerErrors: true,
@@ -26,20 +29,22 @@ export async function generateSchema(file: string): Promise<TJS.Definition> {
   const diagnostics = project.getPreEmitDiagnostics()
   console.log(project.formatDiagnosticsWithColorAndContext(diagnostics))
 
-  const mainSourceFile = project.getSourceFileOrThrow(file)
-  const main = extractMainFunction(mainSourceFile)
+  // TODO: throw if errors?
+
+  const sourceFile = project.getSourceFileOrThrow(file)
+  const main = extractMainFunction(sourceFile)
 
   if (!main) {
     throw new Error('Unable to infer a main function export')
   }
 
   // extract main function type and documentation info
-  const mainName = main.getName()
+  const title = main.getName()
   const mainTypeParams = main.getTypeParameters()
 
   if (mainTypeParams.length > 0) {
     throw new Error(
-      `Generic Type Parameters are not supported for function "${mainName}"`
+      `Generic Type Parameters are not supported for function "${title}"`
     )
   }
 
@@ -51,38 +56,50 @@ export async function generateSchema(file: string): Promise<TJS.Definition> {
     docs = doctrine.parse(description as string)
   }
 
-  addParamsInterface(mainSourceFile, main, docs)
-  addFTSFunctionInterface(mainSourceFile, main, docs)
+  const builder: FTS.DefinitionBuilder = {
+    definition: {
+      config: {
+        async: false,
+        language: 'typescript'
+      },
+      description: docs && docs.description,
+      title
+    },
+    docs,
+    main,
+    sourceFile
+  }
+
+  addParamsInterface(builder)
+  addFunctionInterface(builder)
 
   // console.log(TS.printNode(paramsInterface.compilerNode))
   // console.log(TS.printNode(ftsInterface.compilerNode))
 
-  await mainSourceFile.save()
+  await sourceFile.save()
 
   try {
-    const schema = createJSONSchema(file, FTSFunction, {
+    builder.definition.schema = createJSONSchema(file, FTSFunction, {
       defaultProps: true,
       noExtraProps: true,
       required: true
     })
-    postProcessSchema(schema, main)
-    return schema
+    postProcessDefinition(builder)
   } finally {
     await fs.writeFile(file, originalFileContent, 'utf8')
   }
+
+  return builder.definition as FTS.Definition
 }
 
-export function postProcessSchema(
-  schema: TJS.Definition,
-  main: TS.FunctionDeclaration
-) {
-  schema.title = main.getName()
+export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
+  builder.definition.schema.title = builder.definition.title
 
   // remove empty `defaultProperties`
   // TODO: remove other extraneous propertis
   // TODO: remove / handle Promise type
   filterObjectDeep(
-    schema,
+    builder.definition.schema,
     (key, value) =>
       key === 'defaultProperties' && (!value || arrayEqual(value, []))
   )
@@ -146,21 +163,18 @@ export function extractMainFunction(
 }
 
 export function addParamsInterface(
-  sourceFile: TS.SourceFile,
-  main: TS.FunctionDeclaration,
-  docs?: doctrine.Annotation
+  builder: FTS.DefinitionBuilder
 ): TS.InterfaceDeclaration {
-  const mainParams = main.getParameters()
-  const mainName = main.getName()
+  const mainParams = builder.main.getParameters()
 
-  const paramsInterface = sourceFile.addInterface({
+  const paramsInterface = builder.sourceFile.addInterface({
     name: FTSParams
   })
 
   const paramComments = {}
 
-  if (docs) {
-    const paramTags = docs.tags.filter((tag) => tag.title === 'param')
+  if (builder.docs) {
+    const paramTags = builder.docs.tags.filter((tag) => tag.title === 'param')
     for (const tag of paramTags) {
       paramComments[tag.name] = tag.description
     }
@@ -173,7 +187,9 @@ export function addParamsInterface(
     if (name === 'context') {
       if (i !== mainParams.length - 1) {
         throw new Error(
-          `Function parameter "context" must be last parameter to main function "${mainName}"`
+          `Function parameter "context" must be last parameter to main function "${
+            builder.definition.title
+          }"`
         )
       }
 
@@ -197,50 +213,45 @@ export function addParamsInterface(
   return paramsInterface
 }
 
-export function addFTSFunctionInterface(
-  sourceFile: TS.SourceFile,
-  main: TS.FunctionDeclaration,
-  docs?: doctrine.Annotation
+export function addFunctionInterface(
+  builder: FTS.DefinitionBuilder
 ): TS.InterfaceDeclaration {
-  const mainName = main.getName()
-
-  const ftsInterface = sourceFile.addInterface({
+  const functionInterface = builder.sourceFile.addInterface({
     name: FTSFunction
   })
 
-  ftsInterface.addProperty({
+  functionInterface.addProperty({
     name: 'params',
     type: FTSParams
   })
 
-  addReturnType(ftsInterface, main, docs)
-
-  let description = ''
-
-  if (docs && docs.description) {
-    description += docs.description + '\n'
-  }
-
-  description += `@name: ${mainName}`
-  ftsInterface.addJsDoc({ description })
-
-  return ftsInterface
+  addReturnType(builder, functionInterface)
+  return functionInterface
 }
 
 export function addReturnType(
-  ftsInterface: TS.InterfaceDeclaration,
-  main: TS.FunctionDeclaration,
-  docs?: doctrine.Annotation
+  builder: FTS.DefinitionBuilder,
+  functionInterface: TS.InterfaceDeclaration
 ): TS.PropertySignature {
-  const mainReturnType = main.getReturnType()
+  const mainReturnType = builder.main.getReturnType()
+  let type = mainReturnType.getText()
+  builder.definition.config.async = builder.main.isAsync()
 
-  const property = ftsInterface.addProperty({
+  const promiseRe = /^Promise<(.*)>$/
+  const promiseReMatch = type.match(promiseRe)
+
+  if (promiseReMatch) {
+    type = promiseReMatch[1]
+    builder.definition.config.async = true
+  }
+
+  const property = functionInterface.addProperty({
     name: 'return',
-    type: mainReturnType.getText()
+    type
   })
 
-  if (docs) {
-    const returnTag = docs.tags.find(
+  if (builder.docs) {
+    const returnTag = builder.docs.tags.find(
       (tag) => tag.title === 'returns' || tag.title === 'return'
     )
 
