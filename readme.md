@@ -221,7 +221,7 @@ FTS is an active WIP.
   - [x] add support common jsdoc comments
   - [x] fix should be readonly to source files
   - [x] fix async / promise return types
-  - [x] fix support for anonymous function exports
+  - [x] fix support for arrow function exports
   - [x] add support for default values
   - [ ] add support for custom tsconfig
   - [ ] add support for data blobs (buffers, streams, etc)

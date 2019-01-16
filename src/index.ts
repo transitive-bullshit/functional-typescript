@@ -29,9 +29,10 @@ export async function generateDefinition(
   project.resolveSourceFileDependencies()
 
   const diagnostics = project.getPreEmitDiagnostics()
-  console.log(project.formatDiagnosticsWithColorAndContext(diagnostics))
-
-  // TODO: throw if errors?
+  if (diagnostics.length > 0) {
+    console.log(project.formatDiagnosticsWithColorAndContext(diagnostics))
+    // TODO: throw?
+  }
 
   const sourceFile = project.getSourceFileOrThrow(file)
   const main = extractMainFunction(sourceFile)
@@ -75,7 +76,6 @@ export async function generateDefinition(
   }
 
   addFunctionInterface(builder)
-
   await sourceFile.save()
 
   try {
