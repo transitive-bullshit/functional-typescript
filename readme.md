@@ -290,7 +290,7 @@ Great question -- this answer will be updated once we have a good answer... 😁
 ---
 
 - [Quicktype](https://quicktype.io) - Used under the hood for converting TypeScript types to [JSON Schema](https://json-schema.org).
-- [typescript-json-scheema](https://github.com/YousefED/typescript-json-schema) - Generates JSON Schema from TypeScript.
+- [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) - Generates JSON Schema from TypeScript.
 
 ---
 
