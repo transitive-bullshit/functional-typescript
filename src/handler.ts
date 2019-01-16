@@ -1,5 +1,6 @@
 import Ajv from 'ajv'
-import * as cors from 'cors'
+// import * as cors from 'cors'
+import * as http from 'http'
 import * as micro from 'micro'
 import * as qs from 'qs'
 import * as url from 'url'
@@ -14,13 +15,14 @@ export function createHttpHandler(
     }
   }
 ): FTS.HttpHandler {
-  const ajv = new Ajv()
-  const validateParams = ajv.compile(definition.params)
-  // const validateReturn = ajv.compile(definition.return)
+  const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
+  const validateParams = ajv.compile(definition.params.schema)
+  // const validateReturns = ajv.compile(definition.returns)
 
   const opts: FTS.HttpHandlerOptions = {
     ...options
   }
+  console.log(opts)
 
   let entryPoint: any = require(jsFilePath)
 
@@ -46,7 +48,7 @@ export function createHttpHandler(
     }
   }
 
-  const handler = (req, res) => {
+  const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
     const urlinfo = url.parse(req.url)
     const query = qs.parse(urlinfo.query)
     let params: any = {}
@@ -59,8 +61,10 @@ export function createHttpHandler(
     if (!isValid) {
       const message = ajv.errorsText(validateParams.errors)
       const error = new Error(message)
-      error.statusCode = 400
-      return micro.sendError(req, res, error)
+      // TODOO
+      // error.statusCode = 400
+      micro.sendError(req, res, error)
+      return
     }
 
     // TODO: need array for params ordering

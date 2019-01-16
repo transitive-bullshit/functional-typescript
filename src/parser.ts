@@ -4,9 +4,10 @@ import * as fs from 'fs-extra'
 import * as path from 'path'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
+import { version } from './package'
 import * as FTS from './types'
 
-const FTSFunction = 'FTSFunction'
+const FTSReturns = 'FTSReturns'
 const FTSParams = 'FTSParams'
 
 export async function generateDefinition(
@@ -20,13 +21,27 @@ export async function generateDefinition(
     target: TS.ScriptTarget.ES5
   }
 
+  const jsonSchemaOptions = {
+    defaultProps: true,
+    noExtraProps: true,
+    required: true
+  }
+
   const definition: Partial<FTS.Definition> = {
     config: {
-      async: false,
-      context: false,
       defaultExport: true,
       language: 'typescript'
-    }
+    },
+    params: {
+      context: false,
+      order: [],
+      schema: null
+    },
+    returns: {
+      async: false,
+      schema: null
+    },
+    version
   }
 
   const originalFileContent = await fs.readFile(file, 'utf8')
@@ -77,15 +92,13 @@ export async function generateDefinition(
     title
   }
 
-  addFunctionInterface(builder)
+  addParamsDeclaration(builder)
+  addReturnTypeAlias(builder)
+
   await sourceFile.save()
 
   try {
-    builder.definition.schema = createJSONSchema(file, FTSFunction, {
-      defaultProps: true,
-      noExtraProps: true,
-      required: true
-    })
+    addJSONSchemas(builder, jsonSchemaOptions)
     postProcessDefinition(builder)
   } finally {
     await fs.writeFile(file, originalFileContent, 'utf8')
@@ -170,24 +183,6 @@ export function extractMainFunction(
   return undefined
 }
 
-export function addFunctionInterface(
-  builder: FTS.DefinitionBuilder
-): TS.InterfaceDeclaration {
-  addParamsDeclaration(builder)
-
-  const functionInterface = builder.sourceFile.addInterface({
-    name: FTSFunction
-  })
-
-  functionInterface.addProperty({
-    name: 'params',
-    type: FTSParams
-  })
-
-  addReturnType(builder, functionInterface)
-  return functionInterface
-}
-
 export function addParamsDeclaration(
   builder: FTS.DefinitionBuilder
 ): TS.ClassDeclaration {
@@ -223,7 +218,7 @@ export function addParamsDeclaration(
         )
       }
 
-      builder.definition.config.context = true
+      builder.definition.params.context = true
       // TODO: ensure context has valid type `FTS.Context`
       // ignore context in parameter aggregation
       continue
@@ -244,29 +239,31 @@ export function addParamsDeclaration(
     if (comment) {
       property.addJsDoc(comment)
     }
+
+    builder.definition.params.order.push(name)
   }
 
   return paramsDeclaration
 }
 
-export function addReturnType(
-  builder: FTS.DefinitionBuilder,
-  functionInterface: TS.InterfaceDeclaration
-): TS.PropertySignature {
+export function addReturnTypeAlias(
+  builder: FTS.DefinitionBuilder
+): TS.TypeAliasDeclaration {
   const mainReturnType = builder.main.getReturnType()
   let type = mainReturnType.getText()
-  builder.definition.config.async = builder.main.isAsync()
 
   const promiseRe = /^Promise<(.*)>$/
   const promiseReMatch = type.match(promiseRe)
 
+  builder.definition.returns.async = builder.main.isAsync()
+
   if (promiseReMatch) {
     type = promiseReMatch[1]
-    builder.definition.config.async = true
+    builder.definition.returns.async = true
   }
 
-  const property = functionInterface.addProperty({
-    name: 'return',
+  const typeAlias = builder.sourceFile.addTypeAlias({
+    name: FTSReturns,
     type
   })
 
@@ -276,19 +273,18 @@ export function addReturnType(
     )
 
     if (returnTag) {
-      property.addJsDoc(returnTag)
+      typeAlias.addJsDoc(returnTag)
     }
   }
 
-  return property
+  return typeAlias
 }
 
-export function createJSONSchema(
-  file: string,
-  fullTypeName = '*',
-  settings?: TJS.PartialArgs,
+export function addJSONSchemas(
+  builder: FTS.DefinitionBuilder,
+  jsonSchemaOptions: TJS.PartialArgs = {},
   jsonCompilerOptions: any = {}
-): TJS.Definition {
+) {
   const compilerOptions = {
     lib: ['es2018', 'dom'],
     target: 'es5',
@@ -296,27 +292,37 @@ export function createJSONSchema(
   }
 
   const program = TJS.getProgramFromFiles(
-    [file],
+    [builder.sourceFile.getFilePath()],
     compilerOptions,
     process.cwd()
   )
 
-  return TJS.generateSchema(program, fullTypeName, settings)
+  builder.definition.params.schema = TJS.generateSchema(
+    program,
+    FTSParams,
+    jsonSchemaOptions
+  )
+
+  builder.definition.returns.schema = TJS.generateSchema(
+    program,
+    FTSReturns,
+    jsonSchemaOptions
+  )
 }
 
 export function postProcessDefinition(builder: FTS.DefinitionBuilder) {
-  const { schema } = builder.definition
+  const { params, returns } = builder.definition
+  const schemas = [params, returns]
 
-  schema.title = builder.title
-  delete schema.required
-  delete schema.additionalProperties
-
-  // remove empty `defaultProperties`
-  filterObjectDeep(
-    schema,
-    (key, value) =>
-      key === 'defaultProperties' && (!value || arrayEqual(value, []))
-  )
+  for (const schema of schemas) {
+    // remove empty `defaultProperties`
+    // TODO: is this really necessary? why not just disable defaultProps?
+    filterObjectDeep(
+      schema,
+      (key, value) =>
+        key === 'defaultProperties' && (!value || arrayEqual(value, []))
+    )
+  }
 
   // TODO: remove other extraneous propertis
 }
@@ -338,7 +344,7 @@ export function filterObjectDeep(
 }
 
 if (!module.parent) {
-  generateDefinition('./fixtures/hello-world.ts')
+  generateDefinition('./fixtures/medium.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

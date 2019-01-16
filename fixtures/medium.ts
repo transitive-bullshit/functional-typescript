@@ -17,7 +17,7 @@ interface Nala {
  */
 export default async function Example(
   foo: string,
-  bar: number,
+  bar: number = 5,
   nala?: Nala
 ): Promise<string> {
   return 'Hello World'

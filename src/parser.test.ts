@@ -14,8 +14,13 @@ for (const fixture of fixtures) {
     const definition = await FTS.generateDefinition(fixture)
     t.truthy(definition)
 
-    ajv.validateSchema(definition.schema)
+    t.true(Array.isArray(definition.params.order))
+    ajv.validateSchema(definition.params.schema)
     t.is(ajv.errors, null)
+
+    ajv.validateSchema(definition.returns)
+    t.is(ajv.errors, null)
+
     t.snapshot(definition)
   })
 }
