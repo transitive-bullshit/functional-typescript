@@ -144,72 +144,81 @@ interface Nala {
  */
 export default async function ExampleFunction(
   foo: string,
-  bar: number,
+  bar: number = 5,
   nala?: Nala
 ): Promise<string> {
   return 'Hello World!'
 }
 ```
 
-FTS will generate a JSON Schema that fully specifies the default `ExampleFunction` export.
+FTS will generate a JSON function definition that fully specifies the default `ExampleFunction` export. In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Example",
   "description": "This is an example description for an example function.",
-  "title": "ExampleFunction",
-  "type": "object",
-  "properties": {
-    "params": {
-      "$ref": "#/definitions/FTSParams"
-    },
-    "return": {
-      "description": "Description of return value.",
-      "type": "Promise<string>"
-    }
+  "version": "0.0.1",
+  "config": {
+    "language": "typescript",
+    "defaultExport": true
   },
-  "required": ["params", "return"],
-  "definitions": {
-    "FTSParams": {
+  "params": {
+    "context": false,
+    "order": ["foo", "bar", "nala"],
+    "schema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
       "properties": {
+        "bar": {
+          "default": 5,
+          "type": "number"
+        },
         "foo": {
           "description": "Example describing string `foo`.",
           "type": "string"
-        },
-        "bar": {
-          "type": "number"
         },
         "nala": {
           "$ref": "#/definitions/Nala"
         }
       },
-      "required": ["bar", "foo"]
-    },
-    "Nala": {
-      "type": "object",
-      "properties": {
-        "numbers": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
+      "required": ["bar", "foo"],
+      "additionalProperties": false,
+      "definitions": {
+        "Color": {
+          "enum": [0, 1, 2],
+          "type": "number"
         },
-        "color": {
-          "$ref": "#/definitions/Color"
+        "Nala": {
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/Color"
+            },
+            "numbers": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            }
+          },
+          "required": ["color", "numbers"],
+          "type": "object"
         }
-      },
-      "required": ["color", "numbers"]
-    },
-    "Color": {
-      "enum": [0, 1, 2],
-      "type": "number"
+      }
+    }
+  },
+  "returns": {
+    "async": true,
+    "schema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "description": "Description of return value.",
+      "type": "string"
     }
   }
 }
 ```
 
-Note that this JSON Schema allows for easy type checking, documentation generation, and asynchronous function invocation.
+Note that this JSON definition allows for easy type checking, documentation generation, and asynchronous function invocation.
 
 ## Roadmap
 
@@ -227,14 +236,14 @@ FTS is an active WIP.
   - [ ] add support for data blobs (buffers, streams, etc)
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
-- [ ] Function invocation given an FTS definition schema and JS file entrypoint
+- [ ] Function http handler given an FTS definition schema and JS file entrypoint
   - [ ] validate function parameters against json schema
   - [ ] validate function return type against json schema
   - [ ] add support for async functions
   - [ ] add support for Context (ip, headers, etc)
   - [ ] add support for setting response headers
   - [ ] add CLI support for invoking functions
-- [ ] HTTP gateway implementation
+- [ ] HTTP server implementation
 - [ ] Documentation
   - [ ] basic usage Info
   - [ ] standard specification
