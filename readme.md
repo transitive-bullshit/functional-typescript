@@ -168,7 +168,7 @@ $ curl -s 'http://localhost:3000' -d 'name=POST'
 Hello POST!
 ```
 
-Note that in this example, we're generating the FTS Definition and serving it together, but in practice it is recommended that you generate these definitions during your build step, alongside your normal TS => JS compilation. These definitions should be viewed as json build artifacts that are _referenced_ at runtime in your server or serverless function.
+Note that in this example, we're generating the FTS Definition and serving it together, but in practice we recommend that you generate these definitions during your build step, alongside your normal TS => JS compilation. The definitions should be viewed as json build artifacts that are _referenced_ at runtime in your server or serverless function.
 
 ## FTS Definition
 
