@@ -41,8 +41,6 @@ for (const fixture of fixtures) {
     const port = await getPort()
     const server = await FTS.createHttpServer(handler, port)
 
-    // TODO: make jsf params deterministic
-
     const params = await jsf.resolve(definition.params.schema)
     const query = qs.stringify(params)
 

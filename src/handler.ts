@@ -187,6 +187,6 @@ function sendError(context: FTS.HttpContext, error: Error, statusCode = 500) {
   /* tslint:disable no-string-literal */
   error['statusCode'] = statusCode
   /* tslint:enable no-string-literal */
-  console.log(error)
+  console.error(error)
   micro.sendError(context.req, context.res, error)
 }
