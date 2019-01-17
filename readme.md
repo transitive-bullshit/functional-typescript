@@ -232,9 +232,10 @@ FTS is an active WIP.
   - [ ] add support for standard JS with jsdoc comments
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
   - [x] add support for HTTP GET
-  - [ ] add support for other HTTP methods
+  - [x] add support for other HTTP methods
   - [x] validate function parameters against json schema
   - [x] validate function return type against json schema
+  - [x] add support for passing params as array
   - [x] add support for async functions
   - [x] add support for http context (ip, headers, etc)
   - [ ] add support for setting response headers
@@ -246,10 +247,9 @@ FTS is an active WIP.
   - [ ] standard specification
   - [ ] description of how it works
   - [ ] how to use with different serverless cloud providers
-- [ ] Testing
+- [x] Testing
   - [x] basic unit tests for function definition parser
   - [x] basic unit tests for function http handler
-  - [ ] basic unit tests for HTTP server
   - [x] integration tests for TS function => definition => HTTP server
 - [ ] Misc
   - [ ] parser, cli, http handler, and http server should be separate packages to minimize serverless bundle size and startup time (especially parser's dependency on typescript)
