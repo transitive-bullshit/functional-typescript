@@ -13,7 +13,7 @@ $ yarn install
 $ node index.js
 ```
 
-Which will print out an `FTS.Definition` schema and a port the server is listening on:
+Which will print out an `FTS.Definition` schema, as well as which port the server is listening on:
 
 ```
 {
