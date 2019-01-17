@@ -4,9 +4,10 @@
 
 This is a simple example which transforms a "Hello World" TypeScript function into a type-safe HTTP endpoint. To do so, we perform the following steps:
 
-1. Generate an `FTS.Definition` from our input TS source file
-2. Create an `FTS.HttpHandler` from our definition and compiled JS source file
-3. Start an http server to handle requests to our FTS function
+1. Generate an `FTS.Definition`
+2. Create an `FTS.HttpHandler`
+3. Start an http server
+4. Profit!
 
 ## Running
 
