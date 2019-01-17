@@ -6,6 +6,15 @@ const path = require('path')
 const tsFile = getTSFile()
 const jsFile = TS2JS(tsFile)
 
+// Guard against running on non-test files
+if (!tsFile.endsWith('.test.ts') && !tsFile.endsWith('.spec.ts')) {
+  const tsFileBase = path.basename(tsFile)
+  console.error()
+  console.error(`Error: file "${tsFileBase}" is not a valid test file.`)
+  console.error()
+  process.exit(1)
+}
+
 replaceCLIArg(tsFile, jsFile)
 
 // Ava debugger

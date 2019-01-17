@@ -4,8 +4,6 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Current File",
-      // we test in `build` to make cleanup fast and easy
-      "cwd": "${workspaceFolder}",
       // Replace this with your project root. If there are multiple, you can
       // automatically run the currently visible file with: "program": ${file}"
       "program": "${file}",
@@ -15,22 +13,19 @@
         "<node_internals>/**/*.js",
         "${workspaceFolder}/node_modules/**/*.js"
       ],
-      "preLaunchTask": "npm: build:main",
       // "stopOnEntry": true,
-      "smartStep": true,
-      "runtimeArgs": ["--nolazy"]
+      "runtimeArgs": ["--nolazy"],
+      "smartStep": true
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Tests",
+      "name": "Debug Current AVA Test",
       "program": "${workspaceRoot}/.vscode/debug-ts.js",
-      "args": ["${file}"],
+      "args": ["${file}", "--serial", "--verbose", "--no-color"],
       "skipFiles": ["<node_internals>/**/*.js"],
-      // Consider using `npm run watch` or `yarn watch` for faster debugging
-      // "preLaunchTask": "npm: build",
-      // "smartStep": true,
-      "runtimeArgs": ["--nolazy"]
+      "runtimeArgs": ["--nolazy"],
+      "smartStep": true
     }
   ]
 }
