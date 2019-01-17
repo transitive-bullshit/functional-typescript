@@ -172,9 +172,7 @@ Note that in this example, we're generating the FTS Definition and serving it to
 
 ## FTS Definition
 
-Given our "hello world" example from earlier, FTS will generate a JSON definition that fully specifies the `hello` function export.
-
-In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
+Given our "hello world" example from earlier, FTS generates the following JSON definition that fully specifies the `hello` function export.
 
 ```json
 {
@@ -211,7 +209,9 @@ In addition to some metadata, this definition contains a JSON Schema for the fun
 }
 ```
 
-Note that this JSON definition allows for easy type checking, documentation generation, and asynchronous function invocation.
+In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
+
+Note that this definition allows for easy **type checking**, **documentation generation**, and **remote function invocation**.
 
 ## Roadmap
 
