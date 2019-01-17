@@ -10,10 +10,13 @@ import * as FTS from './types'
 export async function createHttpServer(
   handler: FTS.HttpHandler,
   endpointOrPort?: string | number,
-  log: (...args: any[]) => void = noop
+  options: Partial<FTS.HttpServerOptions> = {
+    silent: false
+  }
 ): Promise<http.Server> {
   const server = micro(handler)
   const parsedEndpoint = parseEndpoint(endpointOrPort)
+  const log = options.silent ? noop : console.log
 
   return new Promise((resolve, reject) => {
     server.on('error', (err: Error) => {

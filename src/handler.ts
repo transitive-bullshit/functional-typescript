@@ -4,6 +4,7 @@ import * as http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import { Stream } from 'stream'
+import { requireHandlerFunction } from './require-handler-function'
 import * as FTS from './types'
 
 const DEV = process.env.NODE_ENV === 'development'
@@ -28,45 +29,7 @@ export function createHttpHandler(
   // TODO: add cors and use options
   console.log(opts)
 
-  let entryPoint: any = require(jsFilePath)
-
-  if (!entryPoint) {
-    throw new Error(
-      `Invalid FTS definition "${definition.title}"; empty JS module require.`
-    )
-  }
-
-  if (definition.config.defaultExport) {
-    if (typeof entryPoint !== 'function') {
-      entryPoint = entryPoint.default
-    }
-  } else {
-    if (!definition.config.namedExport) {
-      throw new Error(
-        `Invalid FTS definition "${
-          definition.title
-        }"; must have either a defaultExport or namedExport.`
-      )
-    }
-
-    entryPoint = entryPoint[definition.config.namedExport]
-
-    if (!entryPoint) {
-      throw new Error(
-        `Invalid FTS definition "${definition.title}"; JS export "${
-          definition.config.namedExport
-        }" doesn't exist.`
-      )
-    }
-  }
-
-  if (typeof entryPoint !== 'function') {
-    throw new Error(
-      `Invalid FTS definition "${
-        definition.title
-      }"; referenced JS export is not a function.`
-    )
-  }
+  const innerHandler = requireHandlerFunction(definition, jsFilePath)
 
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
     const context = new FTS.HttpContext(req, res)
@@ -75,7 +38,7 @@ export function createHttpHandler(
     if (req.method === 'GET') {
       params = context.query
     } else {
-      // TODO: handle
+      // TODO: handle more HTTP methods
       sendError(context, new Error('TODO: support more HTTP methods'))
       return
     }
@@ -93,7 +56,7 @@ export function createHttpHandler(
     }
 
     try {
-      Promise.resolve(entryPoint(...args))
+      Promise.resolve(innerHandler(...args))
         .then((result: any) => {
           const isValidReturnType = validateReturns(result)
           if (!isValidReturnType) {
@@ -187,6 +150,5 @@ function sendError(context: FTS.HttpContext, error: Error, statusCode = 500) {
   /* tslint:disable no-string-literal */
   error['statusCode'] = statusCode
   /* tslint:enable no-string-literal */
-  console.error(error)
   micro.sendError(context.req, context.res, error)
 }

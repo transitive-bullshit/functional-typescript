@@ -109,8 +109,14 @@ npm install -g functional-typescript
 
 This will install the `fts` CLI program globally.
 
-```bash
-fts --help
+```
+Generates an FTS Definition schema given a TS input file.
+
+Usage: fts [options] <file.ts>
+
+Options:
+  -p, --project <project>  Path to 'tsconfig.json'.
+  -h, --help               output usage information
 ```
 
 #### Module
@@ -119,13 +125,51 @@ fts --help
 npm install --save functional-typescript
 ```
 
-```js
-const fts = require('functional-typescript')
+Here is a working example that can be found in [./examples/hello-world].
 
-// TODO
+```js
+const FTS = require('functional-typescript')
+
+async function example() {
+  const tsFilePath = './hello-world.ts'
+  const jsFilePath = './hello-world.js'
+
+  // Parse a TS file's main function export into an FTS.Definition schema.
+  const definition = await FTS.generateDefinition(tsFilePath)
+  console.log(definition)
+
+  // Create a standard http handler function `(req, res) => { ... }` that will
+  // invoke the compiled JS function, performing type checking and conversions
+  // between http and json for the function's parameters and return value.
+  const handler = FTS.createHttpHandler(definition, jsFilePath)
+
+  // Create a `micro` http server that uses our FTS.HttpHandler to respond
+  // to incoming http requests.
+  await FTS.createHttpServer(handler, 'http://localhost:3000')
+
+  // You could alternatively use your `handler` with any Node.js server
+  // framework, such as express, koa, @now/node, etc.
+}
+
+example().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
 ```
 
-## FTS Specification
+Once you have a server running, you can invoke your type-safe function over HTTP:
+
+```bash
+$ curl -s http://localhost:3000?name=GET
+Hello GET!
+
+$ curl -s http://localhost:3000 -d 'name=POST'
+Hello POST!
+```
+
+Note that in this example, we're generating the FTS Definition and serving it together, but in practice it is recommended that you generate these definitions during your build step, alongside your normal TS => JS compilation. These definitions should be viewed as json build artifacts that are _referenced_ at runtime in your server or serverless function.
+
+## FTS Definition
 
 Given the following TypeScript file:
 
@@ -156,7 +200,9 @@ export default async function ExampleFunction(
 }
 ```
 
-FTS will generate a JSON function definition that fully specifies the default `ExampleFunction` export. In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
+FTS will generate a JSON definition that fully specifies the default `ExampleFunction` export.
+
+In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
 
 ```json
 {

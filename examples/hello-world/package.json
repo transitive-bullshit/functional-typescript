@@ -1,0 +1,14 @@
+{
+  "name": "functional-typescript-example-hello-world",
+  "description": "Simple Hello World example for Functional Typescript",
+  "repository": "transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "functional-typescript": "link:../.."
+  }
+}

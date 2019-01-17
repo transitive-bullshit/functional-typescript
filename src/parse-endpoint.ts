@@ -29,7 +29,8 @@ export function parseEndpoint(endpointOrPort?: string | number): any[] {
       }
       return [url.pathname]
 
-    case 'tcp:': {
+    case 'tcp:':
+    case 'http:': {
       const port = url.port ? parseInt(url.port, 10) : defaultPort
       return [port, url.hostname]
     }

@@ -73,5 +73,11 @@ export interface HttpHandlerOptions {
   cors?: cors.CorsOptions
 }
 
+export interface HttpServerOptions {
+  silent: boolean
+}
+
+export type Func = (...args: any[]) => any
+
 export * from './context'
 export * from './http-context'
