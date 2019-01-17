@@ -6,7 +6,53 @@ This is a simple example which shows how to generate an FTS `Definition`, create
 
 In order to run this example, you must first build the top-level `functional-typescript` package locally.
 
-Once you have a server running, you can invoke your type-safe function over HTTP:
+Then, run:
+
+```bash
+$ yarn install
+$ node index.js
+```
+
+Which will print out an `FTS.Definition` schema and a port the server is listening on:
+
+```
+{
+  "title": "hello-world",
+  "version": "0.0.1",
+  "config": {
+    "language": "typescript",
+    "defaultExport": true
+  },
+  "params": {
+    "context": false,
+    "order": [
+      "name"
+    ],
+    "schema": {
+      "type": "object",
+      "properties": [
+        null
+      ],
+      "additionalProperties": false,
+      "required": [
+        null
+      ],
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    }
+  },
+  "returns": {
+    "async": false,
+    "schema": {
+      "type": "string",
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    }
+  }
+}
+
+fts: Accepting connections on port 3000
+```
+
+Once you have the server running, you can invoke your type-safe function over HTTP:
 
 ```bash
 $ curl -s http://localhost:3000?name=GET
