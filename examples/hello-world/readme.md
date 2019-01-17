@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" />
 
-# Functional TypeScript "Hello World" Exammple
+# FTS "Hello World" Example
 
 This is a simple example which shows how to generate an FTS `Definition`, create an `FTS.HttpHandler`, and start a basic http server that wraps a "Hello World" function.
 

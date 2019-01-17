@@ -1,5 +1,5 @@
 {
-  "name": "functional-typescript-example-hello-world",
+  "name": "fts-example-hello-world",
   "description": "Simple Hello World example for Functional Typescript",
   "repository": "transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
