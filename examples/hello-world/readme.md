@@ -37,12 +37,15 @@ Which will print out an `FTS.Definition` schema, as well as which port the serve
     ],
     "schema": {
       "type": "object",
-      "properties": [
-        null
-      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "World"
+        }
+      },
       "additionalProperties": false,
       "required": [
-        null
+        "name"
       ],
       "$schema": "http://json-schema.org/draft-07/schema#"
     }

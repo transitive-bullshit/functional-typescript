@@ -8,9 +8,9 @@
 
 ## Features
 
-- **Standard**: Just TypeScript + JSON Schema
 - **Robust**: Type-safe serverless functions!
 - **Simple**: Quick to setup and integrate
+- **Standard**: Just TypeScript + JSON Schema
 - **Compatible**: Supports all major serverless providers (AWS, GCP, Azure, Now, etc)
 - **Explicit**: Easily generate serverless function docs
 - **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
@@ -136,7 +136,6 @@ async function example() {
 
   // Parse a TS file's main function export into an FTS.Definition schema.
   const definition = await FTS.generateDefinition(tsFilePath)
-  console.log(definition)
 
   // Create a standard http handler function `(req, res) => { ... }` that will
   // invoke the compiled JS function, performing type checking and conversions
@@ -171,99 +170,40 @@ Note that in this example, we're generating the FTS Definition and serving it to
 
 ## FTS Definition
 
-Given the following TypeScript file:
-
-```ts
-enum Color {
-  Red,
-  Green,
-  Blue
-}
-
-interface Nala {
-  numbers: number[]
-  color: Color
-}
-
-/**
- * This is an example description for an example function.
- *
- * @param foo - Example describing string `foo`.
- * @returns Description of return value.
- */
-export default async function ExampleFunction(
-  foo: string,
-  bar: number = 5,
-  nala?: Nala
-): Promise<string> {
-  return 'Hello World!'
-}
-```
-
-FTS will generate a JSON definition that fully specifies the default `ExampleFunction` export.
+Given our "hello world" example from earlier, FTS will generate a JSON definition that fully specifies the `hello` function export.
 
 In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
 
 ```json
 {
-  "title": "Example",
-  "description": "This is an example description for an example function.",
+  "title": "hello",
   "version": "0.0.1",
   "config": {
     "language": "typescript",
-    "defaultExport": true
+    "defaultExport": false,
+    "namedExport": "hello"
   },
   "params": {
     "context": false,
-    "order": ["foo", "bar", "nala"],
+    "order": ["name"],
     "schema": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
       "properties": {
-        "bar": {
-          "default": 5,
-          "type": "number"
-        },
-        "foo": {
-          "description": "Example describing string `foo`.",
-          "type": "string"
-        },
-        "nala": {
-          "$ref": "#/definitions/Nala"
+        "name": {
+          "type": "string",
+          "default": "World"
         }
       },
-      "required": ["bar", "foo"],
       "additionalProperties": false,
-      "definitions": {
-        "Color": {
-          "enum": [0, 1, 2],
-          "type": "number"
-        },
-        "Nala": {
-          "additionalProperties": false,
-          "properties": {
-            "color": {
-              "$ref": "#/definitions/Color"
-            },
-            "numbers": {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            }
-          },
-          "required": ["color", "numbers"],
-          "type": "object"
-        }
-      }
+      "required": ["name"],
+      "$schema": "http://json-schema.org/draft-07/schema#"
     }
   },
   "returns": {
-    "async": true,
+    "async": false,
     "schema": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "description": "Description of return value.",
-      "type": "string"
+      "type": "string",
+      "$schema": "http://json-schema.org/draft-07/schema#"
     }
   }
 }
