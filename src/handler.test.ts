@@ -11,6 +11,7 @@ import * as qs from 'qs'
 import seedrandom from 'seedrandom'
 import * as tempy from 'tempy'
 import * as FTS from '.'
+import { requireHandlerFunction } from './require-handler-function'
 
 const fixtures = globby.sync('./fixtures/**/*.ts')
 const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
@@ -57,18 +58,21 @@ for (const fixture of fixtures) {
     const url = `http://localhost:${port}`
 
     const params = await jsf.resolve(definition.params.schema)
-    const query = qs.stringify(params)
-    console.log({ name, params, query, port })
+    const paramsArray = definition.params.order.map((key) => params[key])
+    const func = requireHandlerFunction(definition, jsFilePath)
+
+    const expected = await Promise.resolve(func(...paramsArray))
+    console.log({ name, params, port, expected })
 
     // test GET request with params as a query string
-    // note: not all fixtures will support this type of encoding
-    // TODO: figure out how to disable / configure different fixtures
+    // note: some fixtures will not support this type of encoding
     if (testConfig.get) {
+      const query = qs.stringify(params)
       const responseGET = await got(url, {
         json: true,
         query
       })
-      validateResponseSuccess(responseGET, 'GET')
+      validateResponseSuccess(responseGET, 'GET', expected)
     }
 
     // test POST request with params as a json body object
@@ -77,25 +81,26 @@ for (const fixture of fixtures) {
         body: params,
         json: true
       })
-      validateResponseSuccess(responsePOST, 'POST')
+      validateResponseSuccess(responsePOST, 'POST', expected)
     }
 
     // test POST request with params as a json body array
     if (testConfig.postArray) {
-      const paramsArray = definition.params.order.map((key) => params[key])
       const responsePOSTArray = await got.post(url, {
         body: paramsArray,
         json: true
       })
-      validateResponseSuccess(responsePOSTArray, 'POSTArray')
+      validateResponseSuccess(responsePOSTArray, 'POSTArray', expected)
     }
-
-    // TODO: invoke original TS function with params and ensure same result
 
     await pify(server.close.bind(server))()
     await fs.remove(outDir)
 
-    function validateResponseSuccess(res: got.Response<object>, label: string) {
+    function validateResponseSuccess(
+      res: got.Response<object>,
+      label: string,
+      expectedBody: any
+    ) {
       console.log({
         body: res.body,
         label,
@@ -106,6 +111,12 @@ for (const fixture of fixtures) {
       const validateReturns = ajv.compile(definition.returns.schema)
       validateReturns(res.body)
       t.is(validateReturns.errors, null)
+
+      if (typeof expectedBody === 'number' && isNaN(expectedBody)) {
+        expectedBody = null
+      }
+
+      t.deepEqual(res.body, expectedBody)
 
       // TODO: snapshot statusCode, statusMessage, and body
     }
