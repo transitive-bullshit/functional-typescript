@@ -243,7 +243,7 @@ FTS is an active WIP.
   - [x] add CLI wrapper to generate function definitions
   - [ ] add support for standard JS with jsdoc comments
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
-  - [x] add support for other HTTP GET
+  - [x] add support for HTTP GET
   - [ ] add support for other HTTP methods
   - [x] validate function parameters against json schema
   - [x] validate function return type against json schema
