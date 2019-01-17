@@ -9,7 +9,7 @@ import { Context } from './context'
 import { version } from './package'
 
 /**
- * Optional context utilities for FTS functions when being invoked over http.
+ * Optional context utilities for FTS functions when invoked over http.
  *
  * Based off of [Koa](https://koajs.com/#context).
  *
@@ -111,6 +111,15 @@ export class HttpContext extends Context {
     try {
       const { parameters } = contentType.parse(this.req)
       return parameters.charset || ''
+    } catch (e) {
+      return ''
+    }
+  }
+
+  get contentType() {
+    try {
+      const { type } = contentType.parse(this.req)
+      return type
     } catch (e) {
       return ''
     }

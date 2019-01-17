@@ -6,7 +6,7 @@ async function example() {
 
   // Parse a TS file's main function export into an FTS.Definition schema.
   const definition = await FTS.generateDefinition(tsFilePath)
-  console.log(definition)
+  console.log(JSON.stringify(definition, null, 2))
 
   // Create a standard http handler function `(req, res) => { ... }` that will
   // invoke the compiled JS function, performing type checking and conversions

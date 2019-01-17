@@ -2,7 +2,7 @@ import Ajv from 'ajv'
 import test from 'ava'
 import * as fs from 'fs-extra'
 import getPort from 'get-port'
-// import * as globby from 'globby'
+import * as globby from 'globby'
 import got from 'got'
 import jsf from 'json-schema-faker'
 import * as path from 'path'
@@ -12,7 +12,7 @@ import seedrandom from 'seedrandom'
 import * as tempy from 'tempy'
 import * as FTS from '.'
 
-const fixtures = ['./fixtures/power.ts'] // globby.sync('./fixtures/**/*.ts')
+const fixtures = globby.sync('./fixtures/**/*.ts')
 const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
 
 jsf.option({
@@ -40,31 +40,54 @@ for (const fixture of fixtures) {
 
     const port = await getPort()
     const server = await FTS.createHttpServer(handler, port)
+    const url = `http://localhost:${port}`
 
     const params = await jsf.resolve(definition.params.schema)
     const query = qs.stringify(params)
-
     console.log({ name, params, query, port })
-    const response = await got(`http://localhost:${port}`, {
+
+    // test GET request with body as a query string
+    // note: not all fixtures will support this type of encoding
+    // TODO: figure out how to disable / configure different fixtures
+    const responseGET = await got(url, {
       json: true,
       query
     })
-    console.log({
-      body: response.body,
-      statusCode: response.statusCode
+    validateResponseSuccess(responseGET, 'GET')
+
+    // test POST request with body as a json params object
+    const responsePOST = await got.post(url, {
+      body: params,
+      json: true
     })
-    t.is(response.statusCode, 200)
+    validateResponseSuccess(responsePOST, 'POST')
 
-    const validateReturns = ajv.compile(definition.returns.schema)
-    validateReturns(response.body)
-    t.is(validateReturns.errors, null)
+    // test POST request with body as a json array object
+    const paramsArray = definition.params.order.map((key) => params[key])
+    const responsePOSTArray = await got.post(url, {
+      body: paramsArray,
+      json: true
+    })
+    validateResponseSuccess(responsePOSTArray, 'POSTArray')
 
-    // TODO: response.body may be false, null, undefined, '', or NaN
-
-    // TODO: invoke original TS function with params and ensure same result!
-    // TODO: snapshot statusCode, statusMessage, and body
+    // TODO: invoke original TS function with params and ensure same result
 
     await pify(server.close.bind(server))()
     await fs.remove(outDir)
+
+    function validateResponseSuccess(res: got.Response<object>, label: string) {
+      console.log({
+        body: res.body,
+        label,
+        statusCode: res.statusCode
+      })
+      t.is(res.statusCode, 200)
+
+      const validateReturns = ajv.compile(definition.returns.schema)
+      validateReturns(res.body)
+      t.is(validateReturns.errors, null)
+
+      // TODO: snapshot statusCode, statusMessage, and body
+    }
   })
 }

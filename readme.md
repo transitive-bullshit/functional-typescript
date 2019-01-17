@@ -211,7 +211,7 @@ Given our "hello world" example from earlier, FTS generates the following JSON d
 
 In addition to some metadata, this definition contains a JSON Schema for the function's parameters and a JSON Schema for the function's return type.
 
-Note that this definition allows for easy **type checking**, **documentation generation**, and **remote function invocation**.
+Note that this definition allows for easy **type checking**, **documentation generation**, and **automated testing** via tools like [json-schema-faker](https://github.com/json-schema-faker/json-schema-faker).
 
 ## Roadmap
 
@@ -241,9 +241,9 @@ FTS is an active WIP.
   - [ ] add CLI support for invoking functions via http handler
 - [x] HTTP server implementation
 - [ ] Documentation
-  - [x] basic usage Info
-  - [ ] standard specification
+  - [x] basic usage example
   - [x] example functions (test suite)
+  - [ ] standard specification
   - [ ] description of how it works
   - [ ] how to use with different serverless cloud providers
 - [ ] Testing

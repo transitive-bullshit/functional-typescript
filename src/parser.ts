@@ -20,7 +20,7 @@ export async function generateDefinition(
   const compilerOptions = {
     ignoreCompilerErrors: true,
     // TODO: why do we need to specify the full filename for these lib definition files?
-    // lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
+    lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
     target: TS.ScriptTarget.ES5,
     ...(options.compilerOptions || {})
   }
