@@ -127,7 +127,7 @@ Options:
 npm install --save functional-typescript
 ```
 
-Here is an end-to-end example (found in [./examples/hello-world](./examples/hello-world)).
+Here is an end-to-end example ([examples/hello-world](./examples/hello-world)).
 
 ```js
 const FTS = require('functional-typescript')
@@ -161,10 +161,10 @@ example().catch((err) => {
 Once you have a server running, you can invoke your type-safe function over HTTP:
 
 ```bash
-$ curl -s http://localhost:3000?name=GET
+$ curl -s 'http://localhost:3000?name=GET'
 Hello GET!
 
-$ curl -s http://localhost:3000 -d 'name=POST'
+$ curl -s 'http://localhost:3000' -d 'name=POST'
 Hello POST!
 ```
 

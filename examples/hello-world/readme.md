@@ -65,10 +65,10 @@ fts: Accepting connections on port 3000
 Once you have the server running, you can invoke your type-safe function over HTTP:
 
 ```bash
-$ curl -s http://localhost:3000?name=GET
+$ curl -s 'http://localhost:3000?name=GET'
 Hello GET!
 
-$ curl -s http://localhost:3000 -d 'name=POST'
+$ curl -s 'http://localhost:3000' -d 'name=POST'
 Hello POST!
 ```
 
