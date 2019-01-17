@@ -1,9 +1,9 @@
 // TODO: parser would be ~2x faster if we reused the ts program from TS in TJS
 
 import arrayEqual from 'array-equal'
-import * as doctrine from 'doctrine'
-import * as fs from 'fs-extra'
-import * as path from 'path'
+import doctrine from 'doctrine'
+import fs from 'fs-extra'
+import path from 'path'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 import { version } from './package'

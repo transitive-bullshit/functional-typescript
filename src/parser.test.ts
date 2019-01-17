@@ -1,7 +1,7 @@
 import Ajv from 'ajv'
 import test from 'ava'
-import * as globby from 'globby'
-import * as path from 'path'
+import globby from 'globby'
+import path from 'path'
 import * as FTS from '.'
 
 const fixtures = globby.sync('./fixtures/**/*.ts')

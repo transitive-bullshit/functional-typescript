@@ -1,4 +1,4 @@
-import * as http from 'http'
+import http from 'http'
 import micro from 'micro'
 import { parseEndpoint } from './parse-endpoint'
 import * as FTS from './types'

@@ -1,10 +1,10 @@
-import * as accepts from 'accepts'
-import * as contentType from 'content-type'
-import * as http from 'http'
+import accepts from 'accepts'
+import contentType from 'content-type'
+import http from 'http'
 import parseUrl from 'parseurl'
-import * as qs from 'qs'
+import qs from 'qs'
 import typeIs from 'type-is'
-import * as url from 'url'
+import url from 'url'
 import { Context } from './context'
 import { version } from './package'
 
@@ -154,7 +154,7 @@ export class HttpContext extends Context {
 
   get accept() {
     if (!this.pAccept) {
-      this.pAccept = accepts.default(this.req)
+      this.pAccept = accepts(this.req)
     }
     return this.pAccept
   }

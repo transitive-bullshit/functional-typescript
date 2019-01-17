@@ -1,4 +1,4 @@
-import * as path from 'path'
+import path from 'path'
 import resolve from 'resolve'
 import * as FTS from './types'
 

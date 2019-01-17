@@ -1,6 +1,6 @@
 import Ajv from 'ajv'
 // import * as cors from 'cors'
-import * as http from 'http'
+import http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import { Stream } from 'stream'
