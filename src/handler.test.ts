@@ -22,9 +22,23 @@ jsf.option({
 })
 
 for (const fixture of fixtures) {
-  const { name } = path.parse(fixture)
+  const { name, dir } = path.parse(fixture)
+  const testConfigPath = path.join(process.cwd(), dir, 'config.json')
 
-  test(name, async (t) => {
+  test.serial(name, async (t) => {
+    let testConfig = {
+      get: true,
+      post: true,
+      postArray: true
+    }
+
+    if (fs.pathExistsSync(testConfigPath)) {
+      testConfig = {
+        ...testConfig,
+        ...require(testConfigPath)
+      }
+    }
+
     const outDir = tempy.directory()
     const definition = await FTS.generateDefinition(fixture, {
       compilerOptions: {
@@ -49,26 +63,32 @@ for (const fixture of fixtures) {
     // test GET request with params as a query string
     // note: not all fixtures will support this type of encoding
     // TODO: figure out how to disable / configure different fixtures
-    const responseGET = await got(url, {
-      json: true,
-      query
-    })
-    validateResponseSuccess(responseGET, 'GET')
+    if (testConfig.get) {
+      const responseGET = await got(url, {
+        json: true,
+        query
+      })
+      validateResponseSuccess(responseGET, 'GET')
+    }
 
     // test POST request with params as a json body object
-    const responsePOST = await got.post(url, {
-      body: params,
-      json: true
-    })
-    validateResponseSuccess(responsePOST, 'POST')
+    if (testConfig.post) {
+      const responsePOST = await got.post(url, {
+        body: params,
+        json: true
+      })
+      validateResponseSuccess(responsePOST, 'POST')
+    }
 
     // test POST request with params as a json body array
-    const paramsArray = definition.params.order.map((key) => params[key])
-    const responsePOSTArray = await got.post(url, {
-      body: paramsArray,
-      json: true
-    })
-    validateResponseSuccess(responsePOSTArray, 'POSTArray')
+    if (testConfig.postArray) {
+      const paramsArray = definition.params.order.map((key) => params[key])
+      const responsePOSTArray = await got.post(url, {
+        body: paramsArray,
+        json: true
+      })
+      validateResponseSuccess(responsePOSTArray, 'POSTArray')
+    }
 
     // TODO: invoke original TS function with params and ensure same result
 

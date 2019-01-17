@@ -5,7 +5,7 @@ enum Color {
 }
 
 interface Nala {
-  numbers: number[]
+  numbers?: number[]
   color: Color
 }
 
@@ -20,5 +20,5 @@ export default async function Example(
   bar: number = 5,
   nala?: Nala
 ): Promise<string> {
-  return 'Hello World'
+  return JSON.stringify({ foo, bar, nala })
 }
