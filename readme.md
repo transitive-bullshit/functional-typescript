@@ -49,7 +49,7 @@ And returns a result like this:
 "Hello GitHub!"
 ```
 
-All parameters and return values are type-checked by a standard Node.js HTTP handler, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
+All parameters and return values are type-checked by a standard Node.js HTTP handler, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly!
 
 ## Why Functional TypeScript?
 
