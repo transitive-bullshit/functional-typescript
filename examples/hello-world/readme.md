@@ -2,9 +2,13 @@
 
 # FTS "Hello World" Example
 
-This is a simple example which shows how to generate an FTS `Definition`, create an `FTS.HttpHandler`, and start a basic http server that wraps a "Hello World" function.
+This is a simple example which transforms a "Hello World" TypeScript function into type-safe function callable over HTTP. To do so, we perform the following steps:
 
-In order to run this example, you must first build the top-level `functional-typescript` package locally.
+1. Generate an `FTS.Definition` from our input TS source file
+2. Create an `FTS.HttpHandler` from our definition and compiled JS source file
+3. Start an http server to handle requests to our FTS function
+
+In order to run this example, you first need to build the top-level `functional-typescript` package locally.
 
 Then, run:
 
