@@ -46,7 +46,7 @@ for (const fixture of fixtures) {
     const query = qs.stringify(params)
     console.log({ name, params, query, port })
 
-    // test GET request with body as a query string
+    // test GET request with params as a query string
     // note: not all fixtures will support this type of encoding
     // TODO: figure out how to disable / configure different fixtures
     const responseGET = await got(url, {
@@ -55,14 +55,14 @@ for (const fixture of fixtures) {
     })
     validateResponseSuccess(responseGET, 'GET')
 
-    // test POST request with body as a json params object
+    // test POST request with params as a json body object
     const responsePOST = await got.post(url, {
       body: params,
       json: true
     })
     validateResponseSuccess(responsePOST, 'POST')
 
-    // test POST request with body as a json array object
+    // test POST request with params as a json body array
     const paramsArray = definition.params.order.map((key) => params[key])
     const responsePOSTArray = await got.post(url, {
       body: paramsArray,
