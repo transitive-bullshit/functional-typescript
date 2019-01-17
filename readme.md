@@ -127,7 +127,7 @@ Options:
 npm install --save functional-typescript
 ```
 
-Here is a working example that can be found in [./examples/hello-world].
+Here is an end-to-end example (found in [./examples/hello-world](./examples/hello-world)).
 
 ```js
 const FTS = require('functional-typescript')
