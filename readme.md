@@ -299,7 +299,7 @@ FTS is an active WIP.
   - [ ] add CLI support for invoking functions via http handler
 - [x] HTTP server implementation
 - [ ] Documentation
-  - [ ] basic usage Info
+  - [x] basic usage Info
   - [ ] standard specification
   - [x] example functions (test suite)
   - [ ] description of how it works
