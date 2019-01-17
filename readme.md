@@ -101,9 +101,9 @@ FTS allows you to define **provider-agnostic** serverless functions while also g
 
 ## Usage
 
-You can use this package as either a CLI or programatically as a module.
+You can use this package as either a CLI or as a module.
 
-#### CLI
+### CLI
 
 ```bash
 npm install -g functional-typescript
@@ -121,7 +121,7 @@ Options:
   -h, --help               output usage information
 ```
 
-#### Module
+### Module
 
 ```bash
 npm install --save functional-typescript
