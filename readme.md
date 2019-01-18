@@ -292,6 +292,8 @@ The default HTTP handler with JSON Schema validation is the simplest way of usin
 
 The real benefit of FTS is that the remote function definitions are just standard TypeScript, without you having to worry about understanding the complexities of gRPC, protocol buffers, or other common RPC formats. **You only need to understand and write TypeScript.**
 
+Couple that with the simplicity and infinite scalability of serverless functions, and FTS starts to become really powerful, enabling any TypeScript developer to easily create rock solid services.
+
 ## Related
 
 - [FaaSLang](https://github.com/faaslang/faaslang) - Very similar in spirit to this project but uses JavaScript with JSDoc instead of TypeScript.
