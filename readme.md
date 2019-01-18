@@ -282,7 +282,7 @@ Great question -- this answer will be updated once we have a good answer... 😁
 
 Functional TypeScript is a standard for declaring and invoking remote functions. This type of invocation is known as an [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) or remote procedure call.
 
-There are many other RPC standards. Some notable ones include [SOAP](https://en.wikipedia.org/wiki/SOAP), [Apache Thrift](https://en.wikipedia.org/wiki/Apache_Thrift), and [gRPC](https://en.wikipedia.org/wiki/GRPC).
+Some other notable RPC standards include [SOAP](https://en.wikipedia.org/wiki/SOAP), [Apache Thrift](https://en.wikipedia.org/wiki/Apache_Thrift), and [gRPC](https://en.wikipedia.org/wiki/GRPC).
 
 > So how does FTS fit into this picture?
 
