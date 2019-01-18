@@ -252,9 +252,10 @@ FTS is an active WIP.
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
 - [ ] Misc
-  - [ ] parser, cli, http handler, and http server should be separate packages to minimize serverless bundle size and startup time (especially parser's dependency on typescript)
+  - [ ] create separate packages for parser, cli, handler, and server
 - [ ] Post-MVP
-  - [ ] support multiple languages
+  - [ ] support multiple source languages
+  - [ ] support multiple transport handlers (http, grpc, thrift)
   - [ ] now-builder for FTS functions
 
 ## FAQ
@@ -276,6 +277,20 @@ FTS also exposes a standard Node.js [http handler](https://nodejs.org/api/http.h
 ### How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?
 
 Great question -- this answer will be updated once we have a good answer... 😁
+
+### How is this different from other RPC standards?
+
+Functional TypeScript is a standard for declaring and invoking remote functions. This type of invocation is known as an [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) or remote procedure call.
+
+There are many other RPC standards. Some notable ones include [SOAP](https://en.wikipedia.org/wiki/SOAP), [Apache Thrift](https://en.wikipedia.org/wiki/Apache_Thrift), and [gRPC](https://en.wikipedia.org/wiki/GRPC).
+
+> So how does FTS fit into this picture?
+
+First off, FTS is fully compatible with these other RPC standards, with a gRPC transport layer being prioritized on the roadmap.
+
+The default HTTP handler with JSON Schema validation is the simplest way of using FTS, but it's pretty straightforward to interop with other RPC standards. For example, to use FTS with gRPC, we need to convert the JSON Schemas into protocol buffers (both of which describe the types and format of data) and add a gRPC handler which calls our compiled target JS function. Of course, there are pros and cons to using HTTP vs gRPC, with HTTP being easier to use and debug and gRPC being more efficient and scalable.
+
+The real benefit of FTS is that the remote function definitions are just standard TypeScript, without you having to worry about understanding the complexities of gRPC, protocol buffers, or other common RPC formats. **You only need to understand and write TypeScript.**
 
 ## Related
 
