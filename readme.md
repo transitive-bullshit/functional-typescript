@@ -225,10 +225,11 @@ FTS is an active WIP.
   - [x] fix async / promise return types
   - [x] fix support for arrow function exports
   - [x] add support for default values
-  - [ ] add support for custom tsconfig
   - [x] add support for void return type
-  - [ ] add support for Buffer type
-  - [ ] add support for Date types
+  - [x] add support for Buffer type
+  - [x] add support for Date types
+  - [ ] add support for returning Buffer and Date types
+  - [ ] add support for custom tsconfig
   - [x] add CLI wrapper to generate function definitions
   - [x] add support for standard JS with jsdoc comments
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint

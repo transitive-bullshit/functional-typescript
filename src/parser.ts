@@ -12,6 +12,8 @@ import * as FTS from './types'
 const FTSReturns = 'FTSReturns'
 const FTSParams = 'FTSParams'
 
+const promiseTypeRe = /^Promise<(.*)>$/
+
 const supportedExtensions = {
   js: 'javascript',
   jsx: 'javascript',
@@ -103,7 +105,9 @@ export async function generateDefinition(
   if (doc) {
     const { description } = doc.getStructure()
     docs = doctrine.parse(description as string)
-    definition.description = docs.description
+    if (docs.description) {
+      definition.description = docs.description
+    }
   }
 
   const builder: FTS.DefinitionBuilder = {
@@ -244,9 +248,10 @@ function addParamsDeclaration(
     const param = mainParams[i]
     const name = param.getName()
     const structure = param.getStructure()
-    if (!structure.type) {
-      structure.type = param.getType().getText()
-    }
+
+    // TODO: this handles alias type resolution i think...
+    // need to test multiple levels of aliasing
+    structure.type = param.getType().getText()
 
     if (name === 'context') {
       if (i !== mainParams.length - 1) {
@@ -270,16 +275,26 @@ function addParamsDeclaration(
       // TODO: does json schema handle Date type for us?
     }
 
+    // Type coercion for non-JSON primitives like Date and Buffer
+    let jsdoc = paramComments[name]
+    const isDate = structure.type === 'Date'
+    const isBuffer = structure.type === 'Buffer'
+
+    if (isDate || isBuffer) {
+      const coerceTo = structure.type
+      if (!isDate) {
+        structure.type = 'string'
+      }
+      jsdoc = `${jsdoc ? jsdoc + '\n' : ''}@coerceTo ${coerceTo}`
+    }
+
     const property = paramsDeclaration.addProperty(
       structure as TS.PropertySignatureStructure
     )
 
-    const comment = paramComments[name]
-    if (comment) {
-      property.addJsDoc(comment)
+    if (jsdoc) {
+      property.addJsDoc(jsdoc)
     }
-
-    // TODO: add support for @coerceTo
 
     builder.definition.params.order.push(name)
   }
@@ -293,8 +308,7 @@ function addReturnTypeAlias(
   const mainReturnType = builder.main.getReturnType()
   let type = mainReturnType.getText()
 
-  const promiseRe = /^Promise<(.*)>$/
-  const promiseReMatch = type.match(promiseRe)
+  const promiseReMatch = type.match(promiseTypeRe)
 
   builder.definition.returns.async = builder.main.isAsync()
 
@@ -359,7 +373,7 @@ function extractJSONSchemas(
 
 if (!module.parent) {
   // useful for quick testing purposes
-  generateDefinition('./fixtures/void.ts')
+  generateDefinition('./fixtures/date.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

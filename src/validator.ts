@@ -1,14 +1,16 @@
 import Ajv from 'ajv'
 
+const encoding = 'base64'
+
 const customCoercionTypes = {
-  Buffer: (maybeBuffer: any): Buffer => {
-    return Buffer.from(maybeBuffer)
+  Buffer: (data: any): Buffer => {
+    return Buffer.from(data, encoding)
   },
 
-  Date: (maybeDate: any): Date => {
-    const date = new Date(maybeDate)
+  Date: (data: any): Date => {
+    const date = new Date(data)
     if (isNaN(date as any)) {
-      throw new Error(`Invalid Date "${maybeDate}"`)
+      throw new Error(`Invalid Date "${data}"`)
     }
 
     return date
@@ -23,28 +25,39 @@ export function createJsonSchemaValidator(opts?: any): Ajv.Ajv {
 
 const coerceToKeyword: Ajv.KeywordDefinition = {
   type: 'string',
-  errors: false,
   modifying: true,
-  valid: true,
+  errors: true,
   compile: (schema: any): Ajv.ValidateFunction => {
     const coercionType: (schema: any) => any = customCoercionTypes[schema]
-    return (
+    if (!coercionType) {
+      throw new Error(`Invalid coerceTo "${schema}"`)
+    }
+
+    return function coerceTo(
       data: any,
       dataPath: string,
       parentData: object | any[],
       parentDataProperty: string | number
-    ): boolean => {
+    ): boolean {
       if (!parentData || !dataPath) {
-        return false
+        // TODO: support modifying "bare" types
+        throw new Error(
+          `Invalid coerceTo "${schema}" must be contained in object or array`
+        )
       }
 
-      const transformedData = coercionType(data)
-      if (!transformedData) {
+      try {
+        const transformedData = coercionType(data)
+        if (!transformedData) {
+          return false
+        }
+
+        parentData[parentDataProperty] = transformedData
+        return true
+      } catch (err) {
+        this.errors = [err]
         return false
       }
-
-      parentData[parentDataProperty] = transformedData
-      return true
     }
   }
 }
