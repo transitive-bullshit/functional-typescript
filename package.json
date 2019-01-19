@@ -89,6 +89,7 @@
     "@types/tempy": "^0.2.0",
     "@types/type-is": "^1.6.2",
     "ava": "^1.1.0",
+    "clone-deep": "^4.0.1",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
     "get-port": "^4.1.0",

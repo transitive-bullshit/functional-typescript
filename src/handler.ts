@@ -62,7 +62,10 @@ export function createHttpHandler(
 
               if (result === null) {
                 send(context, res.statusCode || 204, result)
-              } else if (result !== undefined) {
+              } else if (
+                result !== undefined ||
+                !definition.returns.schema.type
+              ) {
                 send(context, res.statusCode || 200, result)
               }
             })

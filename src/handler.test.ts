@@ -1,4 +1,5 @@
 import test from 'ava'
+import cloneDeep from 'clone-deep'
 import fs from 'fs-extra'
 import getPort from 'get-port'
 import globby from 'globby'
@@ -13,7 +14,8 @@ import * as FTS from '.'
 import { requireHandlerFunction } from './require-handler-function'
 import { createJsonSchemaValidator } from './validator'
 
-const fixtures = globby.sync('./fixtures/date.ts')
+// const fixtures = globby.sync('./fixtures/void.ts')
+const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
   alwaysFakeOptionals: true,
@@ -61,11 +63,12 @@ for (const fixture of fixtures) {
     const url = `http://localhost:${port}`
 
     const params = await jsf.resolve(definition.params.schema)
-    const paramsArray = definition.params.order.map((key) => params[key])
-    const func = requireHandlerFunction(definition, jsFilePath)
-
-    validateParams(params)
+    const paramsLocal = cloneDeep(params)
+    validateParams(paramsLocal)
     t.is(validateParams.errors, null)
+
+    const paramsArray = definition.params.order.map((key) => paramsLocal[key])
+    const func = requireHandlerFunction(definition, jsFilePath)
 
     const expected = await Promise.resolve(func(...paramsArray))
     console.log({ name, params, port, expected })
@@ -121,9 +124,11 @@ for (const fixture of fixtures) {
         expectedBody = null
       }
 
-      t.deepEqual(res.body, expectedBody)
-
-      // TODO: snapshot statusCode, statusMessage, and body
+      if (!definition.returns.schema.type) {
+        t.falsy(res.body)
+      } else {
+        t.deepEqual(res.body, expectedBody)
+      }
     }
   })
 }

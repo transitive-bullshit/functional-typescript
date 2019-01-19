@@ -62,6 +62,7 @@ export interface DefinitionBuilder {
   docs?: doctrine.Annotation
   title: string
   definition: Partial<Definition>
+  void: boolean
 }
 
 export type HttpHandler = (

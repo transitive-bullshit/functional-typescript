@@ -115,7 +115,8 @@ export async function generateDefinition(
     docs,
     main,
     sourceFile,
-    title
+    title,
+    void: false
   }
 
   if (options.emit) {
@@ -302,9 +303,7 @@ function addParamsDeclaration(
   return paramsDeclaration
 }
 
-function addReturnTypeAlias(
-  builder: FTS.DefinitionBuilder
-): TS.TypeAliasDeclaration {
+function addReturnTypeAlias(builder: FTS.DefinitionBuilder) {
   const mainReturnType = builder.main.getReturnType()
   let type = mainReturnType.getText()
 
@@ -318,7 +317,8 @@ function addReturnTypeAlias(
   }
 
   if (type === 'void') {
-    type = 'undefined'
+    builder.void = true
+    return
   }
 
   const typeAlias = builder.sourceFile.addTypeAlias({
@@ -335,8 +335,6 @@ function addReturnTypeAlias(
       typeAlias.addJsDoc(returnTag)
     }
   }
-
-  return typeAlias
 }
 
 function extractJSONSchemas(
@@ -364,11 +362,15 @@ function extractJSONSchemas(
     jsonSchemaOptions
   )
 
-  builder.definition.returns.schema = TJS.generateSchema(
-    program,
-    FTSReturns,
-    jsonSchemaOptions
-  )
+  if (builder.void) {
+    builder.definition.returns.schema = {}
+  } else {
+    builder.definition.returns.schema = TJS.generateSchema(
+      program,
+      FTSReturns,
+      jsonSchemaOptions
+    )
+  }
 }
 
 if (!module.parent) {
