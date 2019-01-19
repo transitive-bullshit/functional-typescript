@@ -229,7 +229,7 @@ FTS is an active WIP.
   - [ ] add support for data blobs (buffers, streams, etc)
   - [ ] add support for void return type
   - [x] add CLI wrapper to generate function definitions
-  - [ ] add support for standard JS with jsdoc comments
+  - [x] add support for standard JS with jsdoc comments
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
   - [x] add support for HTTP GET
   - [x] add support for other HTTP methods
@@ -266,18 +266,6 @@ Serverless functions allow your code to run on-demand and scale automatically bo
 
 For more information, see [Why Serverless?](https://serverless.com/learn/overview), and an excellent breakdown on the [Tradeoffs that come with Serverless](https://martinfowler.com/articles/serverless.html).
 
-### How is FTS related to FaaSLang?
-
-Functional TypeScript builds off of and shares many of the same design goals as [FaaSLang](https://github.com/faaslang/faaslang). The main difference is that FaaSLang's default implementation uses **JavaScript + JSDoc** to generate **custom schemas** for function definitions, whereas **FTS uses TypeScript** to generate **JSON Schemas** for function definitions.
-
-In our opinion, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core schema validation layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages. For example, it would be relatively simple to **extend FTS beyond TypeScript** to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io) (Go, Objective-C, C++, etc).
-
-FTS also exposes a standard Node.js [http handler](https://nodejs.org/api/http.html#http_event_request) for invoking FTS functions `(req, res) => { ... }`. This makes it **extremely easy to integrate with popular Node.js server frameworks** such as [express](https://expressjs.com), [koa](https://koajs.com), and [micro](https://github.com/zeit/micro). While FaaSLang could potentially be extended to support more general usage, the default implementation currently only supports a custom API gateway server... which makes me a sad panda. 🐼
-
-### How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?
-
-Great question -- this answer will be updated once we have a good answer... 😁
-
 ### How is this different from other RPC standards?
 
 Functional TypeScript is a standard for declaring and invoking remote functions. This type of invocation is known as an [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) or remote procedure call.
@@ -290,9 +278,21 @@ First off, FTS is fully compatible with these other RPC standards, with a gRPC t
 
 The default HTTP handler with JSON Schema validation is the simplest way of using FTS, but it's pretty straightforward to interop with other RPC standards. For example, to use FTS with gRPC, we need to convert the JSON Schemas into protocol buffers (both of which describe the types and format of data) and add a gRPC handler which calls our compiled target JS function. Of course, there are pros and cons to using HTTP vs gRPC, with HTTP being easier to use and debug and gRPC being more efficient and scalable.
 
-The real benefit of FTS is that the remote function definitions are just standard TypeScript, without you having to worry about understanding the complexities of gRPC, protocol buffers, or other common RPC formats. **You only need to understand and write TypeScript.**
+The real benefit of FTS is that the remote function definitions are just standard TypeScript, without you having to worry about the complexities of gRPC, protocol buffers, or other RPC formats. **You only need to understand and write TypeScript.**
 
-Couple that with the simplicity and infinite scalability of serverless functions, and FTS starts to become really powerful, enabling any TypeScript developer to easily create rock solid services.
+Couple that with the simplicity and scalability of serverless functions, and FTS starts to become really powerful, enabling any TypeScript developer to create rock solid serverless functions easier than ever before.
+
+### How is FTS related to FaaSLang?
+
+Functional TypeScript builds off of and shares many of the same design goals as [FaaSLang](https://github.com/faaslang/faaslang). The main difference is that FaaSLang's default implementation uses **JavaScript + JSDoc** to generate **custom schemas** for function definitions, whereas **FTS uses TypeScript** to generate **JSON Schemas** for function definitions.
+
+In our opinion, the relatively mature [JSON Schema](https://json-schema.org) specification provides a more solid and extensible base for the core schema validation layer. JSON Schema also provides interop with a large ecosystem of existing tools and languages. For example, it would be relatively simple to **extend FTS beyond TypeScript** to generate JSON Schemas from any language that is supported by [Quicktype](https://quicktype.io) (Go, Objective-C, C++, etc).
+
+FTS also exposes a standard Node.js [http handler](https://nodejs.org/api/http.html#http_event_request) for invoking FTS functions `(req, res) => { ... }`. This makes it **extremely easy to integrate with popular Node.js server frameworks** such as [express](https://expressjs.com), [koa](https://koajs.com), and [micro](https://github.com/zeit/micro). While FaaSLang could potentially be extended to support more general usage, the default implementation currently only supports a custom API gateway server... which makes me a sad panda. 🐼
+
+### How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?
+
+Great question -- this answer will be updated once we have a good answer... 😁
 
 ## Related
 

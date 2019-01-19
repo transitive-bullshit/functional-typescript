@@ -4,6 +4,7 @@ import arrayEqual from 'array-equal'
 import doctrine from 'doctrine'
 import fs from 'fs-extra'
 import path from 'path'
+import tempy from 'tempy'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 import { version } from './package'
@@ -12,16 +13,34 @@ import * as FTS from './types'
 const FTSReturns = 'FTSReturns'
 const FTSParams = 'FTSParams'
 
+const supportedExtensions = {
+  js: 'javascript',
+  jsx: 'javascript',
+  ts: 'typescript',
+  tsx: 'typescript'
+}
+
 export async function generateDefinition(
   file: string,
   options: FTS.PartialDefinitionOptions = {}
 ): Promise<FTS.Definition> {
+  const fileInfo = path.parse(file)
+  const language = supportedExtensions[fileInfo.ext.substr(1)]
+
+  if (!language) {
+    throw new Error(`File type "${fileInfo.ext}" not supported.`)
+  }
+
+  const outDir = tempy.directory()
+
   // initialize and compile TS program
   const compilerOptions = {
+    allowJs: true,
     ignoreCompilerErrors: true,
     // TODO: why do we need to specify the full filename for these lib definition files?
     lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
     target: TS.ScriptTarget.ES5,
+    outDir,
     ...(options.compilerOptions || {})
   }
 
@@ -35,7 +54,7 @@ export async function generateDefinition(
   const definition: Partial<FTS.Definition> = {
     config: {
       defaultExport: true,
-      language: 'typescript'
+      language
     },
     params: {
       context: false,
@@ -48,8 +67,6 @@ export async function generateDefinition(
     },
     version
   }
-
-  const originalFileContent = await fs.readFile(file, 'utf8')
 
   const project = new TS.Project({ compilerOptions })
 
@@ -109,13 +126,22 @@ export async function generateDefinition(
   addReturnTypeAlias(builder)
 
   // TODO: figure out a better workaround than mutating the source file directly
-  await sourceFile.save()
+  // TODO: fix support for JS files since you can't save TS in JS
+  const tempSourceFilePath = path.format({
+    dir: fileInfo.dir,
+    ext: '.ts',
+    name: `.${fileInfo.name}-fts`
+  })
+  const tempSourceFile = sourceFile.copy(tempSourceFilePath, {
+    overwrite: true
+  })
+  await tempSourceFile.save()
 
   try {
-    addJSONSchemas(builder, jsonSchemaOptions)
+    extractJSONSchemas(builder, tempSourceFilePath, jsonSchemaOptions)
     postProcessDefinition(builder)
   } finally {
-    await fs.writeFile(file, originalFileContent, 'utf8')
+    await fs.remove(tempSourceFilePath)
   }
 
   return builder.definition as FTS.Definition
@@ -294,19 +320,21 @@ function addReturnTypeAlias(
   return typeAlias
 }
 
-function addJSONSchemas(
+function extractJSONSchemas(
   builder: FTS.DefinitionBuilder,
+  file: string,
   jsonSchemaOptions: TJS.PartialArgs = {},
   jsonCompilerOptions: any = {}
 ) {
   const compilerOptions = {
+    allowJs: true,
     lib: ['es2018', 'dom'],
     target: 'es5',
     ...jsonCompilerOptions
   }
 
   const program = TJS.getProgramFromFiles(
-    [builder.sourceFile.getFilePath()],
+    [file],
     compilerOptions,
     process.cwd()
   )
@@ -356,7 +384,7 @@ function filterObjectDeep(obj: any, blacklist: (k: string, v: any) => boolean) {
 
 if (!module.parent) {
   // for quick testing purposes
-  generateDefinition('./fixtures/hello-world.ts')
+  generateDefinition('./fixtures/es6.js')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

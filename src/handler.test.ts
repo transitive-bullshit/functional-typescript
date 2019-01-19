@@ -13,7 +13,7 @@ import tempy from 'tempy'
 import * as FTS from '.'
 import { requireHandlerFunction } from './require-handler-function'
 
-const fixtures = globby.sync('./fixtures/**/*.ts')
+const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
 
 jsf.option({
