@@ -321,6 +321,10 @@ function addReturnTypeAlias(builder: FTS.DefinitionBuilder) {
     return
   }
 
+  if (type === 'Buffer' || type === 'Date') {
+    throw new Error(`Unsupported return type "${type}"`)
+  }
+
   const typeAlias = builder.sourceFile.addTypeAlias({
     name: FTSReturns,
     type
