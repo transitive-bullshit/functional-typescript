@@ -1,6 +1,5 @@
 // TODO: parser would be ~2x faster if we reused the ts program from TS in TJS
 
-import arrayEqual from 'array-equal'
 import doctrine from 'doctrine'
 import fs from 'fs-extra'
 import path from 'path'
@@ -45,9 +44,9 @@ export async function generateDefinition(
   }
 
   const jsonSchemaOptions = {
-    defaultProps: true,
     noExtraProps: true,
     required: true,
+    validationKeywords: ['coerceTo'],
     ...(options.jsonSchemaOptions || {})
   }
 
@@ -139,7 +138,7 @@ export async function generateDefinition(
 
   try {
     extractJSONSchemas(builder, tempSourceFilePath, jsonSchemaOptions)
-    postProcessDefinition(builder)
+    // postProcessDefinition(builder)
   } finally {
     await fs.remove(tempSourceFilePath)
   }
@@ -280,6 +279,8 @@ function addParamsDeclaration(
       property.addJsDoc(comment)
     }
 
+    // TODO: add support for @coerceTo
+
     builder.definition.params.order.push(name)
   }
 
@@ -300,6 +301,10 @@ function addReturnTypeAlias(
   if (promiseReMatch) {
     type = promiseReMatch[1]
     builder.definition.returns.async = true
+  }
+
+  if (type === 'void') {
+    type = 'undefined'
   }
 
   const typeAlias = builder.sourceFile.addTypeAlias({
@@ -352,39 +357,9 @@ function extractJSONSchemas(
   )
 }
 
-function postProcessDefinition(builder: FTS.DefinitionBuilder) {
-  const { params, returns } = builder.definition
-  const schemas = [params, returns]
-
-  for (const schema of schemas) {
-    // remove empty `defaultProperties`
-    // TODO: is this really necessary? why not just disable defaultProps?
-    filterObjectDeep(
-      schema,
-      (key, value) =>
-        key === 'defaultProperties' && (!value || arrayEqual(value, []))
-    )
-  }
-
-  // TODO: remove other extraneous propertis
-}
-
-function filterObjectDeep(obj: any, blacklist: (k: string, v: any) => boolean) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const value = obj[key]
-      if (blacklist(key, value)) {
-        delete obj[key]
-      } else if (typeof value === 'object') {
-        filterObjectDeep(value, blacklist)
-      }
-    }
-  }
-}
-
 if (!module.parent) {
-  // for quick testing purposes
-  generateDefinition('./fixtures/es6.js')
+  // useful for quick testing purposes
+  generateDefinition('./fixtures/void.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

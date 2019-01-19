@@ -1,4 +1,3 @@
-import Ajv from 'ajv'
 import test from 'ava'
 import fs from 'fs-extra'
 import getPort from 'get-port'
@@ -12,9 +11,9 @@ import seedrandom from 'seedrandom'
 import tempy from 'tempy'
 import * as FTS from '.'
 import { requireHandlerFunction } from './require-handler-function'
+import { createJsonSchemaValidator } from './validator'
 
-const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
-const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
+const fixtures = globby.sync('./fixtures/date.ts')
 
 jsf.option({
   alwaysFakeOptionals: true,
@@ -49,6 +48,10 @@ for (const fixture of fixtures) {
     })
     t.truthy(definition)
 
+    const validator = createJsonSchemaValidator()
+    const validateParams = validator.compile(definition.params.schema)
+    const validateReturns = validator.compile(definition.returns.schema)
+
     const jsFilePath = path.join(outDir, `${name}.js`)
     const handler = FTS.createHttpHandler(definition, jsFilePath)
     t.is(typeof handler, 'function')
@@ -60,6 +63,9 @@ for (const fixture of fixtures) {
     const params = await jsf.resolve(definition.params.schema)
     const paramsArray = definition.params.order.map((key) => params[key])
     const func = requireHandlerFunction(definition, jsFilePath)
+
+    validateParams(params)
+    t.is(validateParams.errors, null)
 
     const expected = await Promise.resolve(func(...paramsArray))
     console.log({ name, params, port, expected })
@@ -108,7 +114,6 @@ for (const fixture of fixtures) {
       })
       t.is(res.statusCode, 200)
 
-      const validateReturns = ajv.compile(definition.returns.schema)
       validateReturns(res.body)
       t.is(validateReturns.errors, null)
 

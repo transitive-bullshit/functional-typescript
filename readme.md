@@ -226,8 +226,9 @@ FTS is an active WIP.
   - [x] fix support for arrow function exports
   - [x] add support for default values
   - [ ] add support for custom tsconfig
-  - [ ] add support for data blobs (buffers, streams, etc)
-  - [ ] add support for void return type
+  - [x] add support for void return type
+  - [ ] add support for Buffer type
+  - [ ] add support for Date types
   - [x] add CLI wrapper to generate function definitions
   - [x] add support for standard JS with jsdoc comments
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
@@ -239,6 +240,7 @@ FTS is an active WIP.
   - [x] add support for async functions
   - [x] add support for http context (ip, headers, etc)
   - [ ] add support for setting response headers
+  - [ ] add support for CORS
   - [ ] add CLI support for invoking functions via http handler
 - [x] HTTP server implementation
 - [ ] Documentation
@@ -252,7 +254,7 @@ FTS is an active WIP.
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
 - [ ] Misc
-  - [ ] create separate packages for parser, cli, handler, and server
+  - [ ] create separate packages for parser+cli, handler, and server
 - [ ] Post-MVP
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)

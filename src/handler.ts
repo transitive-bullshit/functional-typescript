@@ -1,4 +1,3 @@
-import Ajv from 'ajv'
 // import * as cors from 'cors'
 import http from 'http'
 import { readable } from 'is-stream'
@@ -6,6 +5,7 @@ import * as micro from 'micro'
 import { Stream } from 'stream'
 import { requireHandlerFunction } from './require-handler-function'
 import * as FTS from './types'
+import { createJsonSchemaValidator } from './validator'
 
 const DEV = process.env.NODE_ENV === 'development'
 
@@ -18,9 +18,9 @@ export function createHttpHandler(
     }
   }
 ): FTS.HttpHandler {
-  const ajv = new Ajv({ useDefaults: true, coerceTypes: true })
-  const validateParams = ajv.compile(definition.params.schema)
-  const validateReturns = ajv.compile(definition.returns.schema)
+  const validator = createJsonSchemaValidator()
+  const validateParams = validator.compile(definition.params.schema)
+  const validateReturns = validator.compile(definition.returns.schema)
 
   const opts: FTS.HttpHandlerOptions = {
     ...options
@@ -40,7 +40,7 @@ export function createHttpHandler(
       .then((params: any) => {
         const hasValidParams = validateParams(params)
         if (!hasValidParams) {
-          const message = ajv.errorsText(validateParams.errors)
+          const message = validator.errorsText(validateParams.errors)
           sendError(context, new Error(message), 400)
           return
         }
@@ -55,7 +55,7 @@ export function createHttpHandler(
             .then((result: any) => {
               const isValidReturnType = validateReturns(result)
               if (!isValidReturnType) {
-                const message = ajv.errorsText(validateReturns.errors)
+                const message = validator.errorsText(validateReturns.errors)
                 sendError(context, new Error(message), 502)
                 return
               }
