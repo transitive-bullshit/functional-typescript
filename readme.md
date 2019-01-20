@@ -6,9 +6,18 @@
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript.svg)](https://www.npmjs.com/package/functional-typescript) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
+## Features
+
+- **Robust**: Type-safe serverless functions!
+- **Simple**: Quick to setup and integrate
+- **Standard**: Just TypeScript + JSON Schema
+- **Compatible**: Supports all major serverless providers (AWS, GCP, Azure, Now, etc)
+- **Explicit**: Easily generate serverless function docs
+- **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
+- **Lightweight**: Focused http handler optimized for serverless environments
+
 ## Contents
 
-- [Features](#features)
 - [What is Functional TypeScript (FTS)?](#what-is-functional-typescript-fts)
 - [Why FTS?](#why-fts)
 - [Usage](#usage)
@@ -23,16 +32,6 @@
   - [How are primitive types like Date and Buffer handled?](#how-are-primitive-types-like-date-and-buffer-handled)
   - [How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?](#how-do-i-use-fts-with-my-serverless-provider-aws-gcp-azure-now-openwhisk-etc)
 - [Related](#related)
-
-## Features
-
-- **Robust**: Type-safe serverless functions!
-- **Simple**: Quick to setup and integrate
-- **Standard**: Just TypeScript + JSON Schema
-- **Compatible**: Supports all major serverless providers (AWS, GCP, Azure, Now, etc)
-- **Explicit**: Easily generate serverless function docs
-- **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
-- **Lightweight**: Focused http handler optimized for serverless environments
 
 ## What is Functional TypeScript (FTS)?
 
