@@ -22,6 +22,9 @@
     "functional",
     "faas",
     "rpc",
+    "jsonrpc",
+    "json",
+    "jsonschema",
     "stdlib"
   ],
   "scripts": {

@@ -6,6 +6,24 @@
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript.svg)](https://www.npmjs.com/package/functional-typescript) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
+## Contents
+
+- [Features](#features)
+- [What is Functional TypeScript (FTS)?](#what-is-functional-typescript-fts)
+- [Why FTS?](#why-fts)
+- [Usage](#usage)
+  - [CLI](#cli)
+  - [Module](#module)
+- [Definition Format](#definition-format)
+- [Roadmap](#roadmap)
+- [FAQ](#faq)
+  - [Why Serverless?](#why-serverless)
+  - [How is this different from other RPC standards?](#how-is-this-different-from-other-rpc-standards)
+  - [How is FTS related to FaaSLang?](#how-is-fts-related-to-faaslang)
+  - [How are primitive types like Date and Buffer handled?](#how-are-primitive-types-like-date-and-buffer-handled)
+  - [How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?](#how-do-i-use-fts-with-my-serverless-provider-aws-gcp-azure-now-openwhisk-etc)
+- [Related](#related)
+
 ## Features
 
 - **Robust**: Type-safe serverless functions!
@@ -53,7 +71,7 @@ All parameters and return values are type-checked by a standard Node.js HTTP han
 
 The only difference is that they're now infinitely scalable!
 
-## Why Functional TypeScript?
+## Why FTS?
 
 The serverless space has seen such rapid growth that tooling, especially across different cloud providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each cloud provider has their own conventions and gotchas, which can quickly lead to vendor lock-in.
 
@@ -170,7 +188,7 @@ Hello POST!
 
 Note that in this example, we're generating the FTS Definition and serving it together, but in practice we recommend that you generate these definitions during your build step, alongside your normal TS => JS compilation. The definitions should be viewed as json build artifacts that are _referenced_ at runtime in your server or serverless function.
 
-## FTS Definition
+## Definition Format
 
 Given our "hello world" example from earlier, FTS generates the following JSON definition that fully specifies the `hello` function export.
 
