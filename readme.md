@@ -298,6 +298,14 @@ In our opinion, the relatively mature [JSON Schema](https://json-schema.org) spe
 
 FTS also exposes a standard Node.js [http handler](https://nodejs.org/api/http.html#http_event_request) for invoking FTS functions `(req, res) => { ... }`. This makes it **extremely easy to integrate with popular Node.js server frameworks** such as [express](https://expressjs.com), [koa](https://koajs.com), and [micro](https://github.com/zeit/micro). While FaaSLang could potentially be extended to support more general usage, the default implementation currently only supports a custom API gateway server... which makes me a sad panda. 🐼
 
+### How are primitive types like Date and Buffer handled?
+
+These are both very common and useful types that are built into TypeScript and JavaScript, but they're not supported by [JSON](https://www.json.org) or [JSON Schema](htts://json-schema.org).
+
+To resolve this, FTS uses two custom JSON Schema keywords (`convertTo` and `convertFrom`) to handle encoding and decoding these types as strings. Dates are encoded as ISO utf8 strings and Buffers are encoded as base64 strings.
+
+All of these conversions are handled transparently and efficiently by the FTS wrappers _so you can just focus on writing TypeScript_.
+
 ### How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?
 
 Great question -- this answer will be updated once we have a good answer... 😁
