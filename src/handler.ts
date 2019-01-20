@@ -5,7 +5,7 @@ import * as micro from 'micro'
 import { Stream } from 'stream'
 import { requireHandlerFunction } from './require-handler-function'
 import * as FTS from './types'
-import { createJsonSchemaValidator } from './validator'
+import { createValidator } from './validator'
 
 const DEV = process.env.NODE_ENV === 'development'
 
@@ -18,9 +18,9 @@ export function createHttpHandler(
     }
   }
 ): FTS.HttpHandler {
-  const validator = createJsonSchemaValidator()
-  const validateParams = validator.compile(definition.params.schema)
-  const validateReturns = validator.compile(definition.returns.schema)
+  const validator = createValidator()
+  const validateParams = validator.decoder(definition.params.schema)
+  const validateReturns = validator.encoder(definition.returns.schema)
 
   const opts: FTS.HttpHandlerOptions = {
     ...options
@@ -40,7 +40,7 @@ export function createHttpHandler(
       .then((params: any) => {
         const hasValidParams = validateParams(params)
         if (!hasValidParams) {
-          const message = validator.errorsText(validateParams.errors)
+          const message = validator.ajv.errorsText(validateParams.errors)
           sendError(context, new Error(message), 400)
           return
         }
@@ -53,20 +53,21 @@ export function createHttpHandler(
         try {
           Promise.resolve(innerHandler(...args))
             .then((result: any) => {
-              const isValidReturnType = validateReturns(result)
+              const returnValue = { result }
+              const isValidReturnType = validateReturns(returnValue)
               if (!isValidReturnType) {
-                const message = validator.errorsText(validateReturns.errors)
+                const message = validator.ajv.errorsText(validateReturns.errors)
                 sendError(context, new Error(message), 502)
                 return
               }
 
-              if (result === null) {
-                send(context, res.statusCode || 204, result)
+              if (returnValue === null) {
+                send(context, res.statusCode || 204, returnValue)
               } else if (
-                result !== undefined ||
+                returnValue !== undefined ||
                 !definition.returns.schema.type
               ) {
-                send(context, res.statusCode || 200, result)
+                send(context, res.statusCode || 200, returnValue)
               }
             })
             .catch((err) => {

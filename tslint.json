@@ -7,6 +7,8 @@
     "max-classes-per-file": false,
     "member-access": false,
     "no-console": false,
-    "object-literal-sort-keys": false
+    "no-shadowed-variable": false,
+    "object-literal-sort-keys": false,
+    "prefer-conditional-expression": false
   }
 }

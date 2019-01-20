@@ -1,4 +1,4 @@
-// TODO: parser would be ~2x faster if we reused the ts program from TS in TJS
+// TODO: parser would be ~2x faster if we reused the underlying ts program from TS in TJS
 
 import doctrine from 'doctrine'
 import fs from 'fs-extra'
@@ -48,7 +48,7 @@ export async function generateDefinition(
   const jsonSchemaOptions = {
     noExtraProps: true,
     required: true,
-    validationKeywords: ['coerceTo'],
+    validationKeywords: ['coerceTo', 'coerceFrom'],
     ...(options.jsonSchemaOptions || {})
   }
 
@@ -115,8 +115,7 @@ export async function generateDefinition(
     docs,
     main,
     sourceFile,
-    title,
-    void: false
+    title
   }
 
   if (options.emit) {
@@ -127,7 +126,7 @@ export async function generateDefinition(
   }
 
   addParamsDeclaration(builder)
-  addReturnTypeAlias(builder)
+  addReturnTypeDeclaration(builder)
 
   // TODO: figure out a better workaround than mutating the source file directly
   // TODO: fix support for JS files since you can't save TS in JS
@@ -276,34 +275,25 @@ function addParamsDeclaration(
       // TODO: does json schema handle Date type for us?
     }
 
-    // Type coercion for non-JSON primitives like Date and Buffer
-    let jsdoc = paramComments[name]
-    const isDate = structure.type === 'Date'
-    const isBuffer = structure.type === 'Buffer'
-
-    if (isDate || isBuffer) {
-      const coerceTo = structure.type
-      if (!isDate) {
-        structure.type = 'string'
-      }
-      jsdoc = `${jsdoc ? jsdoc + '\n' : ''}@coerceTo ${coerceTo}`
+    const promiseReMatch = structure.type.match(promiseTypeRe)
+    if (promiseReMatch) {
+      throw new Error(
+        `Parameter "${name}" has unsupported type "${structure.type}"`
+      )
     }
 
-    const property = paramsDeclaration.addProperty(
-      structure as TS.PropertySignatureStructure
+    addPropertyToDeclaration(
+      paramsDeclaration,
+      structure as TS.PropertyDeclarationStructure,
+      paramComments[name]
     )
-
-    if (jsdoc) {
-      property.addJsDoc(jsdoc)
-    }
-
     builder.definition.params.order.push(name)
   }
 
   return paramsDeclaration
 }
 
-function addReturnTypeAlias(builder: FTS.DefinitionBuilder) {
+function addReturnTypeDeclaration(builder: FTS.DefinitionBuilder) {
   const mainReturnType = builder.main.getReturnType()
   let type = mainReturnType.getText()
 
@@ -317,28 +307,54 @@ function addReturnTypeAlias(builder: FTS.DefinitionBuilder) {
   }
 
   if (type === 'void') {
-    builder.void = true
-    return
+    // TODO: double check
+    type = 'any'
   }
 
-  if (type === 'Buffer' || type === 'Date') {
-    throw new Error(`Unsupported return type "${type}"`)
-  }
-
-  const typeAlias = builder.sourceFile.addTypeAlias({
-    name: FTSReturns,
-    type
+  const declaration = builder.sourceFile.addInterface({
+    name: FTSReturns
   })
 
-  if (builder.docs) {
-    const returnTag = builder.docs.tags.find(
+  const jsdoc =
+    builder.docs &&
+    builder.docs.tags.find(
       (tag) => tag.title === 'returns' || tag.title === 'return'
     )
+  addPropertyToDeclaration(
+    declaration,
+    { name: 'result', type },
+    jsdoc && jsdoc.description
+  )
+}
 
-    if (returnTag) {
-      typeAlias.addJsDoc(returnTag)
+function addPropertyToDeclaration(
+  declaration: TS.ClassDeclaration | TS.InterfaceDeclaration,
+  structure: TS.PropertyDeclarationStructure,
+  jsdoc?: string
+): TS.PropertyDeclaration | TS.PropertySignature {
+  const isDate = structure.type === 'Date'
+  const isBuffer = structure.type === 'Buffer'
+
+  // Type coercion for non-JSON primitives like Date and Buffer
+  if (isDate || isBuffer) {
+    const coercionType = structure.type
+
+    if (isDate) {
+      structure.type = 'Date'
+    } else {
+      structure.type = 'string'
     }
+
+    jsdoc = `${jsdoc ? jsdoc + '\n' : ''}@coerceTo ${coercionType}`
   }
+
+  const property = declaration.addProperty(structure)
+
+  if (jsdoc) {
+    property.addJsDoc(jsdoc)
+  }
+
+  return property
 }
 
 function extractJSONSchemas(
@@ -366,15 +382,10 @@ function extractJSONSchemas(
     jsonSchemaOptions
   )
 
-  if (builder.void) {
-    builder.definition.returns.schema = {}
-  } else {
-    builder.definition.returns.schema = TJS.generateSchema(
-      program,
-      FTSReturns,
-      jsonSchemaOptions
-    )
-  }
+  builder.definition.returns.schema = TJS.generateSchema(program, FTSReturns, {
+    ...jsonSchemaOptions,
+    required: false
+  })
 }
 
 if (!module.parent) {

@@ -12,9 +12,9 @@ import seedrandom from 'seedrandom'
 import tempy from 'tempy'
 import * as FTS from '.'
 import { requireHandlerFunction } from './require-handler-function'
-import { createJsonSchemaValidator } from './validator'
+import { createValidator } from './validator'
 
-// const fixtures = globby.sync('./fixtures/void.ts')
+// const fixtures = globby.sync('./fixtures/power.ts')
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
@@ -50,9 +50,9 @@ for (const fixture of fixtures) {
     })
     t.truthy(definition)
 
-    const validator = createJsonSchemaValidator()
-    const validateParams = validator.compile(definition.params.schema)
-    const validateReturns = validator.compile(definition.returns.schema)
+    const validator = createValidator()
+    const paramsDecoder = validator.decoder(definition.params.schema)
+    const returnsEncoder = validator.encoder(definition.returns.schema)
 
     const jsFilePath = path.join(outDir, `${name}.js`)
     const handler = FTS.createHttpHandler(definition, jsFilePath)
@@ -64,13 +64,20 @@ for (const fixture of fixtures) {
 
     const params = await jsf.resolve(definition.params.schema)
     const paramsLocal = cloneDeep(params)
-    validateParams(paramsLocal)
-    t.is(validateParams.errors, null)
+    paramsDecoder(paramsLocal)
+    t.is(paramsDecoder.errors, null)
 
-    const paramsArray = definition.params.order.map((key) => paramsLocal[key])
+    const paramsArray = definition.params.order.map((key) => params[key])
+    const paramsLocalArray = definition.params.order.map(
+      (key) => paramsLocal[key]
+    )
     const func = requireHandlerFunction(definition, jsFilePath)
 
-    const expected = await Promise.resolve(func(...paramsArray))
+    const result = await Promise.resolve(func(...paramsLocalArray))
+    const expected = { result }
+    returnsEncoder(expected)
+    const expectedEncoded = JSON.parse(JSON.stringify(expected))
+    t.is(returnsEncoder.errors, null)
     console.log({ name, params, port, expected })
 
     // test GET request with params as a query string
@@ -81,7 +88,7 @@ for (const fixture of fixtures) {
         json: true,
         query
       })
-      validateResponseSuccess(responseGET, 'GET', expected)
+      validateResponseSuccess(responseGET, 'GET', expectedEncoded)
     }
 
     // test POST request with params as a json body object
@@ -90,7 +97,7 @@ for (const fixture of fixtures) {
         body: params,
         json: true
       })
-      validateResponseSuccess(responsePOST, 'POST', expected)
+      validateResponseSuccess(responsePOST, 'POST', expectedEncoded)
     }
 
     // test POST request with params as a json body array
@@ -99,7 +106,7 @@ for (const fixture of fixtures) {
         body: paramsArray,
         json: true
       })
-      validateResponseSuccess(responsePOSTArray, 'POSTArray', expected)
+      validateResponseSuccess(responsePOSTArray, 'POSTArray', expectedEncoded)
     }
 
     await pify(server.close.bind(server))()
@@ -108,7 +115,7 @@ for (const fixture of fixtures) {
     function validateResponseSuccess(
       res: got.Response<object>,
       label: string,
-      expectedBody: any
+      expected: any
     ) {
       console.log({
         body: res.body,
@@ -116,19 +123,7 @@ for (const fixture of fixtures) {
         statusCode: res.statusCode
       })
       t.is(res.statusCode, 200)
-
-      validateReturns(res.body)
-      t.is(validateReturns.errors, null)
-
-      if (typeof expectedBody === 'number' && isNaN(expectedBody)) {
-        expectedBody = null
-      }
-
-      if (!definition.returns.schema.type) {
-        t.falsy(res.body)
-      } else {
-        t.deepEqual(res.body, expectedBody)
-      }
+      t.deepEqual(res.body, expected)
     }
   })
 }

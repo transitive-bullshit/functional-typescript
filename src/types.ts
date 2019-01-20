@@ -1,6 +1,7 @@
-import * as cors from 'cors'
-import * as doctrine from 'doctrine'
-import * as http from 'http'
+import Ajv from 'ajv'
+import cors from 'cors'
+import doctrine from 'doctrine'
+import http from 'http'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
 
@@ -62,7 +63,6 @@ export interface DefinitionBuilder {
   docs?: doctrine.Annotation
   title: string
   definition: Partial<Definition>
-  void: boolean
 }
 
 export type HttpHandler = (
@@ -76,6 +76,12 @@ export interface HttpHandlerOptions {
 
 export interface HttpServerOptions {
   silent: boolean
+}
+
+export interface Validator {
+  ajv: Ajv.Ajv
+  decoder: (schema: any) => Ajv.ValidateFunction
+  encoder: (schema: any) => Ajv.ValidateFunction
 }
 
 export type Func = (...args: any[]) => any
