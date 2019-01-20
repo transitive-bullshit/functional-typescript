@@ -98,6 +98,13 @@ function convertSchema(
   }
 }
 
+/**
+ * Performs **decoding** during schema validation of non-JSON-primitive data
+ * types from serialized string representations to their native JavaScript types.
+ *
+ * Used for converting from ISO utf8 strings to JS Date objects.
+ * Used for converting from base64-encoded strings to JS Buffer objects.
+ */
 const coerceToKeyword: Ajv.KeywordDefinition = {
   type: 'string',
   modifying: true,
@@ -139,6 +146,13 @@ const coerceToKeyword: Ajv.KeywordDefinition = {
   }
 }
 
+/**
+ * Performs **encoding** during schema validation of non-JSON-primitive data
+ * types from their native JavaScript types to serialized string representations.
+ *
+ * Used for converting from JS Date objects to ISO utf8 strings.
+ * Used for converting from JS Buffer objects to base64-encoded strings.
+ */
 const coerceFromKeyword: Ajv.KeywordDefinition = {
   type: 'object',
   modifying: true,
