@@ -202,7 +202,12 @@ Given our "hello world" example from earlier, FTS generates the following JSON d
   "returns": {
     "async": false,
     "schema": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      },
       "$schema": "http://json-schema.org/draft-07/schema#"
     }
   }

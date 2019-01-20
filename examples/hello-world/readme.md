@@ -24,17 +24,16 @@ Which will print out an `FTS.Definition` schema, as well as which port the serve
 
 ```
 {
-  "title": "hello-world",
+  "title": "hello",
   "version": "0.0.1",
   "config": {
     "language": "typescript",
-    "defaultExport": true
+    "defaultExport": false,
+    "namedExport": "hello"
   },
   "params": {
     "context": false,
-    "order": [
-      "name"
-    ],
+    "order": ["name"],
     "schema": {
       "type": "object",
       "properties": {
@@ -44,16 +43,19 @@ Which will print out an `FTS.Definition` schema, as well as which port the serve
         }
       },
       "additionalProperties": false,
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "$schema": "http://json-schema.org/draft-07/schema#"
     }
   },
   "returns": {
     "async": false,
     "schema": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      },
       "$schema": "http://json-schema.org/draft-07/schema#"
     }
   }
