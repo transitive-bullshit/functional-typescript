@@ -19,7 +19,6 @@
 ## Contents
 
 - [What is Functional TypeScript (FTS)?](#what-is-functional-typescript-fts)
-- [Why FTS?](#why-fts)
 - [Usage](#usage)
   - [CLI](#cli)
   - [Module](#module)
@@ -27,7 +26,8 @@
 - [Roadmap](#roadmap)
 - [FAQ](#faq)
   - [Why Serverless?](#why-serverless)
-  - [How is this different from other RPC standards?](#how-is-this-different-from-other-rpc-standards)
+  - [Why FTS?](#why-fts)
+  - [How is FTS different from other RPC standards?](#how-is-fts-different-from-other-rpc-standards)
   - [How is FTS related to FaaSLang?](#how-is-fts-related-to-faaslang)
   - [How are primitive types like Date and Buffer handled?](#how-are-primitive-types-like-date-and-buffer-handled)
   - [How do I use FTS with my Serverless Provider (AWS, GCP, Azure, Now, OpenWhisk, etc)?](#how-do-i-use-fts-with-my-serverless-provider-aws-gcp-azure-now-openwhisk-etc)
@@ -69,52 +69,6 @@ And returns a result like this:
 All parameters and return values are type-checked by a standard Node.js HTTP handler, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
 
 The only difference is that they're now infinitely scalable!
-
-## Why FTS?
-
-The serverless space has seen such rapid growth that tooling, especially across different cloud providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each cloud provider has their own conventions and gotchas, which can quickly lead to vendor lock-in.
-
-For example, take the following Node.js serverless function defined across several cloud providers:
-
-**AWS**
-
-```js
-exports.handler = (event, context, callback) => {
-  const name = event.name || 'World'
-  callback(null, `Hello ${name}!`)
-}
-```
-
-**Azure**
-
-```js
-module.exports = function(context, req) {
-  const name = req.query.name || (req.body && req.body.name) || 'World'
-  context.res = { body: `Hello ${name}!` }
-  context.done()
-}
-```
-
-**GCP**
-
-```js
-const escapeHtml = require('escape-html')
-
-exports.hello = (req, res) => {
-  const name = req.query.name || req.body.name || 'World'
-  res.send(`Hello ${escapeHtml(name)}!`)
-}
-```
-
-**FTS**
-
-```ts
-export function hello(name: string = 'World'): string {
-  return `Hello ${name}!`
-}
-```
-
-FTS allows you to define **provider-agnostic** serverless functions while also giving you **strong type checking** and **built-in documentation** for free.
 
 ## Usage
 
@@ -291,7 +245,53 @@ Serverless functions allow your code to run on-demand and scale automatically bo
 
 For more information, see [Why Serverless?](https://serverless.com/learn/overview), and an excellent breakdown on the [Tradeoffs that come with Serverless](https://martinfowler.com/articles/serverless.html).
 
-### How is this different from other RPC standards?
+### Why FTS?
+
+The serverless space has seen such rapid growth that tooling, especially across different cloud providers, has struggled to keep up. One of the major disadvantages of using serverless functions at the moment is that each cloud provider has their own conventions and gotchas, which can quickly lead to vendor lock-in.
+
+For example, take the following Node.js serverless function defined across several cloud providers:
+
+**AWS**
+
+```js
+exports.handler = (event, context, callback) => {
+  const name = event.name || 'World'
+  callback(null, `Hello ${name}!`)
+}
+```
+
+**Azure**
+
+```js
+module.exports = function(context, req) {
+  const name = req.query.name || (req.body && req.body.name) || 'World'
+  context.res = { body: `Hello ${name}!` }
+  context.done()
+}
+```
+
+**GCP**
+
+```js
+const escapeHtml = require('escape-html')
+
+exports.hello = (req, res) => {
+  const name = req.query.name || req.body.name || 'World'
+  res.send(`Hello ${escapeHtml(name)}!`)
+}
+```
+
+**FTS**
+
+```ts
+export function hello(name: string = 'World'): string {
+  return `Hello ${name}!`
+}
+```
+
+FTS allows you to define **provider-agnostic** serverless functions while also giving you **strong type checking** and **built-in documentation** for free.
+
+### How is FTS different from other RPC standards?
 
 Functional TypeScript is a standard for declaring and invoking remote functions. This type of invocation is known as an [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) or remote procedure call.
 
@@ -299,7 +299,7 @@ Some other notable RPC standards include [SOAP](https://en.wikipedia.org/wiki/SO
 
 > So how does FTS fit into this picture?
 
-First off, FTS is fully compatible with these other RPC standards, with a gRPC transport layer being prioritized on the roadmap.
+First off, FTS is fully compatible with these other RPC standards, with a gRPC transport layer on the roadmap.
 
 The default HTTP handler with JSON Schema validation is the simplest way of using FTS, but it's pretty straightforward to interop with other RPC standards. For example, to use FTS with gRPC, we need to convert the JSON Schemas into protocol buffers (both of which describe the types and format of data) and add a gRPC handler which calls our compiled target JS function. Of course, there are pros and cons to using HTTP vs gRPC, with HTTP being easier to use and debug and gRPC being more efficient and scalable.
 
