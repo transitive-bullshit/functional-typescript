@@ -228,7 +228,7 @@ FTS is an active WIP.
   - [x] add support for void return type
   - [x] add support for Buffer type
   - [x] add support for Date type
-  - [ ] add support for returning Buffer and Date types
+  - [x] add support for returning Buffer and Date types
   - [ ] add support for custom tsconfig
   - [x] add CLI wrapper to generate function definitions
   - [x] add support for standard JS with jsdoc comments
