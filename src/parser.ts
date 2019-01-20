@@ -307,7 +307,6 @@ function addReturnTypeDeclaration(builder: FTS.DefinitionBuilder) {
   }
 
   if (type === 'void') {
-    // TODO: double check
     type = 'any'
   }
 
