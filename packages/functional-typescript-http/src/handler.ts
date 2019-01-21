@@ -6,6 +6,7 @@ import { Stream } from 'stream'
 import { Definition } from 'functional-typescript'
 import { createValidator } from 'functional-typescript-validator'
 import { requireHandlerFunction } from './require-handler-function'
+import { HttpContext } from './http-context'
 import * as HTTP from './types'
 
 const DEV = process.env.NODE_ENV === 'development'
@@ -35,7 +36,7 @@ export function createHttpHandler(
   // Note: it is inconvenient but important for this handler to not be async in
   // order to maximize compatibility with different Node.js server frameworks.
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const context = new HTTP.HttpContext(req, res)
+    const context = new HttpContext(req, res)
 
     getParams(context, definition)
       .then((params: any) => {
@@ -88,7 +89,7 @@ export function createHttpHandler(
 }
 
 async function getParams(
-  context: HTTP.HttpContext,
+  context: HttpContext,
   definition: Definition
 ): Promise<any> {
   let params: any = {}
@@ -118,7 +119,7 @@ async function getParams(
   return params
 }
 
-function send(context: HTTP.HttpContext, code: number, obj: any = null) {
+function send(context: HttpContext, code: number, obj: any = null) {
   const { res } = context
   res.statusCode = code
 
@@ -178,7 +179,7 @@ function send(context: HTTP.HttpContext, code: number, obj: any = null) {
 }
 
 function sendError(
-  context: HTTP.HttpContext,
+  context: HttpContext,
   error: Error,
   statusCode?: number
 ) {
