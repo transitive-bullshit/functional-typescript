@@ -3,26 +3,27 @@ import http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import { Stream } from 'stream'
+import { Definition } from 'functional-typescript'
+import { createValidator } from 'functional-typescript-validator'
 import { requireHandlerFunction } from './require-handler-function'
-import * as FTS from './types'
-import { createValidator } from './validator'
+import * as HTTP from './types'
 
 const DEV = process.env.NODE_ENV === 'development'
 
 export function createHttpHandler(
-  definition: FTS.Definition,
+  definition: Definition,
   jsFilePath: string,
-  options: Partial<FTS.HttpHandlerOptions> = {
+  options: Partial<HTTP.HttpHandlerOptions> = {
     cors: {
       methods: ['GET', 'POST', 'OPTIONS', 'HEAD']
     }
   }
-): FTS.HttpHandler {
+): HTTP.HttpHandler {
   const validator = createValidator()
   const validateParams = validator.decoder(definition.params.schema)
   const validateReturns = validator.encoder(definition.returns.schema)
 
-  const opts: FTS.HttpHandlerOptions = {
+  const opts: HTTP.HttpHandlerOptions = {
     ...options
   }
 
@@ -34,7 +35,7 @@ export function createHttpHandler(
   // Note: it is inconvenient but important for this handler to not be async in
   // order to maximize compatibility with different Node.js server frameworks.
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
-    const context = new FTS.HttpContext(req, res)
+    const context = new HTTP.HttpContext(req, res)
 
     getParams(context, definition)
       .then((params: any) => {
@@ -87,8 +88,8 @@ export function createHttpHandler(
 }
 
 async function getParams(
-  context: FTS.HttpContext,
-  definition: FTS.Definition
+  context: HTTP.HttpContext,
+  definition: Definition
 ): Promise<any> {
   let params: any = {}
 
@@ -117,7 +118,7 @@ async function getParams(
   return params
 }
 
-function send(context: FTS.HttpContext, code: number, obj: any = null) {
+function send(context: HTTP.HttpContext, code: number, obj: any = null) {
   const { res } = context
   res.statusCode = code
 
@@ -177,7 +178,7 @@ function send(context: FTS.HttpContext, code: number, obj: any = null) {
 }
 
 function sendError(
-  context: FTS.HttpContext,
+  context: HTTP.HttpContext,
   error: Error,
   statusCode?: number
 ) {

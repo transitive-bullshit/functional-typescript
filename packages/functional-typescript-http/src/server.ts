@@ -1,16 +1,16 @@
 import http from 'http'
 import micro from 'micro'
 import { parseEndpoint } from './parse-endpoint'
-import * as FTS from './types'
+import * as HTTP from './types'
 
 /**
  * Small wrapper around [micro](https://github.com/zeit/micro) for creating
  * an http server that wraps for a single HttpHandler function.
  */
 export async function createHttpServer(
-  handler: FTS.HttpHandler,
+  handler: HTTP.HttpHandler,
   endpointOrPort?: string | number,
-  options: Partial<FTS.HttpServerOptions> = {
+  options: Partial<HTTP.HttpServerOptions> = {
     silent: false
   }
 ): Promise<http.Server> {

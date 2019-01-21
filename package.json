@@ -1,67 +1,39 @@
 {
-  "name": "functional-typescript",
+  "name": "functional-typescript-monorepo",
+  "private": true,
   "version": "0.0.1",
   "description": "TypeScript standard for rock solid serverless functions.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
-  "bin": {
-    "fts": "build/main/cli.js"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=8"
   },
-  "keywords": [
-    "typescript",
-    "serverless",
-    "lambda",
-    "function",
-    "functional",
-    "faas",
-    "rpc",
-    "jsonrpc",
-    "json",
-    "jsonschema",
-    "stdlib"
-  ],
   "scripts": {
-    "start": "run-s clean \"build:main -- -w\"",
-    "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
+    "start": "run-s 'build:clean -- -w'",
+    "build": "tsc --build tsconfig.json",
+    "build:clean": "run-s 'build -- --clean'",
     "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"src/**/*.ts\" --write",
+    "fix:prettier": "prettier '**/*.ts' --write",
     "fix:tslint": "tslint --fix --project .",
     "test": "run-s build test:*",
-    "test:lint": "tslint --project . && prettier \"src/**/*.ts\" --list-different",
+    "test:lint": "tslint --project . && prettier '**/*.ts' --list-different",
     "test:unit": "nyc -- ava -v",
     "cov": "run-s build test:unit cov:html && opn coverage/index.html",
     "cov:html": "nyc report --reporter=html",
     "doc": "run-s doc:html && opn build/docs/index.html",
     "doc:html": "typedoc src/ --exclude **/*.test.ts --target ES6 --mode file --out build/docs",
-    "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
-    "clean": "trash build test"
+    "doc:publish": "gh-pages -m '[ci skip] Updates' -d build/docs",
+    "clean": "git clean -dfqX -- ./node_modules **/{build,node_modules}/",
+    "postinstall": "lerna run prepare && run-s build"
   },
   "dependencies": {
-    "accepts": "^1.3.5",
-    "ajv": "^6.7.0",
-    "array-equal": "^1.0.0",
-    "commander": "^2.19.0",
-    "content-type": "^1.0.4",
-    "cors": "^2.8.5",
-    "doctrine": "^3.0.0",
-    "fs-extra": "^7.0.1",
-    "is-stream": "^1.1.0",
-    "micro": "^9.3.3",
-    "parseurl": "^1.3.2",
-    "qs": "^6.6.0",
-    "resolve": "^1.9.0",
-    "ts-simple-ast": "^21.0.0",
-    "type-is": "^1.6.16",
-    "typescript-json-schema": "^0.34.0"
+    "functional-typescript": "link:packages/functional-typescript",
+    "functional-typescript-http": "link:packages/functional-typescript-http",
+    "functional-typescript-validator": "link:packages/functional-typescript-validator"
   },
   "devDependencies": {
     "@types/accepts": "^1.3.5",
@@ -94,6 +66,7 @@
     "got": "^9.6.0",
     "husky": "^1.3.1",
     "json-schema-faker": "^0.5.0-rc16",
+    "lerna": "^2.11.0",
     "lint-staged": "^8.1.0",
     "npm-run-all": "^4.1.5",
     "nyc": "^13.1.0",
@@ -103,21 +76,20 @@
     "seedrandom": "^2.4.4",
     "standard-version": "^4.4.0",
     "tempy": "^0.2.1",
-    "trash-cli": "^1.4.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "typedoc": "^0.14.2",
-    "typescript": "^3.2.2"
+    "typescript": "3.2.4"
   },
   "ava": {
     "failFast": true,
     "snapshotDir": "./.snapshots",
     "concurrency": 1,
     "files": [
-      "build/main/**/*.test.js"
+      "packages/*/build/**/*.test.js"
     ],
     "sources": [
-      "build/main/**/*.js"
+      "packages/*/build/**/*.js"
     ]
   },
   "config": {

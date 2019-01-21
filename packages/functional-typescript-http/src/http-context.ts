@@ -5,8 +5,7 @@ import parseUrl from 'parseurl'
 import qs from 'qs'
 import typeIs from 'type-is'
 import url from 'url'
-import { Context } from './context'
-import { version } from './package'
+import { Context, version } from 'functional-typescript'
 
 /**
  * Optional context utilities for FTS functions when invoked over http.

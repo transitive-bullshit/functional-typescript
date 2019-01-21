@@ -1,0 +1,38 @@
+{
+  "name": "functional-typescript",
+  "version": "0.0.1",
+  "description": "TypeScript standard for rock solid serverless functions.",
+  "repository": "https://github.com/transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "bin": {
+    "fts": "build/cli.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "typescript",
+    "serverless",
+    "lambda",
+    "function",
+    "functional",
+    "faas",
+    "rpc",
+    "jsonrpc",
+    "json",
+    "jsonschema",
+    "stdlib"
+  ],
+  "dependencies": {
+    "ajv": "^6.7.0",
+    "commander": "^2.19.0",
+    "doctrine": "^3.0.0",
+    "fs-extra": "^7.0.1",
+    "tempy": "^0.2.1",
+    "ts-simple-ast": "^21.0.0",
+    "typescript-json-schema": "^0.34.0"
+  }
+}
