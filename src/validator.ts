@@ -6,10 +6,12 @@ const encoding = 'base64'
 
 const customCoercionTypes = {
   Buffer: {
+    // decode
     to: (data: string): Buffer => {
       return Buffer.from(data, encoding)
     },
 
+    // encode
     from: (data: Buffer): string => {
       return data.toString(encoding)
     }
@@ -17,9 +19,6 @@ const customCoercionTypes = {
 
   Date: {
     // decode
-    // params: invoke locally
-    // params: invoke remotely
-    // returns: parse remote result?
     to: (data: string): Date => {
       const date = new Date(data)
       if (isNaN(date as any)) {
@@ -29,13 +28,7 @@ const customCoercionTypes = {
       return date
     },
 
-    // http-handler(definition, jsFilePath, opts)
-    // http-client(definition, endpoint, opts)
-
     // encode
-    // params: parse params locally?
-    // returns: parse result locally
-    // returns: parse result remotely
     from: (data: Date): string => {
       return data.toISOString()
     }

@@ -228,8 +228,12 @@ FTS is an active WIP.
   - [x] basic unit tests for function definition parser
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
-- [ ] Misc
+- [ ] Create separate packages
   - [ ] create separate packages for parser+cli, handler, and server
+  - [ ] functional-typescript
+  - [ ] functional-typescript-http-handler
+  - [ ] functional-typescript-http-server
+  - [ ] functional-typescript-http-client
 - [ ] Post-MVP
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)
