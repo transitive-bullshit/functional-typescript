@@ -1,7 +1,7 @@
 {
   "name": "functional-typescript-validator",
   "version": "0.0.1",
-  "description": "Schema validation and encode / decode for Functional TypeScript.",
+  "description": "Schema validation and encoding / decoding for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
