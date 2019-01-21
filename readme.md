@@ -68,8 +68,6 @@ And returns a result like this:
 
 All parameters and return values are type-checked by a standard Node.js HTTP handler, so you can invoke your TypeScript functions remotely with the same confidence as calling them directly.
 
-The only difference is that they're now infinitely scalable!
-
 ## Usage
 
 You can use this package as either a CLI or as a module.
