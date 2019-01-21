@@ -28,7 +28,7 @@
     "stdlib"
   ],
   "scripts": {
-    "start": "run-s clean build:main && run-p \"build:main -- -w\"",
+    "start": "run-s clean \"build:main -- -w\"",
     "build": "run-s clean && run-p build:*",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
