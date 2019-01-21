@@ -1,9 +1,7 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "composite": true
-  },
-  "compilerOptions": {
+    "composite": true,
     "rootDir": "./src",
     "outDir": "./build"
   },

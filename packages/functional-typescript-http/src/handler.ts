@@ -1,12 +1,12 @@
 // import * as cors from 'cors'
+import { Definition } from 'functional-typescript'
+import { createValidator } from 'functional-typescript-validator'
 import http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import { Stream } from 'stream'
-import { Definition } from 'functional-typescript'
-import { createValidator } from 'functional-typescript-validator'
-import { requireHandlerFunction } from './require-handler-function'
 import { HttpContext } from './http-context'
+import { requireHandlerFunction } from './require-handler-function'
 import * as HTTP from './types'
 
 const DEV = process.env.NODE_ENV === 'development'
@@ -178,11 +178,7 @@ function send(context: HttpContext, code: number, obj: any = null) {
   res.end(str)
 }
 
-function sendError(
-  context: HttpContext,
-  error: Error,
-  statusCode?: number
-) {
+function sendError(context: HttpContext, error: Error, statusCode?: number) {
   /* tslint:disable no-string-literal */
   if (statusCode || error['statusCode'] === undefined) {
     error['statusCode'] = statusCode || 500

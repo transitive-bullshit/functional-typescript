@@ -4,7 +4,7 @@ import globby from 'globby'
 import path from 'path'
 import * as FTS from '.'
 
-const fixtures = globby.sync('../../../fixtures/**/*.{js,ts}')
+const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 const ajv = new Ajv()
 
 for (const fixture of fixtures) {

@@ -1,6 +1,8 @@
 import test from 'ava'
 import cloneDeep from 'clone-deep'
 import fs from 'fs-extra'
+import { generateDefinition } from 'functional-typescript'
+import { createValidator } from 'functional-typescript-validator'
 import getPort from 'get-port'
 import globby from 'globby'
 import got from 'got'
@@ -10,12 +12,10 @@ import pify from 'pify'
 import qs from 'qs'
 import seedrandom from 'seedrandom'
 import tempy from 'tempy'
-import { generateDefinition } from 'functional-typescript'
-import { createValidator } from 'functional-typescript-validator'
 import * as HTTP from '.'
 
-// const fixtures = globby.sync('../../../fixtures/power.ts')
-const fixtures = globby.sync('../../../fixtures/**/*.{js,ts}')
+// const fixtures = globby.sync('./fixtures/power.ts')
+const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
   alwaysFakeOptionals: true,

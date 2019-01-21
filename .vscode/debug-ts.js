@@ -37,13 +37,11 @@ function getTSFile() {
  * @return string path
  */
 function TS2JS(tsFile) {
-  const srcFolder = path.join(__dirname, '..', 'src')
-  const distFolder = path.join(__dirname, '..', 'build', 'main')
-
   const tsPathObj = path.parse(tsFile)
+  const buildDir = tsPathObj.dir.replace(/\/src\b/, '/build')
 
   return path.format({
-    dir: tsPathObj.dir.replace(srcFolder, distFolder),
+    dir: buildDir,
     ext: '.js',
     name: tsPathObj.name,
     root: tsPathObj.root

@@ -8,5 +8,5 @@
   "references": [
     { "path": "../functional-typescript" },
     { "path": "../functional-typescript-validator" }
-  }
+  ]
 }
