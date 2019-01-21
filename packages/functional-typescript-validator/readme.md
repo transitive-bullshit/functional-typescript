@@ -2,7 +2,7 @@
 
 # Functional TypeScript Validator
 
-> Schema validation and encoding / decoding for Functional TypeScript.
+> Schema validation and encoding / decoding for [Functional TypeScript](https://github.com/transitive-bullshit/functional-typescript).
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript-validator.svg)](https://www.npmjs.com/package/functional-typescript-validator) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 

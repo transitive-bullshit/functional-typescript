@@ -2,7 +2,7 @@
 
 # Functional TypeScript Http
 
-> Http support for Functional TypeScript
+> HTTP support for [Functional TypeScript](https://github.com/transitive-bullshit/functional-typescript).
 
 [![NPM](https://img.shields.io/npm/v/functional-typescript-http.svg)](https://www.npmjs.com/package/functional-typescript-http) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 

@@ -1,7 +1,7 @@
 {
   "name": "functional-typescript-http",
   "version": "0.0.1",
-  "description": "Http Support for Functional TypeScript.",
+  "description": "HTTP Support for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
