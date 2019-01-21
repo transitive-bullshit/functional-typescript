@@ -1,6 +1,8 @@
 import test from 'ava'
 import cloneDeep from 'clone-deep'
 import fs from 'fs-extra'
+import { generateDefinition } from 'functional-typescript'
+import { createValidator } from 'functional-typescript-validator'
 import getPort from 'get-port'
 import globby from 'globby'
 import got from 'got'
@@ -10,9 +12,7 @@ import pify from 'pify'
 import qs from 'qs'
 import seedrandom from 'seedrandom'
 import tempy from 'tempy'
-import * as FTS from '.'
-import { requireHandlerFunction } from './require-handler-function'
-import { createValidator } from './validator'
+import * as HTTP from '.'
 
 // const fixtures = globby.sync('./fixtures/power.ts')
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
@@ -42,7 +42,7 @@ for (const fixture of fixtures) {
     }
 
     const outDir = tempy.directory()
-    const definition = await FTS.generateDefinition(fixture, {
+    const definition = await generateDefinition(fixture, {
       compilerOptions: {
         outDir
       },
@@ -55,11 +55,11 @@ for (const fixture of fixtures) {
     const returnsEncoder = validator.encoder(definition.returns.schema)
 
     const jsFilePath = path.join(outDir, `${name}.js`)
-    const handler = FTS.createHttpHandler(definition, jsFilePath)
+    const handler = HTTP.createHttpHandler(definition, jsFilePath)
     t.is(typeof handler, 'function')
 
     const port = await getPort()
-    const server = await FTS.createHttpServer(handler, port)
+    const server = await HTTP.createHttpServer(handler, port)
     const url = `http://localhost:${port}`
 
     const params = await jsf.resolve(definition.params.schema)
@@ -71,7 +71,7 @@ for (const fixture of fixtures) {
     const paramsLocalArray = definition.params.order.map(
       (key) => paramsLocal[key]
     )
-    const func = requireHandlerFunction(definition, jsFilePath)
+    const func = HTTP.requireHandlerFunction(definition, jsFilePath)
 
     const result = await Promise.resolve(func(...paramsLocalArray))
     const expected = { result }

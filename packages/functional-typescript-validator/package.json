@@ -1,0 +1,17 @@
+{
+  "name": "functional-typescript-validator",
+  "version": "0.0.1",
+  "description": "Schema validation and encoding / decoding for Functional TypeScript.",
+  "repository": "https://github.com/transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "ajv": "^6.7.0",
+    "clone-deep": "^4.0.1"
+  }
+}

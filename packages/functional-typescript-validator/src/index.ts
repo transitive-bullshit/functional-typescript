@@ -1,6 +1,5 @@
 import Ajv from 'ajv'
 import cloneDeep from 'clone-deep'
-import * as FTS from './types'
 
 const encoding = 'base64'
 
@@ -35,7 +34,13 @@ const customCoercionTypes = {
   }
 }
 
-export function createValidator(opts?: any): FTS.Validator {
+export interface Validator {
+  ajv: Ajv.Ajv
+  decoder: (schema: any) => Ajv.ValidateFunction
+  encoder: (schema: any) => Ajv.ValidateFunction
+}
+
+export function createValidator(opts?: any): Validator {
   const ajv = new Ajv({ useDefaults: true, coerceTypes: true, ...opts })
   ajv.addKeyword('coerceTo', coerceToKeyword)
   ajv.addKeyword('coerceFrom', coerceFromKeyword)

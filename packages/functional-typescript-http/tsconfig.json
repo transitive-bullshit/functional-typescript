@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build"
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../functional-typescript" },
+    { "path": "../functional-typescript-validator" }
+  ]
+}

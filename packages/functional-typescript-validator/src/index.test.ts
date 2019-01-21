@@ -1,5 +1,5 @@
 import test from 'ava'
-import { createValidator } from './validator'
+import { createValidator } from '.'
 
 test('basic', async (t) => {
   const schema = {

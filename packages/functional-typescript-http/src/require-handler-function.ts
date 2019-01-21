@@ -1,11 +1,12 @@
+import { Definition } from 'functional-typescript'
 import path from 'path'
 import resolve from 'resolve'
-import * as FTS from './types'
+import * as HTTP from './types'
 
 export function requireHandlerFunction(
-  definition: FTS.Definition,
+  definition: Definition,
   file: string
-): FTS.Func {
+): HTTP.Func {
   let filePath = file
   if (!path.isAbsolute(filePath)) {
     const basedir = path.dirname(module.parent.parent.parent.filename)

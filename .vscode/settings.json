@@ -2,7 +2,15 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSave": true,
   "npm.enableScriptExplorer": true,
-  "npm.packageManager": "yarn"
+  "npm.packageManager": "yarn",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules/": true,
+    "**/build/": true,
+    "coverage": true,
+    "coverage.lcov": true
+  }
   // "typescript.implementationsCodeLens.enabled": true
   // "typescript.referencesCodeLens.enabled": true
 }

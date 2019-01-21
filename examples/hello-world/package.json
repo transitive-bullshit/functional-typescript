@@ -9,6 +9,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "functional-typescript": "link:../.."
+    "functional-typescript": "link:../../packages/functional-typescript",
+    "functional-typescript-http": "link:../../packages/functional-typescript-http"
   }
 }

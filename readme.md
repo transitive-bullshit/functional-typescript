@@ -94,28 +94,33 @@ Options:
 
 ```bash
 npm install --save functional-typescript
+
+# (optional) add support for http transport
+npm install --save functional-typescript-http
 ```
 
-Here is an end-to-end example ([examples/hello-world](./examples/hello-world)).
+Here is an end-to-end example using HTTP ([examples/hello-world](./examples/hello-world)).
 
 ```js
-const FTS = require('functional-typescript')
+const fts = require('functional-typescript')
+const ftsHttp = require('functional-typescript-http')
 
 async function example() {
   const tsFilePath = './hello-world.ts'
   const jsFilePath = './hello-world.js'
 
   // Parse a TS file's main function export into an FTS.Definition schema.
-  const definition = await FTS.generateDefinition(tsFilePath)
+  const definition = await fts.generateDefinition(tsFilePath)
+  console.log(JSON.stringify(definition, null, 2))
 
   // Create a standard http handler function `(req, res) => { ... }` that will
   // invoke the compiled JS function, performing type checking and conversions
   // between http and json for the function's parameters and return value.
-  const handler = FTS.createHttpHandler(definition, jsFilePath)
+  const handler = ftsHttp.createHttpHandler(definition, jsFilePath)
 
-  // Create a `micro` http server that uses our FTS.HttpHandler to respond
+  // Create a `micro` http server that uses our ftsHttp.HttpHandler to respond
   // to incoming http requests.
-  await FTS.createHttpServer(handler, 'http://localhost:3000')
+  await ftsHttp.createHttpServer(handler, 'http://localhost:3000')
 
   // You could alternatively use your `handler` with any Node.js server
   // framework, such as express, koa, @now/node, etc.
@@ -228,11 +233,10 @@ FTS is an active WIP.
   - [x] basic unit tests for function definition parser
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
-- [ ] Create separate packages
-  - [ ] create separate packages for parser+cli, handler, and server
-  - [ ] functional-typescript
-  - [ ] functional-typescript-http-handler
-  - [ ] functional-typescript-http-server
+- [x] Refactor into separate packages
+  - [x] functional-typescript
+  - [x] functional-typescript-validator
+  - [x] functional-typescript-http
   - [ ] functional-typescript-http-client
 - [ ] Post-MVP
   - [ ] support multiple source languages

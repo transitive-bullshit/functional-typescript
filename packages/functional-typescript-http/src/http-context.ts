@@ -1,12 +1,11 @@
 import accepts from 'accepts'
 import contentType from 'content-type'
+import { Context, version } from 'functional-typescript'
 import http from 'http'
 import parseUrl from 'parseurl'
 import qs from 'qs'
 import typeIs from 'type-is'
 import url from 'url'
-import { Context } from './context'
-import { version } from './package'
 
 /**
  * Optional context utilities for FTS functions when invoked over http.
