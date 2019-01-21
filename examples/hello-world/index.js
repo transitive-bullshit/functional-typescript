@@ -6,6 +6,7 @@ async function example() {
   const jsFilePath = './hello-world.js'
 
   // Parse a TS file's main function export into an FTS.Definition schema.
+  console.log('Generating definition', tsFilePath)
   const definition = await FTS.generateDefinition(tsFilePath)
   console.log(JSON.stringify(definition, null, 2))
 
