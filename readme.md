@@ -233,7 +233,7 @@ FTS is an active WIP.
   - [x] basic unit tests for function definition parser
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
-- [x] Create separate packages for different functionality
+- [x] Refactor into separate packages
   - [x] functional-typescript
   - [x] functional-typescript-validator
   - [x] functional-typescript-http
