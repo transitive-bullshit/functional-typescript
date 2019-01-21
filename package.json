@@ -30,7 +30,8 @@
     "doc:html": "typedoc src/ --exclude **/*.test.ts --target ES6 --mode file --out build/docs",
     "doc:publish": "gh-pages -m '[ci skip] Updates' -d build/docs",
     "clean": "git clean -dfqX -- ./node_modules **/{build,node_modules}/",
-    "postinstall": "lerna run prepare && run-s build"
+    "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('functional-typescript requires yarn for development')\"",
+    "postinstall": "run-s build"
   },
   "dependencies": {
     "functional-typescript": "link:packages/functional-typescript",

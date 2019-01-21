@@ -2,7 +2,7 @@ import Ajv from 'ajv'
 import test from 'ava'
 import globby from 'globby'
 import path from 'path'
-import * as FTS from '.'
+import { generateDefinition } from '.'
 
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 const ajv = new Ajv()
@@ -11,7 +11,7 @@ for (const fixture of fixtures) {
   const { name } = path.parse(fixture)
 
   test(name, async (t) => {
-    const definition = await FTS.generateDefinition(fixture)
+    const definition = await generateDefinition(fixture)
     t.truthy(definition)
 
     t.true(Array.isArray(definition.params.order))
