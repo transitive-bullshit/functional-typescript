@@ -13,10 +13,8 @@
     "node": ">=8"
   },
   "scripts": {
-    "start": "run-s build:clean watch",
-    "watch": "tsc --build tsconfig.json --watch",
-    "build": "run-s build:clean build:main",
-    "build:main": "tsc --build tsconfig.json",
+    "start": "run-s build:clean && tsc --build tsconfig.json --watch",
+    "build": "run-s build:clean && tsc --build tsconfig.json",
     "build:clean": "tsc --build tsconfig.json --clean",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier '**/*.ts' --write",
