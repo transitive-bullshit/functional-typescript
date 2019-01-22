@@ -1,0 +1,15 @@
+{
+  "name": "now-fts",
+  "version": "0.0.1",
+  "license": "MIT",
+  "dependencies": {
+    "@now/node-bridge": "^0.1.10",
+    "fs-extra": "7.0.1"
+  },
+  "devDependencies": {
+    "@now/build-utils": "^0.4.32"
+  },
+  "peerDependencies": {
+    "@now/build-utils": ">=0.0.1"
+  }
+}
