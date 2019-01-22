@@ -4,7 +4,7 @@
 
 > TypeScript standard for rock solid serverless functions.
 
-[![NPM](https://img.shields.io/npm/v/functional-typescript.svg)](https://www.npmjs.com/package/functional-typescript) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+[![NPM](https://img.shields.io/npm/v/fts.svg)](https://www.npmjs.com/package/fts) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/fts) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
 ## Features
 
@@ -75,7 +75,7 @@ You can use this package as either a CLI or as a module.
 ### CLI
 
 ```bash
-npm install -g functional-typescript
+npm install -g fts
 ```
 
 This will install the `fts` CLI program globally.
@@ -93,17 +93,17 @@ Options:
 ### Module
 
 ```bash
-npm install --save functional-typescript
+npm install --save fts
 
 # (optional) add support for http transport
-npm install --save functional-typescript-http
+npm install --save fts-http
 ```
 
 Here is an end-to-end example using HTTP ([examples/hello-world](./examples/hello-world)).
 
 ```js
-const fts = require('functional-typescript')
-const ftsHttp = require('functional-typescript-http')
+const fts = require('fts')
+const ftsHttp = require('fts-http')
 
 async function example() {
   const tsFilePath = './hello-world.ts'
@@ -232,10 +232,10 @@ FTS is an active WIP.
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
 - [x] Refactor into separate packages
-  - [x] functional-typescript
-  - [x] functional-typescript-validator
-  - [x] functional-typescript-http
-  - [ ] functional-typescript-http-client
+  - [x] fts
+  - [x] fts-validator
+  - [x] fts-http
+  - [ ] fts-http-client
 - [ ] Post-MVP
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)

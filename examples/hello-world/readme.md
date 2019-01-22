@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" />
+<img src="https://raw.githubusercontent.com/transitive-bullshit/fts/master/logo.png" alt="FTS Logo" width="150" />
 
 # FTS "Hello World" Example
 
@@ -11,7 +11,7 @@ This is a simple example which transforms a "Hello World" TypeScript function in
 
 ## Running
 
-In order to run this example, you first need to build the top-level `functional-typescript` package locally.
+In order to run this example, you first need to build the top-level `fts` package locally.
 
 Then, run:
 

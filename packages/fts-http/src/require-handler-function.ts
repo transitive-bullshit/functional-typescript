@@ -1,4 +1,4 @@
-import { Definition } from 'functional-typescript'
+import { Definition } from 'fts'
 import path from 'path'
 import resolve from 'resolve'
 import * as HTTP from './types'

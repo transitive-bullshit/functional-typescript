@@ -1,5 +1,5 @@
 {
-  "name": "functional-typescript-monorepo",
+  "name": "fts-monorepo",
   "private": true,
   "version": "0.0.1",
   "description": "TypeScript standard for rock solid serverless functions.",
@@ -29,13 +29,13 @@
     "doc:publish": "gh-pages -m '[ci skip] Updates' -d build/docs",
     "clean": "git clean -dfqX -- ./node_modules **/{build,node_modules}/",
     "bootstrap": "lerna bootstrap",
-    "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('functional-typescript requires yarn for development')\"",
+    "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('fts requires yarn for development')\"",
     "postinstall": "run-s build"
   },
   "dependencies": {
-    "functional-typescript": "link:packages/functional-typescript",
-    "functional-typescript-http": "link:packages/functional-typescript-http",
-    "functional-typescript-validator": "link:packages/functional-typescript-validator"
+    "fts": "link:packages/fts",
+    "fts-http": "link:packages/fts-http",
+    "fts-validator": "link:packages/fts-validator"
   },
   "devDependencies": {
     "@types/accepts": "^1.3.5",

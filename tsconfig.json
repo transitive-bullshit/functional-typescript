@@ -5,8 +5,8 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "./packages/functional-typescript" },
-    { "path": "./packages/functional-typescript-validator" },
-    { "path": "./packages/functional-typescript-http" }
+    { "path": "./packages/fts" },
+    { "path": "./packages/fts-validator" },
+    { "path": "./packages/fts-http" }
   ]
 }

@@ -1,4 +1,4 @@
-# Snapshot report for `packages/functional-typescript/src/parser.test.ts`
+# Snapshot report for `packages/fts/src/parser.test.ts`
 
 The actual snapshot is saved in `parser.test.ts.snap`.
 

@@ -499,15 +499,15 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-"functional-typescript-http@link:../../packages/functional-typescript-http":
+"fts-http@link:../../packages/fts-http":
   version "0.0.0"
   uid ""
 
-"functional-typescript-validator@link:../../packages/functional-typescript-validator":
+"fts-validator@link:../../packages/fts-validator":
   version "0.0.0"
   uid ""
 
-"functional-typescript@link:../../packages/functional-typescript":
+"fts@link:../../packages/fts":
   version "0.0.0"
   uid ""
 

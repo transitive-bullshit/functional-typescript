@@ -1,5 +1,5 @@
-const fts = require('functional-typescript')
-const ftsHttp = require('functional-typescript-http')
+const fts = require('fts')
+const ftsHttp = require('fts-http')
 
 async function example() {
   const tsFilePath = './hello-world.ts'

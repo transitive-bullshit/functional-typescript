@@ -3398,15 +3398,15 @@ function-bind@^1.0.2, function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-"functional-typescript-http@link:packages/functional-typescript-http":
+"fts-http@link:packages/fts-http":
   version "0.0.0"
   uid ""
 
-"functional-typescript-validator@link:packages/functional-typescript-validator":
+"fts-validator@link:packages/fts-validator":
   version "0.0.0"
   uid ""
 
-"functional-typescript@link:packages/functional-typescript":
+"fts@link:packages/fts":
   version "0.0.0"
   uid ""
 

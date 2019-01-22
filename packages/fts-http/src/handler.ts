@@ -1,6 +1,6 @@
 // import * as cors from 'cors'
-import { Definition } from 'functional-typescript'
-import { createValidator } from 'functional-typescript-validator'
+import { Definition } from 'fts'
+import { createValidator } from 'fts-validator'
 import http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
