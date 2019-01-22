@@ -217,9 +217,9 @@ FTS is an active WIP.
   - [x] validate function parameters against json schema
   - [x] validate function return type against json schema
   - [x] add support for passing params as array
-  - [x] add support for async functions
+  - [x] add support for async function
   - [x] add support for http context (ip, headers, etc)
-  - [ ] add support for setting response headers
+  - [x] add support for setting response headers
   - [ ] add support for CORS
   - [ ] add CLI support for invoking functions via http handler
 - [x] HTTP server implementation
@@ -336,6 +336,7 @@ Great question -- this answer will be updated once we have a good answer... 😁
 ## Related
 
 - [FaaSLang](https://github.com/faaslang/faaslang) - Very similar in spirit to this project but uses JavaScript with JSDoc instead of TypeScript.
+- [JSON RPC](https://en.wikipedia.org/wiki/JSON-RPC) - Similar JSON RPC standard.
 - [AWS TypeScript Template](https://github.com/serverless/serverless/tree/master/lib/plugins/create/templates/aws-nodejs-typescript) - Default TypeScript template for AWS serverless functions.
 - [Serverless Plugin TypeScript](https://github.com/prisma/serverless-plugin-typescript) - Serverless plugin for zero-config Typescript support.
 
@@ -343,10 +344,6 @@ Great question -- this answer will be updated once we have a good answer... 😁
 
 - [typescript-json-schema](https://github.com/YousefED/typescript-json-schema) - Used under the hood to convert TypeScript types to [JSON Schema](https://json-schema.org).
 - [Quicktype](https://quicktype.io) - Very useful utility which uses JSON Schema as a common standard for converting between different type systems.
-
----
-
-- [Statically Typed Data Validation with JSON Schema and TypeScript](https://spin.atomicobject.com/2018/03/26/typescript-data-validation) - Great related blog post.
 
 ## License
 

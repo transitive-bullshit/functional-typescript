@@ -202,4 +202,22 @@ export class HttpContext extends Context {
         return (req.headers[header] as string) || ''
     }
   }
+
+  /**
+   * Set header `field` to `val`.
+   *
+   * Examples:
+   *
+   *    this.set('Foo', ['bar', 'baz'])
+   *    this.set('Accept', 'application/json')
+   */
+  set(field: string, val: string | string[]) {
+    if (Array.isArray(val)) {
+      val = val.map((v) => (typeof v === 'string' ? v : String(v)))
+    } else if (typeof val !== 'string') {
+      val = String(val)
+    }
+
+    this.res.setHeader(field, val)
+  }
 }
