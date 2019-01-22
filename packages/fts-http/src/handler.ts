@@ -55,21 +55,18 @@ export function createHttpHandler(
         try {
           Promise.resolve(innerHandler(...args))
             .then((result: any) => {
-              const returnValue = { result }
-              const isValidReturnType = validateReturns(returnValue)
+              const returns = { result }
+              const isValidReturnType = validateReturns(returns)
               if (!isValidReturnType) {
                 const message = validator.ajv.errorsText(validateReturns.errors)
                 sendError(context, new Error(message), 502)
                 return
               }
 
-              if (returnValue === null) {
-                send(context, res.statusCode || 204, returnValue)
-              } else if (
-                returnValue !== undefined ||
-                !definition.returns.schema.type
-              ) {
-                send(context, res.statusCode || 200, returnValue)
+              if (returns.result === null || returns.result === undefined) {
+                send(context, res.statusCode || 204, returns.result)
+              } else {
+                send(context, res.statusCode || 200, returns.result)
               }
             })
             .catch((err) => {
@@ -123,7 +120,7 @@ function send(context: HttpContext, code: number, obj: any = null) {
   const { res } = context
   res.statusCode = code
 
-  if (obj === null) {
+  if (obj === null || obj === undefined) {
     res.end()
     return
   }
@@ -149,6 +146,7 @@ function send(context: HttpContext, code: number, obj: any = null) {
 
   let jsonify = false
   let str = obj
+
   switch (typeof str) {
     case 'object':
       jsonify = true
@@ -156,9 +154,14 @@ function send(context: HttpContext, code: number, obj: any = null) {
     case 'number':
       jsonify = true
       break
+    case 'boolean':
+      jsonify = true
+      break
     case 'string':
       jsonify = context.accepts('text', 'json') === 'json'
       break
+    default:
+      throw micro.createError(500, 'Unexpected return type')
   }
 
   if (jsonify) {

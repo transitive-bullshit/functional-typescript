@@ -14,7 +14,7 @@ import seedrandom from 'seedrandom'
 import tempy from 'tempy'
 import * as HTTP from '.'
 
-// const fixtures = globby.sync('./fixtures/power.ts')
+// const fixtures = globby.sync('./fixtures/void.ts')
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
@@ -123,7 +123,16 @@ for (const fixture of fixtures) {
         statusCode: res.statusCode
       })
       t.is(res.statusCode, 200)
-      t.deepEqual(res.body, expected)
+      const response = { result: res.body as any }
+
+      if (result === undefined || result === null) {
+        if (response.result === '') {
+          response.result = result
+        }
+      }
+
+      const responseEncoded = JSON.parse(JSON.stringify(response))
+      t.deepEqual(responseEncoded, expected)
     }
   })
 }
