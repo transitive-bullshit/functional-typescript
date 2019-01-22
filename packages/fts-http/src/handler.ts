@@ -13,7 +13,7 @@ const DEV = process.env.NODE_ENV === 'development'
 
 export function createHttpHandler(
   definition: Definition,
-  jsFilePath: string,
+  jsFilePathOrModule: string | object,
   options: Partial<HTTP.HttpHandlerOptions> = {
     cors: {
       methods: ['GET', 'POST', 'OPTIONS', 'HEAD']
@@ -31,7 +31,7 @@ export function createHttpHandler(
   // TODO: add cors and use options
   console.log(opts)
 
-  const innerHandler = requireHandlerFunction(definition, jsFilePath)
+  const innerHandler = requireHandlerFunction(definition, jsFilePathOrModule)
 
   // Note: it is inconvenient but important for this handler to not be async in
   // order to maximize compatibility with different Node.js server frameworks.

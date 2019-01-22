@@ -5,15 +5,20 @@ import * as HTTP from './types'
 
 export function requireHandlerFunction(
   definition: Definition,
-  file: string
+  file: string | object
 ): HTTP.Func {
-  let filePath = file
-  if (!path.isAbsolute(filePath)) {
-    const basedir = path.dirname(module.parent.parent.parent.filename)
-    filePath = resolve.sync(file, { basedir })
-  }
+  let entry: any
 
-  let entry: any = require(filePath)
+  if (typeof file === 'string') {
+    let filePath = file
+
+    if (!path.isAbsolute(filePath)) {
+      const basedir = path.dirname(module.parent.parent.parent.filename)
+      filePath = resolve.sync(file, { basedir })
+    }
+
+    entry = require(filePath)
+  }
 
   if (!entry) {
     throw new Error(
