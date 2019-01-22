@@ -226,8 +226,6 @@ FTS is an active WIP.
 - [ ] Documentation
   - [x] basic usage example
   - [x] example functions (test suite)
-  - [ ] standard specification
-  - [ ] description of how it works
   - [ ] how to use with different serverless cloud providers
 - [x] Testing
   - [x] basic unit tests for function definition parser
