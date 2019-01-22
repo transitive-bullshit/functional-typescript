@@ -4,8 +4,8 @@
 
 This is a simple example which transforms a "Hello World" TypeScript function into a type-safe HTTP endpoint. To do so, we perform the following steps:
 
-1. Generate an `FTS.Definition`
-2. Create an `FTS.HttpHandler`
+1. Generate an `Definition`
+2. Create an `HttpHandler`
 3. Start an http server
 4. Profit!
 
@@ -20,7 +20,7 @@ $ yarn install
 $ node index.js
 ```
 
-Which will print out an `FTS.Definition` schema, as well as which port the server is listening on:
+Which will print out a `Definition` schema, as well as which port the server is listening on:
 
 ```
 {
