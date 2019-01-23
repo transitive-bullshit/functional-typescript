@@ -7,7 +7,8 @@
     "fs-extra": "7.0.1"
   },
   "devDependencies": {
-    "@now/build-utils": "^0.4.32"
+    "@now/build-utils": "^0.4.32",
+    "execa": "^1.0.0"
   },
   "peerDependencies": {
     "@now/build-utils": ">=0.0.1"

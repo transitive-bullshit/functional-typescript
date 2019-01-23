@@ -2,6 +2,7 @@ const { createLambda } = require('@now/build-utils/lambda.js')
 const download = require('@now/build-utils/fs/download.js')
 const FileBlob = require('@now/build-utils/file-blob.js')
 const FileFsRef = require('@now/build-utils/file-fs-ref.js')
+const execa = require('execa')
 const fs = require('fs-extra')
 const glob = require('@now/build-utils/fs/glob.js')
 const path = require('path')
@@ -9,6 +10,8 @@ const {
   runNpmInstall,
   runPackageJsonScript
 } = require('@now/build-utils/fs/run-user-scripts.js')
+
+const tsconfig = 'tsconfig.json'
 
 /** @typedef { import('@now/build-utils/file-ref') } FileRef */
 /** @typedef {{[filePath: string]: FileRef}} Files */
@@ -40,15 +43,13 @@ async function downloadInstallAndBundle(
   const entrypointFsDirname = path.join(userPath, path.dirname(entrypoint))
   await runNpmInstall(entrypointFsDirname, npmArguments)
 
-  console.log('YOOOOOOOOOOO', entrypointFsDirname)
-
   console.log('writing ncc package.json...')
   await download(
     {
       'package.json': new FileBlob({
         data: JSON.stringify({
           dependencies: {
-            '@zeit/ncc': '0.11.0'
+            '@zeit/ncc': '0.9.0'
           }
         })
       })
@@ -74,8 +75,26 @@ async function downloadInstallAndBundle(
     ftsPath
   )
 
-  console.log('installing dependencies for fts...')
-  await runNpmInstall(ftsPath, npmArguments)
+  const ftsTsConfigPath = path.join(ftsPath, tsconfig)
+  if (downloadedFiles[tsconfig]) {
+    console.log(`copying ${tsconfig}`)
+    fs.copySync(downloadedFiles[tsconfig].fsPath, ftsTsConfigPath)
+  } else {
+    console.log(`using default ${tsconfig}`)
+    fs.outputJsonSync(ftsTsConfigPath, {
+      compilerOptions: {
+        target: 'es2015',
+        moduleResolution: 'node'
+      }
+    })
+  }
+
+  // TODO: temp
+  console.log('linking dependencies for fts...')
+  execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
+
+  // console.log('installing dependencies for fts...')
+  // await runNpmInstall(ftsPath, npmArguments)
 
   return [downloadedFiles, nccPath, ftsPath, entrypointFsDirname]
 }
@@ -84,36 +103,37 @@ async function generateDefinitionAndCompile(
   { nccPath, ftsPath, downloadedFiles, entrypoint }
 ) {
   const input = downloadedFiles[entrypoint].fsPath
+  const preparedFiles = {}
 
   console.log('generating entrypoint fts definition...')
   const fts = require(path.join(ftsPath, 'node_modules/fts'))
   const definition = await fts.generateDefinition(input)
   const definitionData = JSON.stringify(definition, null, 2)
-  consol.log('fts definition', definitionData)
+  console.log('fts definition', definitionData)
 
   const definitionFsPath = path.join(ftsPath, 'definition.json')
   preparedFiles[definitionFsPath] = new FileBlob({ data: definitionData })
 
   await download(
     {
-      'handler.js': new FileBlob({
+      'handler.ts': new FileBlob({
         data: `
-const ftsHttp = require('fts-http')
-const handler = require("${input}")
+import * as ftsHttp from 'fts-http'
+import handler from '${input.replace('.ts', '')}'
 const definition = ${definitionData}
-module.exports = ftsHttp.createHttpHandler(definition, handler)
+export default ftsHttp.createHttpHandler(definition, handler)
 `
       })
     },
     ftsPath
   )
 
-  const handlerPath = path.join(ftsPath, 'handler.js')
+  console.log('compiling entrypoint with ncc...')
+  const handlerPath = path.join(ftsPath, 'handler.ts')
   const ncc = require(path.join(nccPath, 'node_modules/@zeit/ncc'))
   const { code, assets } = await ncc(handlerPath)
   const outputHandlerPath = path.join('user', 'fts-handler.js')
 
-  const preparedFiles = {}
   const blob = new FileBlob({ data: code })
   // move all user code to 'user' subdirectory
   preparedFiles[outputHandlerPath] = blob
@@ -154,7 +174,6 @@ exports.build = async ({ files, entrypoint, workPath }) => {
   console.log('running user script...')
   await runPackageJsonScript(entrypointFsDirname, 'now-build')
 
-  console.log('compiling entrypoint with ncc...')
   const {
     preparedFiles,
     handlerPath

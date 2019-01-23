@@ -1,6 +1,7 @@
 const FileFsRef = require('@now/build-utils/file-fs-ref.js')
 const test = require('ava')
 const fs = require('fs-extra')
+const globby = require('globby')
 const path = require('path')
 const tempy = require('tempy')
 const builder = require('.')
@@ -18,13 +19,15 @@ for (const fixture of fixtures) {
     const builds = (nowConfig.builds || []).filter((build) => build.use === 'now-fts')
     const entrypoints = builds.map((build) => build.src)
 
+    const sourceFiles = await globby('**/*.{js,json,ts}', { cwd: fixture })
+
     const getContext = (entrypoint, config = {}) => ({
       config,
       workPath,
       entrypoint,
-      files: entrypoints.reduce((files, entrypoint) => {
-        const fsPath = path.join(fixture, entrypoint)
-        files[entrypoint] = new FileFsRef({ fsPath })
+      files: sourceFiles.reduce((files, file) => {
+        const fsPath = path.join(fixture, file)
+        files[file] = new FileFsRef({ fsPath })
         return files
       }, {})
     })
