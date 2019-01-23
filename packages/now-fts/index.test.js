@@ -33,7 +33,10 @@ for (const fixture of fixtures) {
     })
 
     const context = getContext(entrypoints[0])
-    await builder.build(context)
-    await fs.remove(workPath)
+    const result = await builder.build(context)
+    t.truthy(result)
+    t.truthy(result[entrypoints[0]])
+
+    // await fs.remove(workPath)
   })
 }

@@ -111,8 +111,8 @@ async function generateDefinitionAndCompile(
   const definitionData = JSON.stringify(definition, null, 2)
   console.log('fts definition', definitionData)
 
-  const definitionFsPath = path.join(ftsPath, 'definition.json')
-  preparedFiles[definitionFsPath] = new FileBlob({ data: definitionData })
+  // const definitionFsPath = path.join(ftsPath, 'definition.json')
+  // preparedFiles[definitionFsPath] = new FileBlob({ data: definitionData })
 
   await download(
     {
