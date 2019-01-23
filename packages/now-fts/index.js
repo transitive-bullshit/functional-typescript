@@ -44,36 +44,22 @@ async function downloadInstallAndBundle(
   await runNpmInstall(entrypointFsDirname, npmArguments)
 
   console.log('writing ncc package.json...')
-  await download(
-    {
-      'package.json': new FileBlob({
-        data: JSON.stringify({
-          dependencies: {
-            '@zeit/ncc': '0.9.0'
-          }
-        })
-      })
-    },
-    nccPath
-  )
+  fs.outputJsonSync(path.join(nccPath, 'package.json'), {
+    dependencies: {
+      '@zeit/ncc': '0.9.0'
+    }
+  })
 
   console.log('installing dependencies for ncc...')
   await runNpmInstall(nccPath, npmArguments)
 
   console.log('writing fts package.json...')
-  await download(
-    {
-      'package.json': new FileBlob({
-        data: JSON.stringify({
-          dependencies: {
-            'fts': '1.0.0',
-            'fts-http': '1.0.0'
-          }
-        })
-      })
-    },
-    ftsPath
-  )
+  fs.outputJsonSync(path.join(ftsPath, 'package.json'), {
+    dependencies: {
+      'fts': '1.0.0',
+      'fts-http': '1.0.0'
+    }
+  })
 
   const ftsTsConfigPath = path.join(ftsPath, tsconfig)
   if (downloadedFiles[tsconfig]) {
@@ -93,6 +79,7 @@ async function downloadInstallAndBundle(
   console.log('linking dependencies for fts...')
   execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
 
+  // TODO: temp
   // console.log('installing dependencies for fts...')
   // await runNpmInstall(ftsPath, npmArguments)
 
@@ -111,25 +98,21 @@ async function generateDefinitionAndCompile(
   const definitionData = JSON.stringify(definition, null, 2)
   console.log('fts definition', definitionData)
 
+  // TODO: this should be accessible via a special route
   // const definitionFsPath = path.join(ftsPath, 'definition.json')
   // preparedFiles[definitionFsPath] = new FileBlob({ data: definitionData })
 
-  await download(
-    {
-      'handler.ts': new FileBlob({
-        data: `
+  const handlerPath = path.join(ftsPath, 'handler.ts')
+  const handler = `
 import * as ftsHttp from 'fts-http'
 import handler from '${input.replace('.ts', '')}'
 const definition = ${definitionData}
 export default ftsHttp.createHttpHandler(definition, handler)
 `
-      })
-    },
-    ftsPath
-  )
+
+  fs.writeFileSync(handlerPath, handler, 'utf8')
 
   console.log('compiling entrypoint with ncc...')
-  const handlerPath = path.join(ftsPath, 'handler.ts')
   const ncc = require(path.join(nccPath, 'node_modules/@zeit/ncc'))
   const { code, assets } = await ncc(handlerPath)
   const outputHandlerPath = path.join('user', 'fts-handler.js')
