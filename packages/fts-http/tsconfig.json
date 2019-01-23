@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig.base",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./build"
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "build"
   },
-  "include": ["src/**/*"],
-  "references": [
-    { "path": "../fts" },
-    { "path": "../fts-validator" }
-  ]
+  "include": ["src"],
+  "references": [{ "path": "../fts" }, { "path": "../fts-validator" }]
 }

@@ -1,0 +1,36 @@
+{
+  "name": "fts-http-client",
+  "version": "0.0.1",
+  "description": "HTTP client for Functional TypeScript.",
+  "repository": "https://github.com/transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "typescript",
+    "serverless",
+    "lambda",
+    "function",
+    "functional",
+    "faas",
+    "rpc",
+    "http",
+    "client",
+    "jsonrpc",
+    "json",
+    "jsonschema",
+    "stdlib"
+  ],
+  "dependencies": {
+    "fts-validator": "link:../fts-validator",
+    "isomorphic-unfetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "fts": "link:../fts",
+    "fts-http": "link:../fts-http"
+  }
+}

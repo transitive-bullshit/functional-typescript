@@ -28,13 +28,15 @@
     "doc:html": "typedoc src/ --exclude **/*.test.ts --target ES6 --mode file --out build/docs",
     "doc:publish": "gh-pages -m '[ci skip] Updates' -d build/docs",
     "clean": "git clean -dfqX -- ./node_modules **/{build,node_modules}/",
+    "fixtures": "node -r esm ./scripts/generate-fixture-definitions.js > packages/fts-http-client/src/fixtures.json",
     "bootstrap": "lerna bootstrap",
     "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('fts requires yarn for development')\"",
-    "postinstall": "run-s build"
+    "postinstall": "run-s bootstrap"
   },
   "dependencies": {
     "fts": "link:packages/fts",
     "fts-http": "link:packages/fts-http",
+    "fts-http-client": "link:packages/fts-http-client",
     "fts-validator": "link:packages/fts-validator"
   },
   "devDependencies": {
@@ -50,6 +52,7 @@
     "@types/is-stream": "^1.1.0",
     "@types/json-schema": "^7.0.1",
     "@types/micro": "^7.3.3",
+    "@types/nock": "^9.3.1",
     "@types/node": "^10.12.18",
     "@types/parseurl": "^1.3.1",
     "@types/pify": "^3.0.2",
@@ -62,6 +65,7 @@
     "clone-deep": "^4.0.1",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
+    "esm": "^3.1.1",
     "get-port": "^4.1.0",
     "gh-pages": "^2.0.1",
     "globby": "^9.0.0",
@@ -70,9 +74,11 @@
     "json-schema-faker": "^0.5.0-rc16",
     "lerna": "^3.10.6",
     "lint-staged": "^8.1.0",
+    "nock": "^10.0.6",
     "npm-run-all": "^4.1.5",
     "nyc": "^13.1.0",
     "opn-cli": "^4.0.0",
+    "p-map": "^2.0.0",
     "pify": "^4.0.1",
     "prettier": "^1.16.0",
     "seedrandom": "^2.4.4",

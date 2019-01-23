@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" />
 
-# Functional TypeScript Http
+# Functional TypeScript HTTP
 
 > HTTP support for [Functional TypeScript](https://github.com/transitive-bullshit/functional-typescript).
 

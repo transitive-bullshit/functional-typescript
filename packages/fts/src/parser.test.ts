@@ -15,10 +15,10 @@ for (const fixture of fixtures) {
     t.truthy(definition)
 
     t.true(Array.isArray(definition.params.order))
-    ajv.validateSchema(definition.params.schema)
+    t.true(ajv.validateSchema(definition.params.schema))
     t.is(ajv.errors, null)
 
-    ajv.validateSchema(definition.returns)
+    t.true(ajv.validateSchema(definition.returns.schema))
     t.is(ajv.errors, null)
 
     t.snapshot(definition)

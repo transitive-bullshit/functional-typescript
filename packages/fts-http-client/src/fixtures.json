@@ -1,0 +1,517 @@
+{
+  "date": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "playdate"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "date1",
+        "date2"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "date1": {
+            "description": "Enables basic storage and retrieval of dates and times.",
+            "coerceTo": "Date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "date2": {
+            "description": "Enables basic storage and retrieval of dates and times.",
+            "coerceTo": "Date",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "date1",
+          "date2"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "description": "Enables basic storage and retrieval of dates and times.",
+            "coerceTo": "Date",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "playdate"
+  },
+  "double": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "double"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "value"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "description": "Comment describing the `value` parameter.",
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "value"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "description": "Comment describing the return type.",
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "double",
+    "description": "Multiplies a value by 2. (Also a full example of Typedoc's functionality.)\n\n### Example (es module)\n```js\nimport { double } from 'typescript-starter'\nconsole.log(double(4))\n// => 8\n```\n\n### Example (commonjs)\n```js\nvar double = require('typescript-starter').double;\nconsole.log(double(4))\n// => 8\n```"
+  },
+  "es6": {
+    "config": {
+      "defaultExport": true,
+      "language": "javascript"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "foo",
+        "bar"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "description": "Description of foo",
+            "type": "string"
+          },
+          "bar": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bar",
+          "foo"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "example",
+    "description": "Example ES6 JavaScript function commented with jsdoc."
+  },
+  "hello-world": {
+    "config": {
+      "defaultExport": true,
+      "language": "typescript"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "name"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "World"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "hello-world"
+  },
+  "address-book": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "Nala"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "address"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "$ref": "#/definitions/AddressBook"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "address"
+        ],
+        "definitions": {
+          "AddressBook": {
+            "type": "object",
+            "properties": {
+              "contacts": {
+                "description": "A dictionary of Contacts, indexed by unique ID",
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/definitions/Contact"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "contacts"
+            ]
+          },
+          "Contact": {
+            "type": "object",
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "birthday": {
+                "description": "Enables basic storage and retrieval of dates and times.",
+                "type": "string",
+                "format": "date-time"
+              },
+              "title": {
+                "enum": [
+                  "Mr.",
+                  "Mrs.",
+                  "Ms.",
+                  "Prof."
+                ],
+                "type": "string"
+              },
+              "emails": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "phones": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/PhoneNumber"
+                }
+              },
+              "highScore": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "emails",
+              "firstName",
+              "highScore",
+              "phones"
+            ]
+          },
+          "PhoneNumber": {
+            "description": "A Contact's phone number.",
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              },
+              "label": {
+                "description": "An optional label (e.g. \"mobile\")",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "number"
+            ]
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "Nala",
+    "description": "#TopLevel"
+  },
+  "void": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "noop"
+    },
+    "params": {
+      "context": false,
+      "order": [],
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {}
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "noop"
+  },
+  "power": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "power"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "base",
+        "exponent"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "number"
+          },
+          "exponent": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "base",
+          "exponent"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "power",
+    "description": "Raise the value of the first parameter to the power of the second using the es7 `**` operator.\n\n### Example (es module)\n```js\nimport { power } from 'typescript-starter'\nconsole.log(power(2,3))\n// => 8\n```\n\n### Example (commonjs)\n```js\nvar power = require('typescript-starter').power;\nconsole.log(power(2,3))\n// => 8\n```"
+  },
+  "medium": {
+    "config": {
+      "defaultExport": true,
+      "language": "typescript"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "foo",
+        "bar",
+        "nala"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "description": "Example describing string `foo`.",
+            "type": "string"
+          },
+          "bar": {
+            "type": "number",
+            "default": 5
+          },
+          "nala": {
+            "$ref": "#/definitions/Nala"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bar",
+          "foo"
+        ],
+        "definitions": {
+          "Nala": {
+            "type": "object",
+            "properties": {
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "color": {
+                "$ref": "#/definitions/Color"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "color"
+            ]
+          },
+          "Color": {
+            "enum": [
+              0,
+              1,
+              2
+            ],
+            "type": "number"
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "description": "Description of return value.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "Example",
+    "description": "This is an example description for an example function."
+  },
+  "buffer": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "slice"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "buffer",
+        "end"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "buffer": {
+            "coerceTo": "Buffer",
+            "type": "string"
+          },
+          "end": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "buffer",
+          "end"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "0.0.1",
+    "title": "slice"
+  }
+}
