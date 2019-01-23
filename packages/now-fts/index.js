@@ -39,7 +39,7 @@ async function downloadInstallAndBundle(
   console.log('downloading user files...')
   const downloadedFiles = await download(files, userPath)
 
-  console.log('installing dependencies for user\'s code...')
+  console.log("installing dependencies for user's code...")
   const entrypointFsDirname = path.join(userPath, path.dirname(entrypoint))
   await runNpmInstall(entrypointFsDirname, npmArguments)
 
@@ -56,7 +56,7 @@ async function downloadInstallAndBundle(
   console.log('writing fts package.json...')
   fs.outputJsonSync(path.join(ftsPath, 'package.json'), {
     dependencies: {
-      'fts': '1.0.0',
+      fts: '1.0.0',
       'fts-http': '1.0.0'
     }
   })
@@ -86,9 +86,12 @@ async function downloadInstallAndBundle(
   return [downloadedFiles, nccPath, ftsPath, entrypointFsDirname]
 }
 
-async function generateDefinitionAndCompile(
-  { nccPath, ftsPath, downloadedFiles, entrypoint }
-) {
+async function generateDefinitionAndCompile({
+  nccPath,
+  ftsPath,
+  downloadedFiles,
+  entrypoint
+}) {
   const input = downloadedFiles[entrypoint].fsPath
   const preparedFiles = {}
 
@@ -157,10 +160,7 @@ exports.build = async ({ files, entrypoint, workPath }) => {
   console.log('running user script...')
   await runPackageJsonScript(entrypointFsDirname, 'now-build')
 
-  const {
-    preparedFiles,
-    handlerPath
-  } = await generateDefinitionAndCompile({
+  const { preparedFiles, handlerPath } = await generateDefinitionAndCompile({
     nccPath,
     ftsPath,
     downloadedFiles,
@@ -182,7 +182,7 @@ exports.build = async ({ files, entrypoint, workPath }) => {
 
   const launcherFiles = {
     'launcher.js': new FileBlob({ data: launcherData }),
-    'bridge.js': new FileFsRef({ fsPath: require('@now/node-bridge') }),
+    'bridge.js': new FileFsRef({ fsPath: require('@now/node-bridge') })
   }
 
   const lambda = await createLambda({
@@ -194,9 +194,7 @@ exports.build = async ({ files, entrypoint, workPath }) => {
   return { [entrypoint]: lambda }
 }
 
-exports.prepareCache = async ({
-  files, entrypoint, workPath, cachePath
-}) => {
+exports.prepareCache = async ({ files, entrypoint, workPath, cachePath }) => {
   await fs.remove(workPath)
   await downloadInstallAndBundle({ files, entrypoint, workPath: cachePath })
 
