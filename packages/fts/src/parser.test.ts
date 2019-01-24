@@ -21,6 +21,9 @@ for (const fixture of fixtures) {
     t.true(ajv.validateSchema(definition.returns.schema))
     t.is(ajv.errors, null)
 
+    // package version updates shouldn't affect snapshots
+    delete definition.version
+
     t.snapshot(definition)
   })
 }
