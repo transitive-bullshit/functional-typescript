@@ -12,6 +12,7 @@ export interface HttpHandlerOptions {
 
 export interface HttpServerOptions {
   silent: boolean
+  serve(fn: HttpHandler): http.Server
 }
 
 export type Func = (...args: any[]) => any

@@ -1,22 +1,25 @@
 import http from 'http'
 import micro from 'micro'
 import { parseEndpoint } from './parse-endpoint'
-import * as HTTP from './types'
+import { HttpHandler, HttpServerOptions } from './types'
 
 /**
  * Small wrapper around [micro](https://github.com/zeit/micro) for creating
  * an http server that wraps for a single HttpHandler function.
  */
 export async function createHttpServer(
-  handler: HTTP.HttpHandler,
+  handler: HttpHandler,
   endpointOrPort?: string | number,
-  options: Partial<HTTP.HttpServerOptions> = {
-    silent: false
-  }
+  options: Partial<HttpServerOptions> = {}
 ): Promise<http.Server> {
-  const server = micro(handler)
+  const opts: HttpServerOptions = {
+    silent: false,
+    serve: micro,
+    ...options
+  }
+  const server = opts.serve(handler)
   const parsedEndpoint = parseEndpoint(endpointOrPort)
-  const log = options.silent ? noop : console.log
+  const log = opts.silent ? noop : console.log.bind(console)
 
   return new Promise((resolve, reject) => {
     server.on('error', (err: Error) => {
