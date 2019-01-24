@@ -30,7 +30,6 @@
     "isomorphic-unfetch": "^3.0.0"
   },
   "devDependencies": {
-    "fts": "link:../fts",
-    "fts-http": "link:../fts-http"
+    "fts": "link:../fts"
   }
 }
