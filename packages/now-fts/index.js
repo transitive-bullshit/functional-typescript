@@ -56,8 +56,8 @@ async function downloadInstallAndBundle(
   console.log('writing fts package.json...')
   fs.outputJsonSync(path.join(ftsPath, 'package.json'), {
     dependencies: {
-      fts: '1.0.0',
-      'fts-http': '1.0.0'
+      fts: '1.0.1',
+      'fts-http': '1.0.1'
     }
   })
 
@@ -79,7 +79,6 @@ async function downloadInstallAndBundle(
   // console.log('linking dependencies for fts...')
   // execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
 
-  // TODO: temp
   console.log('installing dependencies for fts...')
   await runNpmInstall(ftsPath, npmArguments)
 
