@@ -210,9 +210,9 @@ FTS is an active WIP.
   - [x] add support for Buffer type
   - [x] add support for Date type
   - [x] add support for returning Buffer and Date types
-  - [ ] add support for custom tsconfig
   - [x] add CLI wrapper to generate function definitions
   - [x] add support for standard JS with jsdoc comments
+  - [ ] add support for custom tsconfig
 - [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
   - [x] add support for HTTP GET
   - [x] add support for other HTTP methods
@@ -223,7 +223,6 @@ FTS is an active WIP.
   - [x] add support for http context (ip, headers, etc)
   - [x] add support for setting response headers
   - [ ] add support for CORS
-  - [ ] add CLI support for invoking functions via http handler
 - [x] HTTP server implementation
 - [ ] Documentation
   - [x] basic usage example
@@ -237,7 +236,9 @@ FTS is an active WIP.
   - [x] fts
   - [x] fts-validator
   - [x] fts-http
-  - [ ] fts-http-client
+  - [x] fts-http-client
+  - [x] fts-dev
+  - [ ] now-fts
 - [ ] Post-MVP
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)
