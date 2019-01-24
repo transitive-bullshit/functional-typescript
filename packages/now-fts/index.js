@@ -46,7 +46,8 @@ async function downloadInstallAndBundle(
   console.log('writing ncc package.json...')
   fs.outputJsonSync(path.join(nccPath, 'package.json'), {
     dependencies: {
-      '@zeit/ncc': '0.9.0'
+      '@zeit/ncc': '0.11.0',
+      typescript: '3.2.4'
     }
   })
 
@@ -126,6 +127,7 @@ export default ftsHttp.createHttpHandler(definition, handler)
   for (const assetName of Object.keys(assets)) {
     const { source: data, permissions: mode } = assets[assetName]
     const blob2 = new FileBlob({ data, mode })
+
     preparedFiles[
       path.join('user', path.dirname(entrypoint), assetName)
     ] = blob2

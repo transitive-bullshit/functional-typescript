@@ -387,6 +387,7 @@ function extractJSONSchemas(
   })
 }
 
+/*
 if (!module.parent) {
   // useful for quick testing purposes
   generateDefinition('./fixtures/date.ts')
@@ -398,3 +399,4 @@ if (!module.parent) {
       process.exit(1)
     })
 }
+*/
