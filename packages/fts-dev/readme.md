@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" />
+<a href="https://github.com/transitive-bullshit/functional-typescript" title="Functional TypeScript"><img src="https://raw.githubusercontent.com/transitive-bullshit/functional-typescript/master/logo.png" alt="FTS Logo" width="150" /></a>
 
 > Dev Server for [Functional TypeScript](https://github.com/transitive-bullshit/functional-typescript).
 
