@@ -18,6 +18,8 @@ export function requireHandlerFunction(
     }
 
     entry = require(filePath)
+  } else {
+    entry = file
   }
 
   if (!entry) {
