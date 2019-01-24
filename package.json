@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "fts": "link:packages/fts",
+    "fts-dev": "link:packages/fts-dev",
     "fts-http": "link:packages/fts-http",
     "fts-http-client": "link:packages/fts-http-client",
     "fts-validator": "link:packages/fts-validator"

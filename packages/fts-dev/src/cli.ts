@@ -1,11 +1,16 @@
 import program from 'commander'
-import { generateDefinition } from '.'
+import { createDevServer } from '.'
 
 export async function exec(argv: string[]) {
   program
     .name('fts')
     .usage('[options] <file.ts>')
-    .option('-p, --project <project>', "Path to 'tsconfig.json'.")
+    .option(
+      '-P, --port <port>',
+      'Port to listen on',
+      (s) => parseInt(s, 10),
+      3000
+    )
     .parse(argv)
 
   let file: string
@@ -17,8 +22,9 @@ export async function exec(argv: string[]) {
     process.exit(1)
   }
 
-  const definition = await generateDefinition(file)
-  console.log(JSON.stringify(definition, null, 2))
+  await createDevServer(file, {
+    port: program.port
+  })
 }
 
 exec(process.argv).catch((err) => {

@@ -8,6 +8,7 @@
     { "path": "./packages/fts" },
     { "path": "./packages/fts-validator" },
     { "path": "./packages/fts-http" },
-    { "path": "./packages/fts-http-client" }
+    { "path": "./packages/fts-http-client" },
+    { "path": "./packages/fts-dev" }
   ]
 }
