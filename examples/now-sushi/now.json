@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./src/**/*.ts",
+      "use": "now-fts"
+    }
+  ],
+  "env": {
+    "IS_NOW": "true"
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/src/backend/$1" },
+    { "src": "/sushi/(.*)", "dest": "/src/frontend/sushi?type=$1" },
+    { "src": "/(.*)", "dest": "/src/frontend/$1" }
+  ]
+}

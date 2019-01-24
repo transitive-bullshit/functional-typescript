@@ -1,0 +1,19 @@
+{
+  "name": "typescript-sushi-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec \"ts-node $1\""
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.1.4",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.4"
+  },
+  "dependencies": {
+    "node-fetch": "^2.3.0"
+  }
+}

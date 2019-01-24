@@ -25,11 +25,13 @@ export function example(name: string, date: Date): string {
 }
 ```
 
-You can easily create a local dev server for this function:
+You can easily create a local dev server for this function with:
 
 ```bash
 fts-dev example.ts
 ```
+
+The server defaults to port 3000.
 
 ## License
 
