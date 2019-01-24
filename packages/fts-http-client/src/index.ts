@@ -4,6 +4,8 @@ import fetch from 'isomorphic-unfetch'
 
 export function createHttpClient(definition: Definition, url: string) {
   const { title } = definition
+  const requiredParams = getRequiredParams(definition.params.schema)
+
   const validator = createValidator()
   const paramsEncoder = validator.encoder(definition.params.schema)
   const returnsDecoder = validator.decoder(definition.returns.schema)
@@ -36,8 +38,6 @@ export function createHttpClient(definition: Definition, url: string) {
           firstParam.$ref ||
           isCustomType
         ) {
-          const requiredParams = getRequiredParams(definition.params.schema)
-
           for (const param of requiredParams) {
             if (!arg.hasOwnProperty(param)) {
               isParamsObject = false
@@ -90,6 +90,6 @@ export function createHttpClient(definition: Definition, url: string) {
 
 function getRequiredParams(schema: any): string[] {
   return schema.required.filter(
-    (name) => !schema.properties[name].hasOwnProperty('default')
+    (name: string) => !schema.properties[name].hasOwnProperty('default')
   )
 }
