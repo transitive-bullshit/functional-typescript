@@ -56,8 +56,8 @@ async function downloadInstallAndBundle(
   console.log('writing fts package.json...')
   fs.outputJsonSync(path.join(ftsPath, 'package.json'), {
     dependencies: {
-      fts: '1.0.1',
-      'fts-http': '1.0.1'
+      fts: 'latest',
+      'fts-http': 'latest'
     }
   })
 
