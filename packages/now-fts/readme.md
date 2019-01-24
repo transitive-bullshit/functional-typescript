@@ -8,8 +8,6 @@
 
 [![NPM](https://img.shields.io/npm/v/now-fts.svg)](https://www.npmjs.com/package/now-fts) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
-**NOTE**: The `now-fts` builder is currently in **beta** and **may not work as expected**. We will update this package once it is ready for production use.
-
 The main benefit of `now-fts` is that you **just write TypeScript functions** and can easily deploy robust serverless functions. No dealing with HTTP, parameter validation, or data encoding / decoding!
 
 See the main [docs](https://github.com/transitive-bullshit/functional-typescript) for info on FTS in general.
