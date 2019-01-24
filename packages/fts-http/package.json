@@ -28,7 +28,7 @@
     "accepts": "^1.3.5",
     "content-type": "^1.0.4",
     "cors": "^2.8.5",
-    "fts-validator": "link:../fts-validator",
+    "fts-validator": "^1.0.0",
     "is-stream": "^1.1.0",
     "micro": "^9.3.3",
     "parseurl": "^1.3.2",

@@ -75,13 +75,13 @@ async function downloadInstallAndBundle(
     })
   }
 
-  // TODO: temp
-  console.log('linking dependencies for fts...')
-  execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
+  // TODO: for local testing purposes
+  // console.log('linking dependencies for fts...')
+  // execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
 
   // TODO: temp
-  // console.log('installing dependencies for fts...')
-  // await runNpmInstall(ftsPath, npmArguments)
+  console.log('installing dependencies for fts...')
+  await runNpmInstall(ftsPath, npmArguments)
 
   return [downloadedFiles, nccPath, ftsPath, entrypointFsDirname]
 }

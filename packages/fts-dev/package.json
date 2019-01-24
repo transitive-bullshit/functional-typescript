@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "commander": "^2.19.0",
-    "fts": "link:../fts",
-    "fts-http": "link:../fts-http"
+    "fts": "^1.0.0",
+    "fts-http": "^1.0.0"
   }
 }
