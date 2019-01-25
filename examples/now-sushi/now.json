@@ -1,4 +1,5 @@
 {
+  "name": "fts-typescript-sushi",
   "version": 2,
   "builds": [
     {

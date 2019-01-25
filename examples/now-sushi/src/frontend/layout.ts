@@ -4,7 +4,7 @@ import { join } from 'path'
 export default (content: string) => `
 <html lang="en">
     <head>
-        <title>TypeScript Sushi</title>
+        <title>FTS TypeScript Sushi</title>
         <meta charset="utf8">
         <meta name="viewport" content="user-scalable=0, initial-scale=1, width=device-width">
         <style>

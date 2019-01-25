@@ -11,7 +11,7 @@ const handler = async (req: IncomingMessage, res: ServerResponse) => {
 
   try {
     const sushiResponse = await fetch.default(
-      'https://typescript-sushi.now.sh/api/get-sushi?type=' + type
+      'https://fts-typescript-sushi.now.sh/api/get-sushi?type=' + type
     )
     const { description, pictureURL, title }: Sushi = await sushiResponse.json()
 

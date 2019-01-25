@@ -6,7 +6,7 @@ import layout from './layout'
 
 const handler = async (_: IncomingMessage, res: ServerResponse) => {
   const sushiResponse = await fetch.default(
-    'https://typescript-sushi.now.sh/api/all'
+    'https://fts-typescript-sushi.now.sh/api/all'
   )
   const sushiList: { data: Array<Sushi['type']> } = await sushiResponse.json()
 
