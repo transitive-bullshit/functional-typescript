@@ -30,6 +30,7 @@
     "clean": "git clean -dfqX -- ./node_modules **/{build,node_modules}/",
     "fixtures": "node -r esm ./scripts/generate-fixture-definitions.js > packages/fts-http-client/src/fixtures.json",
     "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
     "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') < 0) throw new Error('fts requires yarn for development')\"",
     "postinstall": "run-s bootstrap"
   },
