@@ -12,5 +12,6 @@
   },
   "peerDependencies": {
     "@now/build-utils": ">=0.0.1"
-  }
+  },
+  "gitHead": "9c95df897ffde29865d5b9190aa7922da780f32e"
 }

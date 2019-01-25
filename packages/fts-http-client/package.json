@@ -30,6 +30,7 @@
     "isomorphic-unfetch": "^3.0.0"
   },
   "devDependencies": {
-    "fts": "link:../fts"
-  }
+    "fts": "^1.0.6"
+  },
+  "gitHead": "9c95df897ffde29865d5b9190aa7922da780f32e"
 }

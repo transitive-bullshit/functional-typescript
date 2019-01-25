@@ -34,5 +34,6 @@
     "tempy": "^0.2.1",
     "ts-simple-ast": "^21.0.0",
     "typescript-json-schema": "^0.34.0"
-  }
+  },
+  "gitHead": "9c95df897ffde29865d5b9190aa7922da780f32e"
 }
