@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/backend/**/*.ts",
+      "use": "now-fts"
+    }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "/src/backend/$1" }]
+}

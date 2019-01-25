@@ -36,9 +36,11 @@ async function downloadInstallAndBundle(
   const nccPath = path.join(workPath, 'ncc')
   const ftsPath = path.join(workPath, 'fts')
 
+  console.log()
   console.log('downloading user files...')
   const downloadedFiles = await download(files, userPath)
 
+  console.log()
   console.log("installing dependencies for user's code...")
   const entrypointFsDirname = path.join(userPath, path.dirname(entrypoint))
   await runNpmInstall(entrypointFsDirname, npmArguments)
@@ -51,6 +53,7 @@ async function downloadInstallAndBundle(
     }
   })
 
+  console.log()
   console.log('installing dependencies for ncc...')
   await runNpmInstall(nccPath, npmArguments)
 
@@ -80,6 +83,7 @@ async function downloadInstallAndBundle(
   // console.log('linking dependencies for fts...')
   // execa.shellSync('yarn link fts fts-http', { cwd: ftsPath, stdio: 'inherit' })
 
+  console.log()
   console.log('installing dependencies for fts...')
   await runNpmInstall(ftsPath, npmArguments)
 
@@ -95,6 +99,7 @@ async function generateDefinitionAndCompile({
   const input = downloadedFiles[entrypoint].fsPath
   const preparedFiles = {}
 
+  console.log()
   console.log('generating entrypoint fts definition...')
   const fts = require(path.join(ftsPath, 'node_modules/fts'))
   const definition = await fts.generateDefinition(input)
@@ -108,13 +113,14 @@ async function generateDefinitionAndCompile({
   const handlerPath = path.join(ftsPath, 'handler.ts')
   const handler = `
 import * as ftsHttp from 'fts-http'
-import handler from '${input.replace('.ts', '')}'
+import * as handler from '${input.replace('.ts', '')}'
 const definition = ${definitionData}
 export default ftsHttp.createHttpHandler(definition, handler)
 `
 
   fs.writeFileSync(handlerPath, handler, 'utf8')
 
+  console.log()
   console.log('compiling entrypoint with ncc...')
   const ncc = require(path.join(nccPath, 'node_modules/@zeit/ncc'))
   const { code, assets } = await ncc(handlerPath)

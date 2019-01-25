@@ -14,17 +14,18 @@ const fixtures = fs
 for (const fixture of fixtures) {
   const { name } = path.parse(fixture)
 
-  test(name, async (t) => {
-    const workPath = tempy.directory()
+  test.serial(name, async (t) => {
     const nowConfig = await fs.readJson(path.join(fixture, 'now.json'))
     const builds = (nowConfig.builds || []).filter(
       (build) => build.use === 'now-fts'
     )
-    const entrypoints = builds.map((build) => build.src)
-
+    const entrypoints = builds
+      .map((build) => build.src)
+      .map((pattern) => globby.sync(pattern, { cwd: fixture }))
+      .reduce((acc, files) => acc.concat(files), [])
     const sourceFiles = await globby('**/*.{js,json,ts}', { cwd: fixture })
 
-    const getContext = (entrypoint, config = {}) => ({
+    const getContext = (entrypoint, workPath, config = {}) => ({
       config,
       workPath,
       entrypoint,
@@ -35,11 +36,16 @@ for (const fixture of fixtures) {
       }, {})
     })
 
-    const context = getContext(entrypoints[0])
-    const result = await builder.build(context)
-    t.truthy(result)
-    t.truthy(result[entrypoints[0]])
+    for (const entrypoint of entrypoints) {
+      const workPath = tempy.directory()
+      console.log({ fixture, entrypoint, workPath })
 
-    // await fs.remove(workPath)
+      const context = getContext(entrypoint, workPath)
+      const result = await builder.build(context)
+      t.truthy(result)
+      t.truthy(result[entrypoint])
+
+      // await fs.remove(workPath)
+    }
   })
 }
