@@ -143,7 +143,6 @@ export async function generateDefinition(
 
   try {
     extractJSONSchemas(builder, tempSourceFilePath, jsonSchemaOptions)
-    // postProcessDefinition(builder)
   } finally {
     await fs.remove(tempSourceFilePath)
   }
@@ -382,10 +381,20 @@ function extractJSONSchemas(
     jsonSchemaOptions
   )
 
+  if (!builder.definition.params.schema) {
+    throw new Error(`Error generating params JSON schema for TS file "${file}"`)
+  }
+
   builder.definition.returns.schema = TJS.generateSchema(program, FTSReturns, {
     ...jsonSchemaOptions,
     required: false
   })
+
+  if (!builder.definition.returns.schema) {
+    throw new Error(
+      `Error generating returns JSON schema for TS file "${file}"`
+    )
+  }
 }
 
 /*
