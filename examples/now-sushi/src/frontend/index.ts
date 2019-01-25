@@ -8,7 +8,7 @@ const handler = async (_: IncomingMessage, res: ServerResponse) => {
   const sushiResponse = await fetch.default(
     'https://fts-typescript-sushi.now.sh/api/all'
   )
-  const sushiList: { data: Array<Sushi['type']> } = await sushiResponse.json()
+  const sushiList: Array<Sushi['type']> = await sushiResponse.json()
 
   res.writeHead(200, { 'Content-Type': 'text/html' })
   res.end(
@@ -21,7 +21,7 @@ const handler = async (_: IncomingMessage, res: ServerResponse) => {
   </div>
   <h2>Learn more about...</h2>
   <ul>
-      ${sushiList.data
+      ${sushiList
         .map(
           (name) =>
             `<li><a class="button" href="/sushi/${name}">${name}</a></li>`
