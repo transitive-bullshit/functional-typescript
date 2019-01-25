@@ -2,8 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "./src/**/*.ts",
+      "src": "src/backend/**/*.ts",
       "use": "now-fts"
+    },
+    {
+      "src": "src/frontend/**/*.ts",
+      "use": "@now/node@canary"
     }
   ],
   "env": {

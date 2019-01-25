@@ -25,11 +25,12 @@ export async function generateDefinition(
   file: string,
   options: FTS.PartialDefinitionOptions = {}
 ): Promise<FTS.Definition> {
+  file = path.resolve(file)
   const fileInfo = path.parse(file)
   const language = supportedExtensions[fileInfo.ext.substr(1)]
 
   if (!language) {
-    throw new Error(`File type "${fileInfo.ext}" not supported.`)
+    throw new Error(`File type "${fileInfo.ext}" not supported. "${file}"`)
   }
 
   const outDir = tempy.directory()
@@ -85,7 +86,7 @@ export async function generateDefinition(
   const main = extractMainFunction(sourceFile, definition)
 
   if (!main) {
-    throw new Error('Unable to infer a main function export')
+    throw new Error(`Unable to infer a main function export "${file}"`)
   }
 
   // extract main function type and documentation info

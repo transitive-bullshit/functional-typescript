@@ -1,7 +1,7 @@
 import { Sushi } from '../../types'
 
 // Imagine this is a DB query.
-export const getSushi = (type: Sushi['type']): Sushi => {
+export function getSushi(type: Sushi['type']): Sushi {
   switch (type) {
     case 'maki':
       return {
