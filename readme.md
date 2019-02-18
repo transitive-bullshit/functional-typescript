@@ -236,6 +236,7 @@ FTS is an active WIP.
 - [x] Publish separate packages
   - [x] fts
   - [x] fts-validator
+  - [x] fts-core
   - [x] fts-http
   - [x] fts-http-client
   - [x] fts-dev
