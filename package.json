@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "fts": "link:packages/fts",
+    "fts-core": "link:packages/fts-core",
     "fts-dev": "link:packages/fts-dev",
     "fts-http": "link:packages/fts-http",
     "fts-http-client": "link:packages/fts-http-client",
