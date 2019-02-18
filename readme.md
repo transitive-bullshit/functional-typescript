@@ -223,6 +223,7 @@ FTS is an active WIP.
   - [x] add support for http context (ip, headers, etc)
   - [x] add support for setting response headers
   - [ ] add support for CORS
+  - [ ] remove support for index-based invocations
 - [x] HTTP server implementation
 - [ ] Documentation
   - [x] basic usage example
@@ -232,17 +233,17 @@ FTS is an active WIP.
   - [x] basic unit tests for function definition parser
   - [x] basic unit tests for function http handler
   - [x] integration tests for TS function => definition => HTTP server
-- [x] Refactor into separate packages
+- [x] Publish separate packages
   - [x] fts
   - [x] fts-validator
   - [x] fts-http
   - [x] fts-http-client
   - [x] fts-dev
-  - [ ] now-fts
+  - [x] now-fts
 - [ ] Post-MVP
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)
-  - [ ] now-builder for FTS functions
+  - [x] now-builder for FTS functions
 
 ## FAQ
 

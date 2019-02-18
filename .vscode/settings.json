@@ -11,6 +11,4 @@
     "coverage": true,
     "coverage.lcov": true
   }
-  // "typescript.implementationsCodeLens.enabled": true
-  // "typescript.referencesCodeLens.enabled": true
 }

@@ -4,16 +4,12 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Current File",
-      // Replace this with your project root. If there are multiple, you can
-      // automatically run the currently visible file with: "program": ${file}"
       "program": "${file}",
-      // "args": ["--no-install"],
       "outFiles": ["${workspaceFolder}/build/main/**/*.js"],
       "skipFiles": [
         "<node_internals>/**/*.js",
         "${workspaceFolder}/node_modules/**/*.js"
       ],
-      // "stopOnEntry": true,
       "runtimeArgs": ["--nolazy"],
       "smartStep": true
     },
