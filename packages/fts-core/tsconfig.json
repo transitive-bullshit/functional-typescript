@@ -5,6 +5,5 @@
     "rootDir": "src",
     "outDir": "build"
   },
-  "include": ["src"],
-  "references": [{ "path": "../fts-core" }]
+  "include": ["src"]
 }

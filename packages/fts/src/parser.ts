@@ -2,11 +2,11 @@
 
 import doctrine from 'doctrine'
 import fs from 'fs-extra'
+import { version } from 'fts-core'
 import path from 'path'
 import tempy from 'tempy'
 import * as TS from 'ts-simple-ast'
 import * as TJS from 'typescript-json-schema'
-import { version } from './package'
 import * as FTS from './types'
 
 const FTSReturns = 'FTSReturns'

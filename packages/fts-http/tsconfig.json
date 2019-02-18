@@ -6,5 +6,9 @@
     "outDir": "build"
   },
   "include": ["src"],
-  "references": [{ "path": "../fts" }, { "path": "../fts-validator" }]
+  "references": [
+    { "path": "../fts" },
+    { "path": "../fts-core" },
+    { "path": "../fts-validator" }
+  ]
 }
