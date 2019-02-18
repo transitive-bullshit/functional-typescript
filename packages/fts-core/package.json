@@ -1,0 +1,15 @@
+{
+  "name": "fts-core",
+  "version": "1.0.4",
+  "description": "Common types for Functional TypeScript.",
+  "repository": "https://github.com/transitive-bullshit/functional-typescript",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "license": "MIT",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+  }
+}

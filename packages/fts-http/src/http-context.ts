@@ -1,6 +1,6 @@
 import accepts from 'accepts'
 import contentType from 'content-type'
-import { Context, version } from 'fts'
+import { Context, version } from 'fts-core'
 import http from 'http'
 import parseUrl from 'parseurl'
 import qs from 'qs'
