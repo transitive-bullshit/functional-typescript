@@ -1,6 +1,6 @@
 {
   "name": "fts",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "TypeScript standard for rock solid serverless functions.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
