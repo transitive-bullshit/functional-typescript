@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import { version } from 'fts-core'
 import path from 'path'
 import tempy from 'tempy'
-import * as TS from 'ts-simple-ast'
+import * as TS from 'ts-morph'
 import * as TJS from 'typescript-json-schema'
 import * as FTS from './types'
 

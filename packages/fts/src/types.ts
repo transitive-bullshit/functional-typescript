@@ -1,5 +1,5 @@
 import doctrine from 'doctrine'
-import * as TS from 'ts-simple-ast'
+import * as TS from 'ts-morph'
 import * as TJS from 'typescript-json-schema'
 
 /**
