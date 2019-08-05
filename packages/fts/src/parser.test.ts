@@ -1,6 +1,6 @@
 import Ajv from 'ajv'
 import test from 'ava'
-// import globby from 'globby'
+import globby from 'globby'
 import path from 'path'
 import { generateDefinition } from '.'
 
