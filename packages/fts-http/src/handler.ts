@@ -22,7 +22,9 @@ export function createHttpHandler(
 ): HTTP.HttpHandler {
   const validator = createValidator()
   const validateParams = validator.decoder(definition.params.schema)
-  const validateReturns = validator.encoder(definition.returns.schema)
+  const validateReturns = definition.returns.http
+    ? null
+    : validator.encoder(definition.returns.schema)
 
   const opts: HTTP.HttpHandlerOptions = {
     ...options
@@ -56,11 +58,27 @@ export function createHttpHandler(
           Promise.resolve(innerHandler(...args))
             .then((result: any) => {
               const returns = { result }
-              const isValidReturnType = validateReturns(returns)
-              if (!isValidReturnType) {
-                const message = validator.ajv.errorsText(validateReturns.errors)
-                sendError(context, new Error(message), 502)
-                return
+
+              if (definition.returns.http) {
+                // skip validation for raw http response
+                returns.result = result.body
+                res.statusCode = result.statusCode
+
+                if (result.headers) {
+                  for (const [key, value] of Object.entries(result.headers)) {
+                    res.setHeader(key, value as string | number | string[])
+                  }
+                }
+              } else {
+                // validate return value
+                const isValidReturnType = validateReturns(returns)
+                if (!isValidReturnType) {
+                  const message = validator.ajv.errorsText(
+                    validateReturns.errors
+                  )
+                  sendError(context, new Error(message), 502)
+                  return
+                }
               }
 
               if (returns.result === null || returns.result === undefined) {
@@ -99,6 +117,7 @@ async function getParams(
     throw micro.createError(501, 'Not implemented')
   }
 
+  // TODO: remove support for non-named array of params
   if (Array.isArray(params)) {
     params = params.reduce((acc, param, i) => {
       const name = definition.params.order[i]

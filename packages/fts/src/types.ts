@@ -36,6 +36,9 @@ export interface Definition {
 
     /** Whether or not the function returns an async Promise */
     async: boolean
+
+    /** Enables a fallback to disable type-checking for raw HTTP responses */
+    http: boolean
   }
 }
 

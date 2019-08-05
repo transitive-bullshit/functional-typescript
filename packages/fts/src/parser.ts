@@ -65,6 +65,7 @@ export async function generateDefinition(
     },
     returns: {
       async: false,
+      http: false,
       schema: null
     },
     version
@@ -272,7 +273,6 @@ function addParamsDeclaration(
       // not Promise<T>
       // not Function or ArrowFunction
       // not RegExp
-      // TODO: does json schema handle Date type for us?
     }
 
     const promiseReMatch = structure.type.match(promiseTypeRe)
@@ -308,6 +308,10 @@ function addReturnTypeDeclaration(builder: FTS.DefinitionBuilder) {
 
   if (type === 'void') {
     type = 'any'
+  }
+
+  if (mainReturnType.isInterface() && type.endsWith('HttpResponse')) {
+    builder.definition.returns.http = true
   }
 
   const declaration = builder.sourceFile.addInterface({
@@ -397,10 +401,9 @@ function extractJSONSchemas(
   }
 }
 
-/*
 if (!module.parent) {
   // useful for quick testing purposes
-  generateDefinition('./fixtures/date.ts')
+  generateDefinition('./fixtures/http-response.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })
@@ -409,4 +412,3 @@ if (!module.parent) {
       process.exit(1)
     })
 }
-*/

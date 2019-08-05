@@ -1,10 +1,11 @@
 import Ajv from 'ajv'
 import test from 'ava'
-import globby from 'globby'
+// import globby from 'globby'
 import path from 'path'
 import { generateDefinition } from '.'
 
-const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
+const fixtures = ['./fixtures/http-response.ts']
+// const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 const ajv = new Ajv()
 
 for (const fixture of fixtures) {

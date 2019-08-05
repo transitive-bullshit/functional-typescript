@@ -5,7 +5,7 @@
       "request": "launch",
       "name": "Debug Current File",
       "program": "${file}",
-      "outFiles": ["${workspaceFolder}/build/main/**/*.js"],
+      "outFiles": ["${workspaceFolder}/packages/*/build/**/*.js"],
       "skipFiles": [
         "<node_internals>/**/*.js",
         "${workspaceFolder}/node_modules/**/*.js"

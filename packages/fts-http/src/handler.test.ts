@@ -14,7 +14,7 @@ import seedrandom from 'seedrandom'
 import tempy from 'tempy'
 import * as HTTP from '.'
 
-// const fixtures = globby.sync('./fixtures/void.ts')
+// const fixtures = globby.sync('./fixtures/http-response.ts')
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
@@ -50,6 +50,7 @@ for (const fixture of fixtures) {
     })
     t.truthy(definition)
 
+    const isHttpResponse = !!definition.returns.http
     const validator = createValidator()
     const paramsDecoder = validator.decoder(definition.params.schema)
     const returnsEncoder = validator.encoder(definition.returns.schema)
@@ -75,37 +76,55 @@ for (const fixture of fixtures) {
 
     const result = await Promise.resolve(func(...paramsLocalArray))
     const expected = { result }
-    returnsEncoder(expected)
+    if (!isHttpResponse) {
+      returnsEncoder(expected)
+      t.is(returnsEncoder.errors, null)
+    } else {
+      expected.result = (result.body || Buffer.from('')).toString()
+    }
     const expectedEncoded = JSON.parse(JSON.stringify(expected))
-    t.is(returnsEncoder.errors, null)
     console.log({ name, params, port, expected })
 
     // test GET request with params as a query string
     // note: some fixtures will not support this type of encoding
     if (testConfig.get) {
       const query = qs.stringify(params)
-      const responseGET = await got(url, {
-        json: true,
-        query
-      })
+      const temp: any = { query }
+      if (!isHttpResponse) {
+        temp.json = true
+      }
+      const responseGET = await got(url, temp)
       validateResponseSuccess(responseGET, 'GET', expectedEncoded)
     }
 
     // test POST request with params as a json body object
     if (testConfig.post) {
-      const responsePOST = await got.post(url, {
-        body: params,
-        json: true
-      })
+      const temp: any = { body: params }
+      if (isHttpResponse) {
+        temp.body = JSON.stringify(params)
+        temp.headers = {
+          'Content-type': 'application/json'
+        }
+      } else {
+        temp.json = true
+      }
+      const responsePOST = await got.post(url, temp)
       validateResponseSuccess(responsePOST, 'POST', expectedEncoded)
     }
 
     // test POST request with params as a json body array
     if (testConfig.postArray) {
-      const responsePOSTArray = await got.post(url, {
-        body: paramsArray,
-        json: true
-      })
+      const temp: any = { body: paramsArray }
+      if (isHttpResponse) {
+        temp.body = JSON.stringify(paramsArray)
+        temp.headers = {
+          'Content-type': 'application/json'
+        }
+      } else {
+        temp.json = true
+      }
+
+      const responsePOSTArray = await got.post(url, temp)
       validateResponseSuccess(responsePOSTArray, 'POSTArray', expectedEncoded)
     }
 
