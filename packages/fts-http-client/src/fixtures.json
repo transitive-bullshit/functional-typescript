@@ -1,4 +1,46 @@
 {
+  "hello-world": {
+    "config": {
+      "defaultExport": true,
+      "language": "typescript"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "name"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "World"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "http": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "1.0.9",
+    "title": "hello-world"
+  },
   "date": {
     "config": {
       "defaultExport": false,
@@ -52,7 +94,7 @@
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
-    "version": "0.0.1",
+    "version": "1.0.9",
     "title": "playdate"
   },
   "double": {
@@ -96,7 +138,7 @@
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
-    "version": "0.0.1",
+    "version": "1.0.9",
     "title": "double",
     "description": "Multiplies a value by 2. (Also a full example of Typedoc's functionality.)\n\n### Example (es module)\n```js\nimport { double } from 'typescript-starter'\nconsole.log(double(4))\n// => 8\n```\n\n### Example (commonjs)\n```js\nvar double = require('typescript-starter').double;\nconsole.log(double(4))\n// => 8\n```"
   },
@@ -131,8 +173,8 @@
       }
     },
     "returns": {
-      "http": false,
       "async": true,
+      "http": false,
       "schema": {
         "type": "object",
         "properties": {
@@ -144,11 +186,73 @@
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
-    "version": "0.0.1",
+    "version": "1.0.9",
     "title": "example",
     "description": "Example ES6 JavaScript function commented with jsdoc."
   },
-  "hello-world": {
+  "http-response": {
+    "config": {
+      "defaultExport": true,
+      "language": "typescript"
+    },
+    "params": {
+      "context": false,
+      "order": [],
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "http": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/definitions/HttpResponse"
+          }
+        },
+        "additionalProperties": false,
+        "definitions": {
+          "HttpResponse": {
+            "description": "Fallback to allow raw HTTP responses that are not type-checked.",
+            "type": "object",
+            "properties": {
+              "statusCode": {
+                "type": "number"
+              },
+              "headers": {
+                "$ref": "#/definitions/OutgoingHttpHeaders"
+              },
+              "body": {
+                "description": "Raw data is stored in instances of the Buffer class.\nA Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.\nValid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'base64'|'binary'(deprecated)|'hex'",
+                "type": "object",
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^[0-9]+$": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "OutgoingHttpHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "1.0.9",
+    "title": "http-response"
+  },
+  "medium": {
     "config": {
       "defaultExport": true,
       "language": "typescript"
@@ -156,30 +260,69 @@
     "params": {
       "context": false,
       "order": [
-        "name"
+        "foo",
+        "bar",
+        "nala"
       ],
       "schema": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "default": "World"
+          "foo": {
+            "description": "Example describing string `foo`.",
+            "type": "string"
+          },
+          "bar": {
+            "type": "number",
+            "default": 5
+          },
+          "nala": {
+            "$ref": "#/definitions/Nala"
           }
         },
         "additionalProperties": false,
         "required": [
-          "name"
+          "bar",
+          "foo"
         ],
+        "definitions": {
+          "Nala": {
+            "type": "object",
+            "properties": {
+              "numbers": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "color": {
+                "$ref": "#/definitions/Color"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "color"
+            ]
+          },
+          "Color": {
+            "enum": [
+              0,
+              1,
+              2
+            ],
+            "type": "number"
+          }
+        },
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
     "returns": {
+      "async": true,
       "http": false,
-      "async": false,
       "schema": {
         "type": "object",
         "properties": {
           "result": {
+            "description": "Description of return value.",
             "type": "string"
           }
         },
@@ -187,8 +330,135 @@
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
-    "version": "0.0.1",
-    "title": "hello-world"
+    "version": "1.0.9",
+    "title": "Example",
+    "description": "This is an example description for an example function."
+  },
+  "power": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "power"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "base",
+        "exponent"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "number"
+          },
+          "exponent": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "base",
+          "exponent"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "http": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "1.0.9",
+    "title": "power",
+    "description": "Raise the value of the first parameter to the power of the second using the es7 `**` operator.\n\n### Example (es module)\n```js\nimport { power } from 'typescript-starter'\nconsole.log(power(2,3))\n// => 8\n```\n\n### Example (commonjs)\n```js\nvar power = require('typescript-starter').power;\nconsole.log(power(2,3))\n// => 8\n```"
+  },
+  "void": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "noop"
+    },
+    "params": {
+      "context": false,
+      "order": [],
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "http": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {}
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "1.0.9",
+    "title": "noop"
+  },
+  "buffer": {
+    "config": {
+      "defaultExport": false,
+      "language": "typescript",
+      "namedExport": "slice"
+    },
+    "params": {
+      "context": false,
+      "order": [
+        "buffer",
+        "end"
+      ],
+      "schema": {
+        "type": "object",
+        "properties": {
+          "buffer": {
+            "coerceTo": "Buffer",
+            "type": "string"
+          },
+          "end": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "buffer",
+          "end"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "returns": {
+      "async": false,
+      "http": false,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    "version": "1.0.9",
+    "title": "slice"
   },
   "address-book": {
     "config": {
@@ -298,8 +568,8 @@
       }
     },
     "returns": {
-      "http": false,
       "async": false,
+      "http": false,
       "schema": {
         "type": "object",
         "properties": {
@@ -311,216 +581,8 @@
         "$schema": "http://json-schema.org/draft-07/schema#"
       }
     },
-    "version": "0.0.1",
+    "version": "1.0.9",
     "title": "Nala",
     "description": "#TopLevel"
-  },
-  "void": {
-    "config": {
-      "defaultExport": false,
-      "language": "typescript",
-      "namedExport": "noop"
-    },
-    "params": {
-      "context": false,
-      "order": [],
-      "schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "returns": {
-      "async": false,
-      "http": false,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "result": {}
-        },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "version": "0.0.1",
-    "title": "noop"
-  },
-  "power": {
-    "config": {
-      "defaultExport": false,
-      "language": "typescript",
-      "namedExport": "power"
-    },
-    "params": {
-      "context": false,
-      "order": [
-        "base",
-        "exponent"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {
-          "base": {
-            "type": "number"
-          },
-          "exponent": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "base",
-          "exponent"
-        ],
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "returns": {
-      "async": false,
-      "http": false,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "version": "0.0.1",
-    "title": "power",
-    "description": "Raise the value of the first parameter to the power of the second using the es7 `**` operator.\n\n### Example (es module)\n```js\nimport { power } from 'typescript-starter'\nconsole.log(power(2,3))\n// => 8\n```\n\n### Example (commonjs)\n```js\nvar power = require('typescript-starter').power;\nconsole.log(power(2,3))\n// => 8\n```"
-  },
-  "medium": {
-    "config": {
-      "defaultExport": true,
-      "language": "typescript"
-    },
-    "params": {
-      "context": false,
-      "order": [
-        "foo",
-        "bar",
-        "nala"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {
-          "foo": {
-            "description": "Example describing string `foo`.",
-            "type": "string"
-          },
-          "bar": {
-            "type": "number",
-            "default": 5
-          },
-          "nala": {
-            "$ref": "#/definitions/Nala"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "bar",
-          "foo"
-        ],
-        "definitions": {
-          "Nala": {
-            "type": "object",
-            "properties": {
-              "numbers": {
-                "type": "array",
-                "items": {
-                  "type": "number"
-                }
-              },
-              "color": {
-                "$ref": "#/definitions/Color"
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "color"
-            ]
-          },
-          "Color": {
-            "enum": [
-              0,
-              1,
-              2
-            ],
-            "type": "number"
-          }
-        },
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "returns": {
-      "async": true,
-      "http": false,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "description": "Description of return value.",
-            "type": "string"
-          }
-        },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "version": "0.0.1",
-    "title": "Example",
-    "description": "This is an example description for an example function."
-  },
-  "buffer": {
-    "config": {
-      "defaultExport": false,
-      "language": "typescript",
-      "namedExport": "slice"
-    },
-    "params": {
-      "context": false,
-      "order": [
-        "buffer",
-        "end"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {
-          "buffer": {
-            "coerceTo": "Buffer",
-            "type": "string"
-          },
-          "end": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "buffer",
-          "end"
-        ],
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "returns": {
-      "async": false,
-      "http": false,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "version": "0.0.1",
-    "title": "slice"
   }
 }

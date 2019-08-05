@@ -4,8 +4,8 @@ import test from 'ava'
 import path from 'path'
 import { generateDefinition } from '.'
 
-const fixtures = ['./fixtures/http-response.ts']
-// const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
+// const fixtures = ['./fixtures/http-response.ts']
+const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 const ajv = new Ajv()
 
 for (const fixture of fixtures) {

@@ -401,8 +401,9 @@ function extractJSONSchemas(
   }
 }
 
+/*
+// useful for quick testing purposes
 if (!module.parent) {
-  // useful for quick testing purposes
   generateDefinition('./fixtures/http-response.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
@@ -412,3 +413,4 @@ if (!module.parent) {
       process.exit(1)
     })
 }
+*/
