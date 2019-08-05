@@ -1,6 +1,6 @@
 {
   "name": "fts-dev",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dev Server for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -32,8 +32,8 @@
   ],
   "dependencies": {
     "commander": "^2.19.0",
-    "fts": "^1.1.0",
-    "fts-http": "^1.1.0"
+    "fts": "^1.1.1",
+    "fts-http": "^1.1.1"
   },
   "gitHead": "9c95df897ffde29865d5b9190aa7922da780f32e"
 }
