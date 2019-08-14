@@ -196,6 +196,11 @@ function send(context: HttpContext, code: number, obj: any = null) {
     }
   } else {
     if (!res.getHeader('Content-Type')) {
+      // TODO: why does this seem to be necessary when using text/plain?
+      if (typeof str === 'string' && !str.endsWith('\n')) {
+        str += '\n'
+      }
+
       res.setHeader('Content-Type', 'text/plain; charset=utf-8')
     }
   }
