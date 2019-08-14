@@ -194,6 +194,8 @@ function send(context: HttpContext, code: number, obj: any = null) {
     if (!res.getHeader('Content-Type')) {
       res.setHeader('Content-Type', 'application/json; charset=utf-8')
     }
+  } else {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
   }
 
   res.setHeader('Content-Length', Buffer.byteLength(str))
