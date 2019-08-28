@@ -114,7 +114,7 @@ async function getParams(
   } else if (context.req.method === 'POST') {
     params = await micro.json(context.req)
   } else {
-    throw micro.createError(501, 'Not implemented')
+    throw micro.createError(501, 'Not implemented\n')
   }
 
   // TODO: remove support for non-named array of params
@@ -129,7 +129,7 @@ async function getParams(
   }
 
   if (typeof params !== 'object') {
-    throw micro.createError(400, 'Invalid parameters')
+    throw micro.createError(400, 'Invalid parameters\n')
   }
 
   return params
@@ -180,7 +180,7 @@ function send(context: HttpContext, code: number, obj: any = null) {
       jsonify = context.accepts('text', 'json') === 'json'
       break
     default:
-      throw micro.createError(500, 'Unexpected return type')
+      throw micro.createError(500, 'Unexpected return type\n')
   }
 
   if (jsonify) {
