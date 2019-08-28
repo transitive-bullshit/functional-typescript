@@ -298,10 +298,11 @@ function addReturnTypeDeclaration(builder: FTS.DefinitionBuilder) {
   let type = mainReturnType.getText()
 
   const promiseReMatch = type.match(promiseTypeRe)
+  const isAsync = !!promiseReMatch
 
   builder.definition.returns.async = builder.main.isAsync()
 
-  if (promiseReMatch) {
+  if (isAsync) {
     type = promiseReMatch[1]
     builder.definition.returns.async = true
   }
@@ -310,7 +311,10 @@ function addReturnTypeDeclaration(builder: FTS.DefinitionBuilder) {
     type = 'any'
   }
 
-  if (mainReturnType.isInterface() && type.endsWith('HttpResponse')) {
+  if (
+    type.endsWith('HttpResponse') &&
+    (isAsync || mainReturnType.isInterface())
+  ) {
     builder.definition.returns.http = true
   }
 

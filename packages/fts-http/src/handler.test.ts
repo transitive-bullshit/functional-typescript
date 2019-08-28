@@ -14,7 +14,7 @@ import seedrandom from 'seedrandom'
 import tempy from 'tempy'
 import * as HTTP from '.'
 
-// const fixtures = globby.sync('./fixtures/http-response.ts')
+// const fixtures = globby.sync('./fixtures/http-response-p.ts')
 const fixtures = globby.sync('./fixtures/**/*.{js,ts}')
 
 jsf.option({
