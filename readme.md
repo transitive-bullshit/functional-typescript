@@ -222,7 +222,7 @@ FTS is an active WIP.
   - [x] add support for async function
   - [x] add support for http context (ip, headers, etc)
   - [x] add support for setting response headers
-  - [ ] add support for CORS
+  - [x] add support for CORS
   - [ ] remove support for index-based invocations
 - [x] HTTP server implementation
 - [ ] Documentation

@@ -1,9 +1,9 @@
-// import * as cors from 'cors'
 import { Definition } from 'fts'
 import { createValidator } from 'fts-validator'
 import http from 'http'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
+import cors = require('micro-cors')
 import { Stream } from 'stream'
 import { HttpContext } from './http-context'
 import { requireHandlerFunction } from './require-handler-function'
@@ -14,9 +14,9 @@ const DEV = process.env.NODE_ENV === 'development'
 export function createHttpHandler(
   definition: Definition,
   jsFilePathOrModule: string | object,
-  options: Partial<HTTP.HttpHandlerOptions> = {
+  options = {
     cors: {
-      methods: ['GET', 'POST', 'OPTIONS', 'HEAD']
+      allowMethods: ['GET', 'POST', 'OPTIONS', 'HEAD']
     }
   }
 ): HTTP.HttpHandler {
@@ -26,19 +26,17 @@ export function createHttpHandler(
     ? null
     : validator.encoder(definition.returns.schema)
 
-  const opts: HTTP.HttpHandlerOptions = {
-    ...options
-  }
-
-  // TODO: add cors and use options
-  console.log(opts)
-
   const innerHandler = requireHandlerFunction(definition, jsFilePathOrModule)
 
   // Note: it is inconvenient but important for this handler to not be async in
   // order to maximize compatibility with different Node.js server frameworks.
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
     const context = new HttpContext(req, res)
+
+    if (context.req.method === 'OPTIONS') {
+      send(context, 200, 'ok')
+      return
+    }
 
     getParams(context, definition)
       .then((params: any) => {
@@ -99,8 +97,7 @@ export function createHttpHandler(
       })
   }
 
-  // cors.default(opts.cors, handler)
-  return handler
+  return cors(options.cors)(handler)
 }
 
 async function getParams(
