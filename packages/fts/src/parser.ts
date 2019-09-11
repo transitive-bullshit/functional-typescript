@@ -393,6 +393,15 @@ function extractJSONSchemas(
     throw new Error(`Error generating params JSON schema for TS file "${file}"`)
   }
 
+  // fix required parameters to only be those which do not have default values
+  const { schema } = builder.definition.params
+  schema.required = (schema.required || []).filter(
+    (k) => schema.properties[k].default === undefined
+  )
+  if (!schema.required.length) {
+    delete schema.required
+  }
+
   builder.definition.returns.schema = TJS.generateSchema(program, FTSReturns, {
     ...jsonSchemaOptions,
     required: false
@@ -408,7 +417,7 @@ function extractJSONSchemas(
 /*
 // useful for quick testing purposes
 if (!module.parent) {
-  generateDefinition('./fixtures/http-response.ts')
+  generateDefinition('./fixtures/medium.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })
