@@ -1,6 +1,6 @@
 {
   "name": "fts-http-client",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "description": "HTTP client for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
@@ -30,7 +30,7 @@
     "isomorphic-unfetch": "^3.0.0"
   },
   "devDependencies": {
-    "fts": "^1.1.5"
+    "fts": "^1.1.7"
   },
   "gitHead": "9c95df897ffde29865d5b9190aa7922da780f32e"
 }
