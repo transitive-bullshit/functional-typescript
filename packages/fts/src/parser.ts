@@ -250,6 +250,11 @@ function addParamsDeclaration(
     const name = param.getName()
     const structure = param.getStructure()
 
+    if (structure.isRestParameter) {
+      builder.definition.params.schema = { additionalProperties: true };
+      continue;
+    }
+
     // TODO: this handles alias type resolution i think...
     // need to test multiple levels of aliasing
     structure.type = param.getType().getText()
@@ -383,11 +388,14 @@ function extractJSONSchemas(
     process.cwd()
   )
 
-  builder.definition.params.schema = TJS.generateSchema(
-    program,
-    FTSParams,
-    jsonSchemaOptions
-  )
+  builder.definition.params.schema = {
+    ...TJS.generateSchema(
+      program,
+      FTSParams,
+      jsonSchemaOptions
+    ),
+    ...(builder.definition.params.schema || {}) // Spread any existing schema params
+  }
 
   if (!builder.definition.params.schema) {
     throw new Error(`Error generating params JSON schema for TS file "${file}"`)
