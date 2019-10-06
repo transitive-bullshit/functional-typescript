@@ -52,6 +52,15 @@ export function createHttpHandler(
           args.push(context)
         }
 
+        // Push additional props into args if allowing additionalProperties
+        if (definition.params.schema.additionalProperties) {
+          Object.keys(params).forEach((name) => {
+            if (definition.params.order.indexOf(name) === -1) {
+              args.push([name, params[name]])
+            }
+          })
+        }
+
         try {
           Promise.resolve(innerHandler(...args))
             .then((result: any) => {
