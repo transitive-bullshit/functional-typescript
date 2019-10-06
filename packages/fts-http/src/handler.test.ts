@@ -51,6 +51,7 @@ for (const fixture of fixtures) {
     t.truthy(definition)
 
     const isHttpResponse = !!definition.returns.http
+    const supportsRest = definition.params.schema.additionalProperties
     const validator = createValidator()
     const paramsDecoder = validator.decoder(definition.params.schema)
     const returnsEncoder = validator.encoder(definition.returns.schema)
@@ -72,6 +73,12 @@ for (const fixture of fixtures) {
       (key) => paramsLocal[key]
     )
     const func = HTTP.requireHandlerFunction(definition, jsFilePath)
+
+    if (supportsRest) {
+      const additionalProperty = 'Hello, World!'
+      params.additionalProperty = additionalProperty
+      paramsLocalArray.push(['additionalProperty', additionalProperty])
+    }
 
     const result = await Promise.resolve(func(...paramsLocalArray))
     const expected = { result }
