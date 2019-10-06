@@ -1,0 +1,49 @@
+# Roadmap
+
+- [x] Function definition parser
+  - [x] extract main function export
+  - [x] convert main function signature to json schema
+  - [x] add support for common jsdoc comments
+  - [x] fix should be readonly to source files
+  - [x] fix async / promise return types
+  - [x] fix support for arrow function exports
+  - [x] add support for default values
+  - [x] add support for void return type
+  - [x] add support for Buffer type
+  - [x] add support for Date type
+  - [x] add support for returning Buffer and Date types
+  - [x] add CLI wrapper to generate function definitions
+  - [x] add support for standard JS with jsdoc comments
+  - [ ] add support for custom tsconfig
+- [x] HTTP handler to invoke a function given an FTS definition and JS file entrypoint
+  - [x] add support for HTTP GET
+  - [x] add support for other HTTP methods
+  - [x] validate function parameters against json schema
+  - [x] validate function return type against json schema
+  - [x] add support for passing params as array
+  - [x] add support for async function
+  - [x] add support for http context (ip, headers, etc)
+  - [x] add support for setting response headers
+  - [x] add support for CORS
+  - [x] remove support for index-based invocations
+- [x] HTTP server implementation
+- [ ] Documentation
+  - [x] basic usage example
+  - [x] example functions (test suite)
+  - [ ] how to use with different serverless cloud providers
+- [x] Testing
+  - [x] basic unit tests for function definition parser
+  - [x] basic unit tests for function http handler
+  - [x] integration tests for TS function => definition => HTTP server
+- [x] Publish separate packages
+  - [x] fts
+  - [x] fts-validator
+  - [x] fts-core
+  - [x] fts-http
+  - [x] fts-http-client
+  - [x] fts-dev
+  - [x] now-fts
+- [ ] Post-MVP
+  - [ ] support multiple source languages
+  - [ ] support multiple transport handlers (http, grpc, thrift)
+  - [x] now-builder for FTS functions
