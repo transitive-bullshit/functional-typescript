@@ -291,6 +291,7 @@ Great question -- this answer will be updated once we have a good answer... 😁
 ## Related
 
 - [FaaSLang](https://github.com/faaslang/faaslang) - Very similar in spirit to this project but uses JavaScript with JSDoc instead of TypeScript.
+- [FastAPI](https://github.com/tiangolo/fastapi) - Similar functionality but for Python.
 - [JSON RPC](https://en.wikipedia.org/wiki/JSON-RPC) - Similar JSON RPC standard.
 - [AWS TypeScript Template](https://github.com/serverless/serverless/tree/master/lib/plugins/create/templates/aws-nodejs-typescript) - Default TypeScript template for AWS serverless functions.
 - [Serverless Plugin TypeScript](https://github.com/prisma/serverless-plugin-typescript) - Serverless plugin for zero-config Typescript support.
