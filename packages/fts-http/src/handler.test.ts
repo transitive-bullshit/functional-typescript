@@ -68,7 +68,6 @@ for (const fixture of fixtures) {
     paramsDecoder(paramsLocal)
     t.is(paramsDecoder.errors, null)
 
-    const paramsArray = definition.params.order.map((key) => params[key])
     const paramsLocalArray = definition.params.order.map(
       (key) => paramsLocal[key]
     )
@@ -110,22 +109,6 @@ for (const fixture of fixtures) {
       }
       const responsePOST = await got.post(url, temp)
       validateResponseSuccess(responsePOST, 'POST', expectedEncoded)
-    }
-
-    // test POST request with params as a json body array
-    if (testConfig.postArray) {
-      const temp: any = { body: paramsArray }
-      if (isHttpResponse) {
-        temp.body = JSON.stringify(paramsArray)
-        temp.headers = {
-          'Content-type': 'application/json'
-        }
-      } else {
-        temp.json = true
-      }
-
-      const responsePOSTArray = await got.post(url, temp)
-      validateResponseSuccess(responsePOSTArray, 'POSTArray', expectedEncoded)
     }
 
     await pify(server.close.bind(server))()

@@ -38,7 +38,7 @@ export function createHttpHandler(
       return
     }
 
-    getParams(context, definition)
+    getParams(context)
       .then((params: any) => {
         const hasValidParams = validateParams(params)
         if (!hasValidParams) {
@@ -109,10 +109,7 @@ export function createHttpHandler(
   return cors(options.cors)(handler)
 }
 
-async function getParams(
-  context: HttpContext,
-  definition: Definition
-): Promise<any> {
+async function getParams(context: HttpContext): Promise<any> {
   let params: any = {}
 
   if (context.req.method === 'GET') {
@@ -121,17 +118,6 @@ async function getParams(
     params = await micro.json(context.req)
   } else {
     throw micro.createError(501, 'Not implemented\n')
-  }
-
-  // TODO: remove support for non-named array of params
-  if (Array.isArray(params)) {
-    params = params.reduce((acc, param, i) => {
-      const name = definition.params.order[i]
-      if (name) {
-        acc[name] = param
-      }
-      return acc
-    }, {})
   }
 
   if (typeof params !== 'object') {
