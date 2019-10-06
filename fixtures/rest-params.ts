@@ -1,3 +1,3 @@
 export default (foo: string, ...params: any[]) => {
-  return JSON.stringify({ foo, ...params })
+  return JSON.stringify({ foo, params })
 }
