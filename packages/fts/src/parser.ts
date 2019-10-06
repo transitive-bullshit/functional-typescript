@@ -251,8 +251,8 @@ function addParamsDeclaration(
     const structure = param.getStructure()
 
     if (structure.isRestParameter) {
-      builder.definition.params.schema = { additionalProperties: true };
-      continue;
+      builder.definition.params.schema = { additionalProperties: true }
+      continue
     }
 
     // TODO: this handles alias type resolution i think...
@@ -389,11 +389,7 @@ function extractJSONSchemas(
   )
 
   builder.definition.params.schema = {
-    ...TJS.generateSchema(
-      program,
-      FTSParams,
-      jsonSchemaOptions
-    ),
+    ...TJS.generateSchema(program, FTSParams, jsonSchemaOptions),
     ...(builder.definition.params.schema || {}) // Spread any existing schema params
   }
 
