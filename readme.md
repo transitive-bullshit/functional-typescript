@@ -196,7 +196,7 @@ Note that this definition allows for easy **type checking**, **documentation gen
 
 ## Roadmap
 
-FTS is an active WIP.
+FTS is stable and being used in production by [Saasify](https://saasify.sh).
 
 - [x] Function definition parser
   - [x] extract main function export
