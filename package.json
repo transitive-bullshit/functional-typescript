@@ -67,6 +67,7 @@
     "clone-deep": "^4.0.1",
     "codecov": "^3.1.0",
     "cz-conventional-changelog": "^2.1.0",
+    "delay": "^4.3.0",
     "esm": "^3.1.1",
     "get-port": "^4.1.0",
     "gh-pages": "^2.0.1",

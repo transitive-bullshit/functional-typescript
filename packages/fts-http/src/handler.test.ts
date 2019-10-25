@@ -3,6 +3,7 @@ import cloneDeep from 'clone-deep'
 import fs from 'fs-extra'
 import { generateDefinition } from 'fts'
 import { createValidator } from 'fts-validator'
+import delay from 'delay'
 import getPort from 'get-port'
 import globby from 'globby'
 import got from 'got'
@@ -119,6 +120,7 @@ for (const fixture of fixtures) {
     }
 
     await pify(server.close.bind(server))()
+    await delay(500)
     await fs.remove(outDir)
 
     function validateResponseSuccess(

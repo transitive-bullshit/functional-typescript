@@ -39,6 +39,7 @@ export async function generateDefinition(
   const compilerOptions = {
     allowJs: true,
     ignoreCompilerErrors: true,
+    esModuleInterop: true,
     // TODO: why do we need to specify the full filename for these lib definition files?
     lib: ['lib.es2018.d.ts', 'lib.dom.d.ts'],
     target: TS.ScriptTarget.ES5,
@@ -379,6 +380,7 @@ function extractJSONSchemas(
     allowJs: true,
     lib: ['es2018', 'dom'],
     target: 'es5',
+    esModuleInterop: true,
     ...jsonCompilerOptions
   }
 
