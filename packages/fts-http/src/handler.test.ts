@@ -63,7 +63,9 @@ for (const fixture of fixtures) {
     const returnsEncoder = validator.encoder(definition.returns.schema)
 
     const jsFilePath = path.join(outDir, `${name}.js`)
-    const handler = HTTP.createHttpHandler(definition, jsFilePath)
+    const handler = HTTP.createHttpHandler(definition, jsFilePath, {
+      debug: true
+    })
     t.is(typeof handler, 'function')
 
     const port = await getPort()

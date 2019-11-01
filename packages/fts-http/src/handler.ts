@@ -4,25 +4,34 @@ import http from 'http'
 import inflate from 'inflation'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
-import cors = require('micro-cors')
-import raw from 'raw-body'
+import microCORS = require('micro-cors')
+import raw = require('raw-body')
 import { Stream } from 'stream'
 
 import { HttpContext } from './http-context'
 import { requireHandlerFunction } from './require-handler-function'
-import * as HTTP from './types'
 
 const DEV = process.env.NODE_ENV === 'development'
+
+interface Options {
+  debug?: boolean
+  cors?: {
+    allowedMethods: string[]
+  }
+}
 
 export function createHttpHandler(
   definition: Definition,
   jsFilePathOrModule: string | object,
-  options = {
-    cors: {
+  opts: Options = {}
+) {
+  const {
+    debug = false,
+    cors = {
       allowMethods: ['GET', 'POST', 'OPTIONS', 'HEAD']
     }
-  }
-): HTTP.HttpHandler {
+  } = opts
+
   const validator = createValidator()
   const validateParams = validator.decoder(definition.params.schema)
   const validateReturns = definition.returns.http
@@ -41,7 +50,7 @@ export function createHttpHandler(
       return
     }
 
-    getParams(context, definition)
+    getParams(context, definition, debug)
       .then((params: any) => {
         let args: any[] = []
 
@@ -121,24 +130,49 @@ export function createHttpHandler(
       })
   }
 
-  return cors(options.cors)(handler)
+  return microCORS(cors)(handler)
 }
 
 async function getParams(
   context: HttpContext,
-  definition: Definition
+  definition: Definition,
+  debug: boolean
 ): Promise<any> {
   if (definition.params.http) {
     if (!definition.params.order.length) {
       return null
     } else {
+      if (debug) {
+        console.log(
+          'fts-http',
+          'headers',
+          JSON.stringify(context.req.headers, null, 2)
+        )
+      }
+
       const opts: any = {}
       const len = context.req.headers['content-length']
       const encoding = context.req.headers['content-encoding'] || 'identity'
       if (len && encoding === 'identity') {
         opts.length = +len
       }
-      return raw(inflate(context.req), opts)
+      if (debug) {
+        console.log(
+          'fts-http',
+          'raw-body',
+          'opts',
+          JSON.stringify(opts, null, 2)
+        )
+      }
+      const body = await ((raw(
+        inflate(context.req),
+        opts
+      ) as unknown) as Promise<Buffer>)
+
+      if (debug) {
+        console.log('fts-http', 'raw-body', body.byteLength, body)
+      }
+      return body
     }
   } else {
     let params: any = {}
