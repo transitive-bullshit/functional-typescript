@@ -19,12 +19,18 @@ export interface Definition {
   /** FTS version that generated this definition */
   version: string
 
+  // consumes: MimeTypes
+  // produces: MimeTypes
+
   params: {
     /** JSON Schema describing the function parameters */
     schema: TJS.Definition
 
     /** Ordering of the function parameters */
     order: string[]
+
+    /** Enables a fallback to disable type-checking for raw HTTP requests */
+    http: boolean
 
     /** Whether or not the function takes in a context parameter */
     context: boolean
@@ -41,6 +47,8 @@ export interface Definition {
     http: boolean
   }
 }
+
+// export type MimeTypes = string[]
 
 export interface Config {
   language: string

@@ -60,6 +60,7 @@ export async function generateDefinition(
       language
     },
     params: {
+      http: false,
       context: false,
       order: [],
       schema: null
@@ -246,6 +247,8 @@ function addParamsDeclaration(
     }
   }
 
+  let httpParameterName: string
+
   for (let i = 0; i < mainParams.length; ++i) {
     const param = mainParams[i]
     const name = param.getName()
@@ -269,9 +272,31 @@ function addParamsDeclaration(
         )
       }
 
-      builder.definition.params.context = true
       // TODO: ensure context has valid type `FTS.Context`
+
+      builder.definition.params.context = true
+
+      if (mainParams.length === 1) {
+        builder.definition.params.http = true
+        httpParameterName = name
+      }
+
       // ignore context in parameter aggregation
+      continue
+    } else if (structure.type === 'Buffer') {
+      if (mainParams.length > 2 || i > 0) {
+        throw new Error(
+          `Function parameter "${name}" of type "Buffer" must not include additional parameters to main function "${
+            builder.title
+          }"`
+        )
+      }
+
+      builder.definition.params.http = true
+      httpParameterName = name
+      builder.definition.params.order.push(name)
+
+      // ignore Buffer in parameter aggregation
       continue
     } else {
       // TODO: ensure that type is valid:
@@ -294,6 +319,17 @@ function addParamsDeclaration(
       paramComments[name]
     )
     builder.definition.params.order.push(name)
+  }
+
+  if (
+    builder.definition.params.http &&
+    builder.definition.params.order.length > 1
+  ) {
+    throw new Error(
+      `Function parameter "${httpParameterName}" of type "Buffer" must not include additional parameters to main function "${
+        builder.title
+      }"`
+    )
   }
 
   return paramsDeclaration
@@ -423,7 +459,7 @@ function extractJSONSchemas(
 /*
 // useful for quick testing purposes
 if (!module.parent) {
-  generateDefinition('./fixtures/medium.ts')
+  generateDefinition('./fixtures/http-request.ts')
     .then((definition) => {
       console.log(JSON.stringify(definition, null, 2))
     })

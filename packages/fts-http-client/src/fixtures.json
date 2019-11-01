@@ -6,6 +6,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "name"
       ],
@@ -49,6 +50,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "date1",
         "date2"
@@ -105,6 +107,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "value"
       ],
@@ -149,6 +152,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "foo",
         "bar"
@@ -197,6 +201,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [],
       "schema": {
         "type": "object",
@@ -259,6 +264,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "foo",
         "bar",
@@ -342,6 +348,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "base",
         "exponent"
@@ -390,6 +397,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [],
       "schema": {
         "type": "object",
@@ -412,54 +420,6 @@
     "version": "1.0.9",
     "title": "noop"
   },
-  "buffer": {
-    "config": {
-      "defaultExport": false,
-      "language": "typescript",
-      "namedExport": "slice"
-    },
-    "params": {
-      "context": false,
-      "order": [
-        "buffer",
-        "end"
-      ],
-      "schema": {
-        "type": "object",
-        "properties": {
-          "buffer": {
-            "coerceTo": "Buffer",
-            "type": "string"
-          },
-          "end": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "buffer",
-          "end"
-        ],
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "returns": {
-      "async": false,
-      "http": false,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "$schema": "http://json-schema.org/draft-07/schema#"
-      }
-    },
-    "version": "1.0.9",
-    "title": "slice"
-  },
   "address-book": {
     "config": {
       "defaultExport": false,
@@ -468,6 +428,7 @@
     },
     "params": {
       "context": false,
+      "http": false,
       "order": [
         "address"
       ],

@@ -23,3 +23,5 @@ yarn-error.log*
 
 lerna-debug.log*
 lerna-error.log*
+
+tsconfig.tsbuildinfo

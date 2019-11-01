@@ -1,10 +1,13 @@
 import { Definition } from 'fts'
 import { createValidator } from 'fts-validator'
 import http from 'http'
+import inflate from 'inflation'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import cors = require('micro-cors')
+import raw from 'raw-body'
 import { Stream } from 'stream'
+
 import { HttpContext } from './http-context'
 import { requireHandlerFunction } from './require-handler-function'
 import * as HTTP from './types'
@@ -38,27 +41,39 @@ export function createHttpHandler(
       return
     }
 
-    getParams(context)
+    getParams(context, definition)
       .then((params: any) => {
-        const hasValidParams = validateParams(params)
-        if (!hasValidParams) {
-          const message = validator.ajv.errorsText(validateParams.errors)
-          sendError(context, new Error(message), 400)
-          return
-        }
+        let args: any[] = []
 
-        const args = definition.params.order.map((name) => params[name])
-        if (definition.params.context) {
-          args.push(context)
-        }
+        if (definition.params.http) {
+          if (definition.params.order.length) {
+            args = [params]
+          }
 
-        // Push additional props into args if allowing additionalProperties
-        if (definition.params.schema.additionalProperties) {
-          Object.keys(params).forEach((name) => {
-            if (definition.params.order.indexOf(name) === -1) {
-              args.push([name, params[name]])
-            }
-          })
+          if (definition.params.context) {
+            args.push(context)
+          }
+        } else {
+          const hasValidParams = validateParams(params)
+          if (!hasValidParams) {
+            const message = validator.ajv.errorsText(validateParams.errors)
+            sendError(context, new Error(message), 400)
+            return
+          }
+
+          args = definition.params.order.map((name) => params[name])
+          if (definition.params.context) {
+            args.push(context)
+          }
+
+          // Push additional props into args if allowing additionalProperties
+          if (definition.params.schema.additionalProperties) {
+            Object.keys(params).forEach((name) => {
+              if (definition.params.order.indexOf(name) === -1) {
+                args.push([name, params[name]])
+              }
+            })
+          }
         }
 
         try {
@@ -109,22 +124,39 @@ export function createHttpHandler(
   return cors(options.cors)(handler)
 }
 
-async function getParams(context: HttpContext): Promise<any> {
-  let params: any = {}
-
-  if (context.req.method === 'GET') {
-    params = context.query
-  } else if (context.req.method === 'POST') {
-    params = await micro.json(context.req)
+async function getParams(
+  context: HttpContext,
+  definition: Definition
+): Promise<any> {
+  if (definition.params.http) {
+    if (!definition.params.order.length) {
+      return null
+    } else {
+      const opts: any = {}
+      const len = context.req.headers['content-length']
+      const encoding = context.req.headers['content-encoding'] || 'identity'
+      if (len && encoding === 'identity') {
+        opts.length = +len
+      }
+      return raw(inflate(context.req), opts)
+    }
   } else {
-    throw micro.createError(501, 'Not implemented\n')
-  }
+    let params: any = {}
 
-  if (typeof params !== 'object') {
-    throw micro.createError(400, 'Invalid parameters\n')
-  }
+    if (context.req.method === 'GET') {
+      params = context.query
+    } else if (context.req.method === 'POST') {
+      params = await micro.json(context.req)
+    } else {
+      throw micro.createError(501, 'Not implemented\n')
+    }
 
-  return params
+    if (typeof params !== 'object') {
+      throw micro.createError(400, 'Invalid parameters\n')
+    }
+
+    return params
+  }
 }
 
 function send(context: HttpContext, code: number, obj: any = null) {
