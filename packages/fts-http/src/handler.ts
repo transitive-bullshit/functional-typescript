@@ -1,3 +1,6 @@
+import contentType from 'content-type'
+import fileType from 'file-type'
+import fs from 'fs'
 import { Definition } from 'fts'
 import { createValidator } from 'fts-validator'
 import http from 'http'
@@ -5,8 +8,11 @@ import inflate from 'inflation'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import microCORS = require('micro-cors')
+import mime from 'mime-types'
+import multiparty from 'multiparty'
 import raw = require('raw-body')
 import { Stream } from 'stream'
+import formParser from 'urlencoded-body-parser'
 
 import { HttpContext } from './http-context'
 import { requireHandlerFunction } from './require-handler-function'
@@ -180,7 +186,62 @@ async function getParams(
     if (context.req.method === 'GET') {
       params = context.query
     } else if (context.req.method === 'POST') {
-      params = await micro.json(context.req)
+      if (context.is('multipart/form-data')) {
+        const form = new multiparty.Form()
+
+        params = await new Promise((resolve, reject) => {
+          form.parse(context.req, (err, fields, files) => {
+            if (err) {
+              return reject(err)
+            }
+
+            for (const key in files) {
+              if (!files.hasOwnProperty(key)) {
+                continue
+              }
+
+              const file = files[key][0]
+              if (!file) {
+                continue
+              }
+
+              let v: string | Buffer = fs.readFileSync(file.path)
+              let m = 'application/octet-stream'
+              const ct = file.headers['content-type']
+              let charset: string
+
+              if (ct) {
+                const c = contentType.parse(ct)
+                if (c) {
+                  m = c.type
+                  charset = c.parameters.charset
+                }
+              } else {
+                const f = fileType(v)
+                if (f) {
+                  m = f.mime
+                }
+              }
+
+              if (!charset) {
+                charset = mime.charset(m)
+              }
+
+              if (charset) {
+                v = v.toString(charset)
+              }
+
+              fields[key] = v
+            }
+
+            resolve(fields)
+          })
+        })
+      } else if (context.is('application/x-www-form-urlencoded')) {
+        params = await formParser(context.req)
+      } else {
+        params = await micro.json(context.req)
+      }
     } else {
       throw micro.createError(501, 'Not implemented\n')
     }
