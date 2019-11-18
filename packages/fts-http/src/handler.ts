@@ -189,11 +189,15 @@ async function getParams(
       if (context.is('multipart/form-data')) {
         const form = new multiparty.Form()
 
+        // TODO: clean this up
         params = await new Promise((resolve, reject) => {
           form.parse(context.req, (err, fields, files) => {
             if (err) {
               return reject(err)
             }
+
+            // TODO: I believe field values are assumed to be strings but should
+            // probably be parsed as json?
 
             for (const key in files) {
               if (!files.hasOwnProperty(key)) {

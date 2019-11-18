@@ -41,7 +41,12 @@ export interface Validator {
 }
 
 export function createValidator(opts?: any): Validator {
-  const ajv = new Ajv({ useDefaults: true, coerceTypes: true, ...opts })
+  const ajv = new Ajv({
+    useDefaults: true,
+    coerceTypes: true,
+    unknownFormats: 'ignore',
+    ...opts
+  })
   ajv.addKeyword('coerceTo', coerceToKeyword)
   ajv.addKeyword('coerceFrom', coerceFromKeyword)
 
