@@ -10,7 +10,6 @@ import * as micro from 'micro'
 import microCORS = require('micro-cors')
 import mime from 'mime-types'
 import multiparty from 'multiparty'
-import parseJson from 'parse-json'
 import raw = require('raw-body')
 import { Stream } from 'stream'
 import formParser from 'urlencoded-body-parser'
@@ -227,7 +226,7 @@ async function getParams(
         })
       } else {
         const body = await getBody(context)
-        return parseJson(body, 'request body')
+        return JSON.parse(body.toString('utf8'))
       }
     } else {
       throw micro.createError(501, 'Not implemented\n')
