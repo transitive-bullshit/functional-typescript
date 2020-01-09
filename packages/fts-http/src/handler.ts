@@ -10,6 +10,7 @@ import * as micro from 'micro'
 import microCORS = require('micro-cors')
 import mime from 'mime-types'
 import multiparty from 'multiparty'
+import parseJson from 'parse-json'
 import raw = require('raw-body')
 import { Stream } from 'stream'
 import formParser from 'urlencoded-body-parser'
@@ -18,18 +19,19 @@ import { HttpContext } from './http-context'
 import { requireHandlerFunction } from './require-handler-function'
 
 const DEV = process.env.NODE_ENV === 'development'
+const BODY_SIZE_LIMIT = '100mb'
 
 interface Options {
-  debug?: boolean
-  cors?: {
-    allowedMethods: string[]
+  debug: boolean
+  cors: {
+    allowMethods: string[]
   }
 }
 
 export function createHttpHandler(
   definition: Definition,
   jsFilePathOrModule: string | object,
-  opts: Options = {}
+  opts: Partial<Options> = {}
 ) {
   const {
     debug = false,
@@ -156,29 +158,7 @@ async function getParams(
         )
       }
 
-      const opts: any = {}
-      const len = context.req.headers['content-length']
-      const encoding = context.req.headers['content-encoding'] || 'identity'
-      if (len && encoding === 'identity') {
-        opts.length = +len
-      }
-      if (debug) {
-        console.log(
-          'fts-http',
-          'raw-body',
-          'opts',
-          JSON.stringify(opts, null, 2)
-        )
-      }
-      const body = await ((raw(
-        inflate(context.req),
-        opts
-      ) as unknown) as Promise<Buffer>)
-
-      if (debug) {
-        console.log('fts-http', 'raw-body', body.byteLength, body)
-      }
-      return body
+      return getBody(context)
     }
   } else {
     let params: any = {}
@@ -242,11 +222,12 @@ async function getParams(
           })
         })
       } else if (context.is('application/x-www-form-urlencoded')) {
-        params = await formParser(context.req)
-      } else {
-        params = await micro.json(context.req, {
-          limit: '100mb'
+        params = await formParser(context.req, {
+          limit: BODY_SIZE_LIMIT
         })
+      } else {
+        const body = await getBody(context)
+        return parseJson(body, 'request body')
       }
     } else {
       throw micro.createError(501, 'Not implemented\n')
@@ -258,6 +239,17 @@ async function getParams(
 
     return params
   }
+}
+
+async function getBody(context: HttpContext): Promise<Buffer> {
+  const opts: any = {}
+  const len = context.req.headers['content-length']
+  const encoding = context.req.headers['content-encoding'] || 'identity'
+  if (len && encoding === 'identity') {
+    opts.length = +len
+    opts.limit = BODY_SIZE_LIMIT
+  }
+  return (raw(inflate(context.req), opts) as unknown) as Promise<Buffer>
 }
 
 function send(context: HttpContext, code: number, obj: any = null) {
