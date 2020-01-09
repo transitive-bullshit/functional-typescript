@@ -244,7 +244,9 @@ async function getParams(
       } else if (context.is('application/x-www-form-urlencoded')) {
         params = await formParser(context.req)
       } else {
-        params = await micro.json(context.req)
+        params = await micro.json(context.req, {
+          limit: '100mb'
+        })
       }
     } else {
       throw micro.createError(501, 'Not implemented\n')
