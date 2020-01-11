@@ -157,7 +157,7 @@ async function getParams(
         )
       }
 
-      return getBody(context)
+      return getBody(context, debug)
     }
   } else {
     let params: any = {}
@@ -225,7 +225,7 @@ async function getParams(
           limit: BODY_SIZE_LIMIT
         })
       } else {
-        const body = await getBody(context)
+        const body = await getBody(context, debug)
         return JSON.parse(body.toString('utf8'))
       }
     } else {
@@ -240,7 +240,7 @@ async function getParams(
   }
 }
 
-async function getBody(context: HttpContext): Promise<Buffer> {
+async function getBody(context: HttpContext, debug: boolean): Promise<Buffer> {
   const opts: any = {}
   const len = context.req.headers['content-length']
   const encoding = context.req.headers['content-encoding'] || 'identity'
@@ -248,6 +248,12 @@ async function getBody(context: HttpContext): Promise<Buffer> {
     opts.length = +len
     opts.limit = BODY_SIZE_LIMIT
   }
+
+  if (debug) {
+    console.log(opts)
+    console.log(context.req.headers)
+  }
+
   return (raw(inflate(context.req), opts) as unknown) as Promise<Buffer>
 }
 
