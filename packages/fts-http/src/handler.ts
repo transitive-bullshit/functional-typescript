@@ -50,6 +50,12 @@ export function createHttpHandler(
   // Note: it is inconvenient but important for this handler to not be async in
   // order to maximize compatibility with different Node.js server frameworks.
   const handler = (req: http.IncomingMessage, res: http.ServerResponse) => {
+    if (opts.debug) {
+      if (req.method !== 'OPTIONS') {
+        console.log(req.method, req.url, req.headers)
+      }
+    }
+
     const context = new HttpContext(req, res)
 
     if (context.req.method === 'OPTIONS') {
@@ -157,7 +163,7 @@ async function getParams(
         )
       }
 
-      return getBody(context, debug)
+      return getBody(context)
     }
   } else {
     let params: any = {}
@@ -225,7 +231,7 @@ async function getParams(
           limit: BODY_SIZE_LIMIT
         })
       } else {
-        const body = await getBody(context, debug)
+        const body = await getBody(context)
         return JSON.parse(body.toString('utf8'))
       }
     } else {
@@ -240,18 +246,15 @@ async function getParams(
   }
 }
 
-async function getBody(context: HttpContext, debug: boolean): Promise<Buffer> {
-  const opts: any = {}
+async function getBody(context: HttpContext): Promise<Buffer> {
+  const opts: any = {
+    limit: BODY_SIZE_LIMIT
+  }
+
   const len = context.req.headers['content-length']
   const encoding = context.req.headers['content-encoding'] || 'identity'
   if (len && encoding === 'identity') {
     opts.length = +len
-    opts.limit = BODY_SIZE_LIMIT
-  }
-
-  if (debug) {
-    console.log(opts)
-    console.log(context.req.headers)
   }
 
   return (raw(inflate(context.req), opts) as unknown) as Promise<Buffer>
