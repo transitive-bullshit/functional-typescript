@@ -330,6 +330,9 @@ function sendError(context: HttpContext, error: Error, statusCode?: number) {
   if (statusCode || error['statusCode'] === undefined) {
     error['statusCode'] = statusCode || 500
   }
+
+  console.error(error)
+
   /* tslint:enable no-string-literal */
   micro.sendError(context.req, context.res, error)
 }
