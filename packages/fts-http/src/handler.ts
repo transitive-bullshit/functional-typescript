@@ -1,10 +1,10 @@
 import contentType from 'content-type'
+import decompressRequest from 'decompress-request'
 import fileType from 'file-type'
 import fs from 'fs'
 import { Definition } from 'fts'
 import { createValidator } from 'fts-validator'
 import http from 'http'
-import inflate from 'inflation'
 import { readable } from 'is-stream'
 import * as micro from 'micro'
 import microCORS = require('micro-cors')
@@ -232,7 +232,7 @@ async function getParams(
         })
       } else {
         const body = await getBody(context)
-        return JSON.parse(body.toString('utf8'))
+        params = JSON.parse(body.toString('utf8'))
       }
     } else {
       throw micro.createError(501, 'Not implemented\n')
@@ -257,7 +257,9 @@ async function getBody(context: HttpContext): Promise<Buffer> {
     opts.length = +len
   }
 
-  return (raw(inflate(context.req), opts) as unknown) as Promise<Buffer>
+  return (raw(decompressRequest(context.req), opts) as unknown) as Promise<
+    Buffer
+  >
 }
 
 function send(context: HttpContext, code: number, obj: any = null) {

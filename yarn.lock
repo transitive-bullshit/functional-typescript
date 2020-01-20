@@ -2752,6 +2752,11 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
+decompress-request@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/decompress-request/-/decompress-request-1.0.0.tgz#770c29856875d416baede259ca1a26981ef8e0ea"
+  integrity sha512-QQivyhJ/gOt9Qj9xDV4KOxq3fz5Sekxyg9dD9hi1Yw+WgjdWk2Cga30ulYvc8NLHp+MvzyBXwI4tZbfFgaBk4g==
+
 decompress-response@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
@@ -3534,51 +3539,6 @@ fstream@^1.0.0, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-"fts-core@link:packages/fts-core":
-  version "0.0.0"
-  uid ""
-
-"fts-dev@link:packages/fts-dev":
-  version "0.0.0"
-  uid ""
-
-"fts-http-client@link:packages/fts-http-client":
-  version "0.0.0"
-  uid ""
-
-"fts-http@link:packages/fts-http":
-  version "1.3.5"
-  dependencies:
-    accepts "^1.3.5"
-    content-type "^1.0.4"
-    cors "^2.8.5"
-    file-type "^12.4.0"
-    fts "^1.3.0"
-    fts-core "^1.1.0"
-    fts-validator "^1.3.3"
-    inflation "^2.0.0"
-    is-stream "^1.1.0"
-    micro "^9.3.3"
-    micro-cors "^0.1.1"
-    mime-types "^2.1.24"
-    multiparty "^4.2.1"
-    parseurl "^1.3.2"
-    qs "^6.6.0"
-    raw-body "^2.4.1"
-    resolve "^1.10.0"
-    type-is "^1.6.16"
-    urlencoded-body-parser "^3.0.0"
-
-"fts-validator@link:packages/fts-validator":
-  version "1.3.3"
-  dependencies:
-    ajv "^6.7.0"
-    clone-deep "^4.0.1"
-
-"fts@link:packages/fts":
-  version "0.0.0"
-  uid ""
-
 function-bind@^1.0.2, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
@@ -4153,11 +4113,6 @@ indent-string@^3.0.0, indent-string@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-3.2.0.tgz#4a5fd6d27cc332f37e5419a504dbb837105c9289"
   integrity sha1-Sl/W0nzDMvN+VBmlBNu4NxBckok=
-
-inflation@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/inflation/-/inflation-2.0.0.tgz#8b417e47c28f925a45133d914ca1fd389107f30f"
-  integrity sha1-i0F+R8KPklpFEz2RTKH9OJEH8w8=
 
 inflight@^1.0.4:
   version "1.0.6"
