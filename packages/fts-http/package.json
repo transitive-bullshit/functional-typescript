@@ -1,6 +1,6 @@
 {
   "name": "fts-http",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "description": "HTTP Support for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
