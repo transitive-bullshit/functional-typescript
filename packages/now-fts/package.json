@@ -1,6 +1,6 @@
 {
   "name": "now-fts",
-  "version": "1.0.8",
+  "version": "1.3.11",
   "license": "MIT",
   "dependencies": {
     "@now/node-bridge": "^0.1.10",

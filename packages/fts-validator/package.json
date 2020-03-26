@@ -1,6 +1,6 @@
 {
   "name": "fts-validator",
-  "version": "1.3.3",
+  "version": "1.3.11",
   "description": "Schema validation and encoding / decoding for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
   "author": "Saasify <dev@saasify.sh>",
