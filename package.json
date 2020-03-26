@@ -10,7 +10,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "scripts": {
     "start": "run-s build:clean && tsc --build tsconfig.json --watch",

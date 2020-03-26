@@ -11,7 +11,7 @@
     "fts-dev": "build/cli.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "typescript",
