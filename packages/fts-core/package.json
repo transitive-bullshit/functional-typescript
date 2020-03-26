@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "Common types for Functional TypeScript.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
-  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "author": "Saasify <dev@saasify.sh>",
   "license": "MIT",
   "main": "build/index.js",
   "typings": "build/index.d.ts",

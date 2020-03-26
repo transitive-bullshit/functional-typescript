@@ -12,4 +12,4 @@ See the main [docs](https://github.com/transitive-bullshit/functional-typescript
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)

@@ -2,7 +2,7 @@
   "name": "fts-example-hello-world",
   "description": "Simple Hello World example for Functional Typescript",
   "repository": "transitive-bullshit/functional-typescript",
-  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "author": "Saasify <dev@saasify.sh>",
   "license": "MIT",
   "private": true,
   "engines": {

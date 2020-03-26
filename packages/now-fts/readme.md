@@ -39,4 +39,4 @@ The resulting deployment will use an `fts-http` handler to respond to HTTP reque
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)

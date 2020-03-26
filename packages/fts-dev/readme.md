@@ -35,4 +35,4 @@ The server defaults to port 3000.
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)

@@ -4,7 +4,7 @@
 
 # Functional TypeScript
 
-> TypeScript standard for rock solid serverless functions.
+> TypeScript standard for rock solid serverless functions. (sponsored by [Saasify](https://saasify.sh))
 
 [![NPM](https://img.shields.io/npm/v/fts.svg)](https://www.npmjs.com/package/fts) [![Build Status](https://travis-ci.com/transitive-bullshit/functional-typescript.svg?branch=master)](https://travis-ci.com/transitive-bullshit/functional-typescript) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
@@ -17,6 +17,7 @@
 - **Explicit**: Easily generate serverless function docs
 - **Fast**: Uses [ajv](https://github.com/epoberezkin/ajv) for schema validation
 - **Lightweight**: Focused http handler optimized for serverless environments
+- **Robust**: Used in production at [Saasify](https://saasify.sh)
 
 ## Contents
 
@@ -290,7 +291,8 @@ Great question -- this answer will be updated once we have a good answer... 😁
 
 ## Related
 
-- [FaaSLang](https://github.com/faaslang/faaslang) - Very similar in spirit to this project but uses JavaScript with JSDoc instead of TypeScript.
+- [Saasify](https://saasify.sh) - Uses FTS for serverless TS support.
+- [FaaSLang](https://github.com/faaslang/faaslang) - Similar in spirit to this project but uses JS instead of TypeScript.
 - [FastAPI](https://github.com/tiangolo/fastapi) - Similar functionality but for Python.
 - [JSON RPC](https://en.wikipedia.org/wiki/JSON-RPC) - Similar JSON RPC standard.
 - [AWS TypeScript Template](https://github.com/serverless/serverless/tree/master/lib/plugins/create/templates/aws-nodejs-typescript) - Default TypeScript template for AWS serverless functions.
@@ -303,4 +305,4 @@ Great question -- this answer will be updated once we have a good answer... 😁
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)

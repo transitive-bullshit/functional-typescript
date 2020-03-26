@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "TypeScript standard for rock solid serverless functions.",
   "repository": "https://github.com/transitive-bullshit/functional-typescript",
-  "author": "Travis Fischer <travis@transitivebullsh.it>",
+  "author": "Saasify <dev@saasify.sh>",
   "license": "MIT",
   "workspaces": [
     "packages/*"

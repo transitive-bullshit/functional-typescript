@@ -78,4 +78,4 @@ Note that in this example, we're generating the FTS Definition and serving it to
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)

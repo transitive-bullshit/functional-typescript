@@ -56,4 +56,4 @@ const result1 = await client({ name: 'Foo', date: new Date() })
 
 ## License
 
-MIT © [Travis Fischer](https://transitivebullsh.it)
+MIT © [Saasify](https://saasify.sh)
