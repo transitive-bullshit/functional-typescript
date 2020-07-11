@@ -47,3 +47,5 @@
   - [ ] support multiple source languages
   - [ ] support multiple transport handlers (http, grpc, thrift)
   - [x] now-builder for FTS functions
+
+Support my OSS work by <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
