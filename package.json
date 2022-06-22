@@ -72,7 +72,7 @@
     "get-port": "^4.1.0",
     "gh-pages": "^2.0.1",
     "globby": "^9.0.0",
-    "got": "^9.6.0",
+    "got": "^11.8.5",
     "husky": "^1.3.1",
     "json-schema-faker": "^0.5.0-rc16",
     "lerna": "^3.10.6",
