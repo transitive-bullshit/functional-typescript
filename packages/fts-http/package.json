@@ -29,7 +29,7 @@
     "content-type": "^1.0.4",
     "cors": "^2.8.5",
     "decompress-request": "^1.0.0",
-    "file-type": "^12.4.0",
+    "file-type": "^16.5.4",
     "fts": "^1.4.0",
     "fts-core": "^1.4.0",
     "fts-validator": "^1.4.0",
