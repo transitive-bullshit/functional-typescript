@@ -6660,15 +6660,15 @@ q@^1.4.1, q@^1.5.1:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qs@^6.2.1:
+qs@^6.2.1, qs@^6.5.1:
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.0.tgz#d1297e2a049c53119cb49cca366adbbacc80b409"
   integrity sha512-27RP4UotQORTpmNQDX8BHPukOnBP3p1uUJY5UnDhaJB+rMt9iMsok724XL+UHU23bEFOHRMQ2ZhI99qOWUMGFA==
 
-qs@^6.5.1, qs@^6.6.0:
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.6.0.tgz#a99c0f69a8d26bf7ef012f871cdabb0aee4424c2"
-  integrity sha512-KIJqT9jQJDQx5h5uAVPimw6yVg2SekOKu959OCtktD3FjzbpvaPr8i4zzg07DOMz+igA4W/aNM7OV8H37pFYfA==
+qs@^6.6.0:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.6.1.tgz#badc3705933629bed17bc709ba824ba0676708c5"
+  integrity sha512-DxHK46yYwC06eXWu3FCqlADDkzHZUhkaMY2o4jFbPtN90TO/Y4jzyuOpCa1iZ4OvFEOCC4MoGzubQUdxpZzk2w==
 
 qs@~6.5.2:
   version "6.5.2"
